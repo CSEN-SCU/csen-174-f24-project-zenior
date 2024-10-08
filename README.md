@@ -32,4 +32,6 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Learn React.js](https://react.dev/) - React documentation with examples and refferences.
+- [React Docs](https://react.dev/) - React documentation with examples and refferences.
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - learn about Tailwind CSS features and API.
+- [Prisma Documentation](https://www.prisma.io/docs/) - learn about Prisma features and API.
