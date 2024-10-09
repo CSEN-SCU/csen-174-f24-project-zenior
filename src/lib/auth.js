@@ -2,32 +2,30 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 
-// const newUser = async (profile) => {
-//   if (profile.email.endsWith("@scu.edu")) {
-//     try {
-//       const user = await prisma.user.findUnique({
-//         where: { email: profile.email },
-//       });
-//
-//       if (!user) {
-//         await prisma.user.create({
-//           data: {
-//             email: profile.email,
-//             name: profile.name,
-//             image: profile.image,
-//           },
-//         });
-//       }
-//
-//       return true;
-//     } catch (error) {
-//       console.error(error);
-//       return false;
-//     }
-//   }
-//   console.error("Login from unauthorized email: ", profile.email);
-//   return false;
-// };
+const newUser = async (profile) => {
+  if (profile.email.endsWith("@scu.edu")) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email: profile.email },
+      });
+
+      if (!user) {
+        await prisma.user.create({
+          data: {
+            email: profile.email,
+          },
+        });
+      }
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+  console.error("Login from unauthorized email: ", profile.email);
+  return false;
+};
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -38,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ profile }) {
-      const authResult = profile.email.endsWith("@scu.edu");
+      const authResult = await newUser(profile);
       return authResult;
     },
   },
@@ -46,3 +44,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   //   error: "/auth/error",
   // },
 });
+
+export const loggedUser = async () => {
+  const session = await auth();
+  if (session) {
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+    return user;
+  } else {
+    return null;
+  }
+};
