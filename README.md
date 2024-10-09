@@ -45,6 +45,6 @@ To learn more about the technology used in this project, take a look at the foll
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [React Docs](https://react.dev/) - React documentation with examples and refferences.
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - learn about Tailwind CSS features and API.
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - learn how to use Tailwind utility classes.
 - [Prisma Documentation](https://www.prisma.io/docs/orm) - learn about Prisma ORM.
 - [Shadcn/ui Documentation](https://ui.shadcn.com/docs) - learn about Shadcn/ui components and examples.
