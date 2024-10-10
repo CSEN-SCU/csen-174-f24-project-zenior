@@ -1,0 +1,106 @@
+@startuml
+!theme vibrant
+title Zenior Database Schema
+
+entity User {
+  * id : UUID <<PK>>
+  --
+  email : String <<Unique>>
+  role : String
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+
+entity Student {
+  * id : UUID <<PK>>
+  --
+  firstName : String
+  lastName : String
+  major : String
+  minor : String?
+  createdAt : DateTime
+  updatedAt : DateTime
+  userId : UUID <<FK>>
+}
+
+entity Faculty {
+  * id : UUID <<PK>>
+  --
+  firstName : String
+  lastName : String
+  department : String
+  bio : Text
+  researchInterests : String[]
+  expertiseAreas : String[]
+  createdAt : DateTime
+  updatedAt : DateTime
+  userId : UUID <<FK>>
+}
+
+entity Project {
+  * id : UUID <<PK>>
+  --
+  title : String
+  description : Text
+  academicYear : String
+  department : String
+  isInterdisciplinary : Boolean
+  status : String
+  groupOpen : Boolean <<Default(True)>>
+  advisorId : UUID <<FK>>
+  coAdvisorId : UUID? <<FK>>
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+
+entity Skill {
+  * id : UUID <<PK>>
+  --
+  name : String <<Unique>>
+}
+
+entity AdvisorRequest {
+  * id : UUID <<PK>>
+  --
+  status : String
+  studentId : UUID <<FK>>
+  projectId : UUID <<FK>>
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+
+entity GroupRequest {
+  * id : UUID <<PK>>
+  --
+  status : String
+  type : String <<join|invite>>
+  studentId : UUID <<FK>>
+  projectId : UUID <<FK>>
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+
+entity ProjectMembers {
+  * studentId : UUID <<FK>>
+  * projectId : UUID <<FK>>
+}
+
+entity StudentSkills {
+  * studentId : UUID <<FK>>
+  * skillId : UUID <<FK>>
+}
+
+User <|-- Student
+User <|-- Faculty
+
+StudentSkills }|--|| Skill : "has skills"
+StudentSkills }|--|| Student : "associated with"
+ProjectMembers }|--|| Student : "has members"
+ProjectMembers }|--|| Project : "associated with"
+AdvisorRequest }|--|| Student : "belongs to"
+AdvisorRequest }|--|| Project : "requests for"
+GroupRequest }|--|| Student : "belongs to"
+GroupRequest }|--|| Project : "requests for"
+Project }|--|| Faculty : "has advisor" <<FK advisorId>>
+Project }|--|| Faculty : "has co-advisor" <<FK coAdvisorId>>
+@enduml
