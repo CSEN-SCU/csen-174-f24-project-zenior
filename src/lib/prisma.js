@@ -1,6 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+
 const singlePrismaInstance = () => {
-  if (!globalThis.prismaGlobal) {
+  if (process.env.NODE_ENV === "production") {
+    return new PrismaClient();
+  } else if (!globalThis.prismaGlobal) {
     globalThis.prismaGlobal = new PrismaClient();
   }
 
