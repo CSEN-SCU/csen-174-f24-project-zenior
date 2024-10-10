@@ -48,10 +48,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 export const loggedUser = async () => {
   const session = await auth();
   if (session) {
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    });
-    return user;
+    console.log("Session: ", session);
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   } else {
     return null;
   }
