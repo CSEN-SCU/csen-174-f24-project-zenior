@@ -1,10 +1,9 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 const newUser = async (profile) => {
   if (profile.email.endsWith("@scu.edu")) {
-    const prisma = new PrismaClient();
     try {
       const user = await prisma.user.findUnique({
         where: { email: profile.email },
@@ -22,8 +21,6 @@ const newUser = async (profile) => {
     } catch (error) {
       console.error(error);
       return false;
-    } finally {
-      await prisma.$disconnect();
     }
   }
   console.error("Login from unauthorized email: ", profile.email);
@@ -51,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 export const loggedUser = async () => {
   const session = await auth();
   if (session) {
-    const prisma = new PrismaClient();
+    console.log("Session: ", session);
     try {
       const user = await prisma.user.findUnique({
         where: { email: session.user.email },
@@ -60,8 +57,6 @@ export const loggedUser = async () => {
     } catch (error) {
       console.error(error);
       return null;
-    } finally {
-      await prisma.$disconnect();
     }
   } else {
     return null;
