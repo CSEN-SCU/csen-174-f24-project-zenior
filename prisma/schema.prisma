@@ -7,8 +7,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -22,57 +22,61 @@ model User {
 }
 
 model Student {
-  id         String   @id @default(uuid())
-  firstName  String
-  lastName   String
-  major      String
-  minor      String?
-  skills     StudentSkill[]
-  projects   ProjectMember[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id])
+  id             String           @id @default(uuid())
+  firstName      String
+  lastName       String
+  major          String
+  minor          String?
+  skills         StudentSkill[]
+  projects       ProjectMember[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  userId         String           @unique
+  user           User             @relation(fields: [userId], references: [id])
+  AdvisorRequest AdvisorRequest[]
+  GroupRequest   GroupRequest[]
 }
 
 model Faculty {
-  id              String   @id @default(uuid())
-  firstName       String
-  lastName        String
-  department      String
-  bio             String?
+  id                String    @id @default(uuid())
+  firstName         String
+  lastName          String
+  department        String
+  bio               String?
   researchInterests String[]
-  expertiseAreas  String[]
-  advisedProjects Project[] @relation("advisorId")
+  expertiseAreas    String[]
+  advisedProjects   Project[] @relation("advisorId")
   coAdvisedProjects Project[] @relation("coAdvisorId")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id])
 }
 
 model Skill {
-  id      String   @id @default(uuid())
-  name    String   @unique
+  id       String         @id @default(uuid())
+  name     String         @unique
   students StudentSkill[]
 }
 
 model Project {
-  id                 String   @id @default(uuid())
-  title              String
-  description        String
-  academicYear       String
-  department         String
-  isInterdisciplinary Boolean @default(false)
-  status             String   @default("pending")
-  groupOpen          Boolean  @default(true)
-  advisorId          String?
-  coAdvisorId        String?
-  advisor            Faculty? @relation("advisorId", fields: [advisorId], references: [id])
-  coAdvisor          Faculty? @relation("coAdvisorId", fields: [coAdvisorId], references: [id])
-  members            ProjectMember[]
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                  String           @id @default(uuid())
+  title               String
+  description         String
+  academicYear        String
+  department          String
+  isInterdisciplinary Boolean          @default(false)
+  status              String           @default("pending")
+  groupOpen           Boolean          @default(true)
+  advisorId           String?
+  coAdvisorId         String?
+  advisor             Faculty?         @relation("advisorId", fields: [advisorId], references: [id])
+  coAdvisor           Faculty?         @relation("coAdvisorId", fields: [coAdvisorId], references: [id])
+  members             ProjectMember[]
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  AdvisorRequest      AdvisorRequest[]
+  GroupRequest        GroupRequest[]
 }
 
 model AdvisorRequest {
@@ -101,8 +105,8 @@ model GroupRequest {
 }
 
 model ProjectMember {
-  student   Student @relation(fields: [studentId], references: [id])
-  project   Project @relation(fields: [projectId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
 
   studentId String
   projectId String
@@ -111,8 +115,8 @@ model ProjectMember {
 }
 
 model StudentSkill {
-  student   Student @relation(fields: [studentId], references: [id])
-  skill     Skill   @relation(fields: [skillId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+  skill   Skill   @relation(fields: [skillId], references: [id])
 
   studentId String
   skillId   String
