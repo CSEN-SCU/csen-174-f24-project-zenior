@@ -1,5 +1,6 @@
 import React from "react";
 import AuthButton from "@/components/AuthButton";
+import Link from "next/link";
 
 import {
   Card,
