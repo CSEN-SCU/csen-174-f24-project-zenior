@@ -1,0 +1,8 @@
+# Auth.js
+AUTH_SECRET="f9hat3mkdPiBrZYJWPdW/AekGENyNMukSOyYR1UYtes="
+AUTH_GOOGLE_ID="1082753646293-8kmchqjgm40rftd91s1rnkb7li3abogd.apps.googleusercontent.com"
+AUTH_GOOGLE_SECRET="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"
+
+# Supabase DB
+DATABASE_URL="postgresql://postgres.whpnoicsnlwhrlugezsb:FxBIKn5oxlpRpAxa@aws-0-us-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.whpnoicsnlwhrlugezsb:FxBIKn5oxlpRpAxa@aws-0-us-west-1.pooler.supabase.com:5432/postgres"
