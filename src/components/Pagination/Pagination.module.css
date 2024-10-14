@@ -1,0 +1,29 @@
+.pagination{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+.pageLink{
+    cursor: pointer;
+}
+.pageItem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #546575;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+.pageItemActive{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #b30738;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
