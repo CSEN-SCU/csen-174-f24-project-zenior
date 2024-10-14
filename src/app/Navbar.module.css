@@ -30,7 +30,54 @@
     border-right: 1px solid #bbb;
   }
 
-  .navbarCenter .navLinks a {
+  .navbarMain .navLinks a {
     display: block;
     color: #b30738;
+  }
+
+  /*hamburger icon for smaller screens */
+  .hamburger {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /*media query for smaller screens*/
+  @media (max-width: 768px) {
+    .navbar{
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hamburger{
+      display: block;
+      color: #b30738;
+    }
+    .navbarMain{
+      display: none;
+      width: 100%;
+    }
+    .navbarMain.showMenu {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .navbarMain .navLinks{
+      flex-direction: column;
+      width: 100%;
+      padding: 0%;
+    }
+    .navbarMain .navLinks li{
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+      padding: 1rem;
+      border: none;
+      text-align: left;
+      width: 100%;
+    }
+    .navbarMain .navLinks a{
+      padding: 1rem;
+      width: 100%;
+    }
   }
