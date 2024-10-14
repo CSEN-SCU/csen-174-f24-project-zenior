@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import styles from './Navbar.module.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Navbar = () => {
 	//manage menu visibility
@@ -25,16 +26,16 @@ const Navbar = () => {
 			<div className={`${styles.navbarMain} ${isOpen ? styles.showMenu : ' '}`}>
 				<ul className={styles.navLinks}>
 					<li>
-						<a >Student Project Proposals</a>
+						<Link href="/student-proposals/page.js" replace={true}>Student Project Proposals</Link>
 					</li>
 					<li>
-						<a >Faculty Advisor Project Proposals</a>
+						<Link href="/faculty-proposals/page.js" replace={true}>Faculty Advisor Project Proposals</Link>
 					</li>
 					<li>
-						<a >Faculty Advisor Directory</a>
+						<Link href="/advisor-directory/page.js" replace={true}>Faculty Advisor Directory</Link>
 					</li>
 					<li>
-						<a >My Project and Team</a>
+						<Link href="/my-team/page.js" replace={true}>My Project and Team</Link>
 					</li>
 				</ul>
 			</div>

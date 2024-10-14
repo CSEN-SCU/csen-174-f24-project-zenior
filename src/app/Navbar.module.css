@@ -32,7 +32,20 @@
 
   .navbarMain .navLinks a {
     display: block;
+    color: #546575;
+    text-decoration: underline;
+  }
+
+  .navbarMain .navLinks a:hover {
+    display: block;
     color: #b30738;
+    text-decoration: none;
+  }
+
+  .navbarMain .navLinks a:focus {
+    display: block;
+    color: #b30738;
+    text-decoration: none;
   }
 
   /*hamburger icon for smaller screens */
@@ -52,7 +65,7 @@
     }
     .hamburger{
       display: block;
-      color: #b30738;
+      color: #546575;
     }
     .navbarMain{
       display: none;
@@ -79,5 +92,6 @@
     .navbarMain .navLinks a{
       padding: 1rem;
       width: 100%;
+      text-decoration: underline;
     }
   }
