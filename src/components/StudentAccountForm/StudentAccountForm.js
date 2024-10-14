@@ -8,8 +8,11 @@ const StudentAccountForm = () => {
     name: '',
     major: '',
     minor: '',
-    skills: ''
+    skills: []
   });
+
+  // track input for skills
+  const [skillInput, setSkillInput] = useState(""); 
 
   // State to track login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +23,28 @@ const StudentAccountForm = () => {
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  // handle input for skills
+  const handleSkillInputChange = (e) => {
+    setSkillInput(e.target.value);
+  }; 
+  
+  // add the skill to the list when "Enter" is pressed
+  const handleSkillKeyDown = (e) => {
+    if (e.key === "Enter" && skillInput.trim() !== "") {
+      e.preventDefault(); // prevent form submission
+      setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()]}); 
+      setSkillInput(""); // clear the input after adding
+    }
+  }; 
+
+  // remove a skill with the 'x'
+  const handleRemoveSkill = (skillToRemove) => {
+    setFormData({
+      ...formData, 
+      skills: formData.skills.filter(skill => skill !== skillToRemove)
+    }); 
+  }; 
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -93,21 +118,32 @@ const StudentAccountForm = () => {
             />
           </div>
 
-          <div className={styles.selectContainer}>
-            <label htmlFor="skills" className={styles.label}>Skills</label>
+          {/* Skills input box */}
+          <div className={styles.skillsInputContainer}>
             <input
               className={styles.input}
               type="text"
               name="skills"
-              placeholder="Type your skills"
-              value={formData.skills}
-              onChange={handleInputChange}
+              placeholder="Type your skills and press Enter"
+              value={skillInput}
+              onChange={handleSkillInputChange}
+              onKeyDown={handleSkillKeyDown}
             />
+          </div>
+
+          {/* Skills list below the input */}
+          <div className={styles.skillsContainer}>
+            {formData.skills.map((skill, index) => (
+              <div key={index} className={styles.skillTag}>
+                {skill} <span onClick={() => handleRemoveSkill(skill)} className={styles.removeSkill}>x</span>
+              </div>
+            ))}
           </div>
 
           <button className={styles.button} type="submit">Create Account</button>
         </form>
       </div>
+
       {!isLoggedIn && (
         <div className={styles.instructionContainer}>
           <p className={styles.instructionText}>
@@ -118,5 +154,5 @@ const StudentAccountForm = () => {
     </div>
   );
 };
-
+ 
 export default StudentAccountForm;
