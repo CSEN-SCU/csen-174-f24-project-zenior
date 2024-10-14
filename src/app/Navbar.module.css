@@ -7,25 +7,30 @@
     padding: 1rem;
   }
 
-  .navbar-left .logo {
+  .navbarLeft .logo {
     font-size: 1.5rem;
     font-weight: bold;
     color: #fff;
     text-decoration: none;
   }
 
-  .navbar-main .nav-links {
+  .navbarMain .navLinks {
     list-style-type: none;
     display: flex;
     margin: 0;
     padding: 0;
   }
 
-  .navbar-main .nav-links li {
+  .navbarMain .navLinks li{
     margin-right: 1rem;
   }
 
-  .navbar-center .nav-links a {
+  .navbarMain .navLinks li:not(:last-child) {
+    padding-right: 1rem;
+    border-right: 1px solid #bbb;
+  }
+
+  .navbarCenter .navLinks a {
+    display: block;
     color: #b30738;
-    text-decoration: none;
   }

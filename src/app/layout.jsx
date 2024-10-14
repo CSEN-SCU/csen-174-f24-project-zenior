@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import Navbar from "./Navbar";
 
 // Default fonts - need to be changed to use SCU fonts
 const geistSans = localFont({
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar />
         <AuthProvider session={session}>
           {children}
           <Toaster />
