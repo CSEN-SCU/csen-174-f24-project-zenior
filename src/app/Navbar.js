@@ -26,16 +26,16 @@ const Navbar = () => {
 			<div className={`${styles.navbarMain} ${isOpen ? styles.showMenu : ' '}`}>
 				<ul className={styles.navLinks}>
 					<li>
-						<Link href="/student-proposals/page.js" replace={true}>Student Project Proposals</Link>
+						<Link href="/student-proposals" replace={true}>Student Project Proposals</Link>
 					</li>
 					<li>
-						<Link href="/faculty-proposals/page.js" replace={true}>Faculty Advisor Project Proposals</Link>
+						<Link href="/faculty-proposals" replace={true}>Faculty Advisor Project Proposals</Link>
 					</li>
 					<li>
-						<Link href="/advisor-directory/page.js" replace={true}>Faculty Advisor Directory</Link>
+						<Link href="/advisor-directory" replace={true}>Faculty Advisor Directory</Link>
 					</li>
 					<li>
-						<Link href="/my-team/page.js" replace={true}>My Project and Team</Link>
+						<Link href="/my-team" replace={true}>My Project and Team</Link>
 					</li>
 				</ul>
 			</div>

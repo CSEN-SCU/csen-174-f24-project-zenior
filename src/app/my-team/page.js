@@ -1,3 +1,5 @@
+import styles from './profile.module.css';
+
 export default function Team() {
-	return <h1> My team and dashboard </h1>
+	return <h1> My team </h1>
 }
