@@ -1,22 +1,22 @@
 "use client";
 
-import { useState } from 'react';
-import styles from '../../styles/StudentAccountForm.module.css';
+import { useState } from "react";
+import styles from "@/styles/StudentAccountForm.module.css";
 
 const StudentAccountForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    major: '',
-    minor: '',
-    skills: []
+    name: "",
+    major: "",
+    minor: "",
+    skills: [],
   });
 
   // track input for skills
-  const [skillInput, setSkillInput] = useState(""); 
+  const [skillInput, setSkillInput] = useState("");
 
   // State to track login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   // State for profile picture
   const [profilePicture, setProfilePicture] = useState(null);
 
@@ -27,24 +27,27 @@ const StudentAccountForm = () => {
   // handle input for skills
   const handleSkillInputChange = (e) => {
     setSkillInput(e.target.value);
-  }; 
-  
+  };
+
   // add the skill to the list when "Enter" is pressed
   const handleSkillKeyDown = (e) => {
     if (e.key === "Enter" && skillInput.trim() !== "") {
       e.preventDefault(); // prevent form submission
-      setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()]}); 
+      setFormData({
+        ...formData,
+        skills: [...formData.skills, skillInput.trim()],
+      });
       setSkillInput(""); // clear the input after adding
     }
-  }; 
+  };
 
   // remove a skill with the 'x'
   const handleRemoveSkill = (skillToRemove) => {
     setFormData({
-      ...formData, 
-      skills: formData.skills.filter(skill => skill !== skillToRemove)
-    }); 
-  }; 
+      ...formData,
+      skills: formData.skills.filter((skill) => skill !== skillToRemove),
+    });
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -87,7 +90,9 @@ const StudentAccountForm = () => {
           />
 
           <div className={styles.selectContainer}>
-            <label htmlFor="major" className={styles.label}>Major</label>
+            <label htmlFor="major" className={styles.label}>
+              Major
+            </label>
             <select
               className={styles.select}
               name="major"
@@ -107,7 +112,9 @@ const StudentAccountForm = () => {
           </div>
 
           <div className={styles.selectContainer}>
-            <label htmlFor="minor" className={styles.label}>Minor</label>
+            <label htmlFor="minor" className={styles.label}>
+              Minor
+            </label>
             <input
               className={styles.input}
               type="text"
@@ -135,12 +142,20 @@ const StudentAccountForm = () => {
           <div className={styles.skillsContainer}>
             {formData.skills.map((skill, index) => (
               <div key={index} className={styles.skillTag}>
-                {skill} <span onClick={() => handleRemoveSkill(skill)} className={styles.removeSkill}>x</span>
+                {skill}{" "}
+                <span
+                  onClick={() => handleRemoveSkill(skill)}
+                  className={styles.removeSkill}
+                >
+                  x
+                </span>
               </div>
             ))}
           </div>
 
-          <button className={styles.button} type="submit">Create Account</button>
+          <button className={styles.button} type="submit">
+            Create Account
+          </button>
         </form>
       </div>
 
@@ -154,5 +169,5 @@ const StudentAccountForm = () => {
     </div>
   );
 };
- 
+
 export default StudentAccountForm;
