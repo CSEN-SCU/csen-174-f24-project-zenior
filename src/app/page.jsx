@@ -1,7 +1,5 @@
 import React from "react";
 import AuthButton from "@/components/AuthButton";
-import Link from "next/link";
-
 import {
   Card,
   CardHeader,
@@ -14,8 +12,6 @@ import { loggedUser } from "@/lib/auth";
 
 const Home = async () => {
   const user = await loggedUser();
-
-  console.log(user);
 
   return (
     <main>

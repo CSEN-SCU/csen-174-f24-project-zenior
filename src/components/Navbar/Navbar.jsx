@@ -18,7 +18,12 @@ const Navbar = () => {
     <nav className={styles.navbar}>
       <div className={styles.navbarLeft}>
         <a href="/" className={styles.logo}>
-          <Image src="/Logo.png" alt="ZENior logo" width={150} height={50} />
+          <Image
+            src="/images/Logo.png"
+            alt="ZENior logo"
+            width={150}
+            height={50}
+          />
         </a>
       </div>
       <button className={styles.hamburger} onClick={toggleMenu}>
