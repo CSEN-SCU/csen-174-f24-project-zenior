@@ -8,10 +8,11 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { loggedUser } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 const Home = async () => {
-  const user = await loggedUser();
+  const session = await auth();
+  const user = session?.user;
 
   return (
     <main>
@@ -25,7 +26,10 @@ const Home = async () => {
           </CardHeader>
           <CardContent>
             {user ? (
-              <p>You&apos;re signed in as {user.email}</p>
+              <p>
+                You&apos;re a <strong>{user.role}</strong> signed in as{" "}
+                <strong>{user.email}</strong>
+              </p>
             ) : (
               <p>You&apos;re not signed in</p>
             )}
