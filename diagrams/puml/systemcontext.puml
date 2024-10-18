@@ -1,0 +1,27 @@
+@startuml System Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Zeinor System Context
+
+' Define the external entities
+Person(student, "Student", "Rising senior in SCU's School of Engineering")
+Person(advisor, "Advisor", "Faculty advisor in SCU's School of Engineering")
+
+' Define the software system
+System(zwa, "Zeinor Web Application", "A hub for rising seniors to form senior design teams...")
+
+' Define external systems
+System_Ext(auth, "User Authentication", "Authenticates the user through Google OAuth to ensure that user has an SCU domain email.")
+System_Ext(api, "Scholar Commons API", "SCU’s hub for theses and published research documents from SCU faculty and students.")
+
+' Relationships
+Rel(student, zwa, "Creates profile, proposes and/or views project pitches, views faculty directory, and joins a team...")
+Rel(advisor, zwa, "Creates profile, pitches project proposals, and joins a SD team as an advisor.")
+Rel(auth, zwa, "Application requests Google if user is verified...", "OAuth")
+Rel(zwa, auth, "Google OAuth returns the authorization code which confirms the user's identity.", "OAuth")
+Rel(zwa, api, "Sends requested data to Zenior", "API")
+Rel(api, zwa, "Request papers from API from topic", "API")
+
+SHOW_LEGEND()
+
+@enduml
