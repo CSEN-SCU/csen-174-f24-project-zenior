@@ -42,45 +42,46 @@ model User {
   role              Role     @default(student)
   isActive          Boolean  @default(true)
   profilePictureUrl String?
+  new               Boolean  @default(true)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
-  Student   Student?
-  Faculty   Faculty?
+  Student Student?
+  Faculty Faculty?
 }
 
 model Student {
-  id             String           @id @default(uuid())
-  firstName      String
-  lastName       String
-  major          String
-  minor          String?
-  bio            String?
-  skills         StudentSkill[]
-  projects       ProjectMember[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  userId         String           @unique
-  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String          @id @default(uuid())
+  firstName String
+  lastName  String
+  major     String
+  minor     String?
+  bio       String?
+  skills    StudentSkill[]
+  projects  ProjectMember[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  userId    String          @unique
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   AdvisorRequest AdvisorRequest[]
   GroupRequest   GroupRequest[]
 }
 
 model Faculty {
-  id                String    @id @default(uuid())
+  id                String                    @id @default(uuid())
   firstName         String
   lastName          String
   department        String
   bio               String?
   researchInterests FacultyResearchInterest[]
   expertiseAreas    FacultyExpertiseArea[]
-  advisedProjects   Project[] @relation("advisorId")
-  coAdvisedProjects Project[] @relation("coAdvisorId")
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  userId            String    @unique
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  advisedProjects   Project[]                 @relation("advisorId")
+  coAdvisedProjects Project[]                 @relation("coAdvisorId")
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+  userId            String                    @unique
+  user              User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   skills FacultySkill[]
 }
@@ -93,21 +94,21 @@ model Skill {
 }
 
 model Project {
-  id                  String           @id @default(uuid())
+  id                  String          @id @default(uuid())
   title               String
   description         String
   academicYear        String
   department          String
-  isInterdisciplinary Boolean          @default(false)
-  status              ProjectStatus    @default(proposed)
-  groupOpen           Boolean          @default(true)
+  isInterdisciplinary Boolean         @default(false)
+  status              ProjectStatus   @default(proposed)
+  groupOpen           Boolean         @default(true)
   advisorId           String?
   coAdvisorId         String?
-  advisor             Faculty?         @relation("advisorId", fields: [advisorId], references: [id])
-  coAdvisor           Faculty?         @relation("coAdvisorId", fields: [coAdvisorId], references: [id])
+  advisor             Faculty?        @relation("advisorId", fields: [advisorId], references: [id])
+  coAdvisor           Faculty?        @relation("coAdvisorId", fields: [coAdvisorId], references: [id])
   members             ProjectMember[]
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 
   AdvisorRequest AdvisorRequest[]
   GroupRequest   GroupRequest[]
@@ -129,13 +130,13 @@ model AdvisorRequest {
 }
 
 model GroupRequest {
-  id        String        @id @default(uuid())
-  status    RequestStatus @default(pending)
+  id        String           @id @default(uuid())
+  status    RequestStatus    @default(pending)
   type      GroupRequestType @default(join) // join or invite
-  student   Student       @relation(fields: [studentId], references: [id])
-  project   Project       @relation(fields: [projectId], references: [id])
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  student   Student          @relation(fields: [studentId], references: [id])
+  project   Project          @relation(fields: [projectId], references: [id])
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   studentId String
   projectId String
@@ -175,18 +176,18 @@ model FacultySkill {
 }
 
 model FacultyResearchInterest {
-  faculty           Faculty         @relation(fields: [facultyId], references: [id])
-  researchInterest  ResearchInterest @relation(fields: [researchInterestId], references: [id])
+  faculty          Faculty          @relation(fields: [facultyId], references: [id])
+  researchInterest ResearchInterest @relation(fields: [researchInterestId], references: [id])
 
-  facultyId         String
+  facultyId          String
   researchInterestId String
 
   @@id([facultyId, researchInterestId])
 }
 
 model FacultyExpertiseArea {
-  faculty         Faculty       @relation(fields: [facultyId], references: [id])
-  expertiseArea   ExpertiseArea @relation(fields: [expertiseAreaId], references: [id])
+  faculty       Faculty       @relation(fields: [facultyId], references: [id])
+  expertiseArea ExpertiseArea @relation(fields: [expertiseAreaId], references: [id])
 
   facultyId       String
   expertiseAreaId String
@@ -195,13 +196,13 @@ model FacultyExpertiseArea {
 }
 
 model ResearchInterest {
-  id       String                @id @default(uuid())
-  name     String                @unique
+  id        String                    @id @default(uuid())
+  name      String                    @unique
   faculties FacultyResearchInterest[]
 }
 
 model ExpertiseArea {
-  id       String              @id @default(uuid())
-  name     String              @unique
+  id        String                 @id @default(uuid())
+  name      String                 @unique
   faculties FacultyExpertiseArea[]
 }

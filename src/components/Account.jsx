@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
@@ -69,8 +69,13 @@ const Account = () => {
     <div className={styles.container}>
       <div className={styles.formCard}>
         <div className={styles.avatarContainer}>
-          <Avatar className="h-32 w-32"> {/* make avatar larger */}
-            <AvatarImage src={profilePicture || "/default-profile.png"} alt="Profile" />
+          <Avatar className="w-32 h-32">
+            {" "}
+            {/* make avatar larger */}
+            <AvatarImage
+              src={profilePicture || "/default-profile.png"}
+              alt="Profile"
+            />
             <AvatarFallback>Profile Picture</AvatarFallback>
           </Avatar>
           <label htmlFor="profile-upload" className={styles.cameraIcon}>
@@ -84,7 +89,7 @@ const Account = () => {
             className={styles.fileInput}
           />
         </div>
-        
+
         <form onSubmit={handleLogin}>
           <input
             className={styles.input}
@@ -160,10 +165,7 @@ const Account = () => {
             ))}
           </div>
 
-          <Button variant="custom">
-            Create Account
-          </Button>
-
+          <Button variant="custom">Create Account</Button>
         </form>
       </div>
 

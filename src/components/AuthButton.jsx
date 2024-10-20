@@ -39,7 +39,7 @@ const AuthButton = ({ className }) => {
           title: "Signing in",
           description: "Redirecting to sign in",
         });
-        signIn("google");
+        signIn("google", { redirectTo: "/success" });
       }}
     >
       {loading ? <Loading /> : "Sign in with Google"}
