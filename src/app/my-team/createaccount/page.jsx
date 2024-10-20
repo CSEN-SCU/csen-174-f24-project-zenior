@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
 
-const StudentAccountForm = () => {
+const Account = () => {
   const [formData, setFormData] = useState({
     name: "",
     major: "",
@@ -65,19 +68,23 @@ const StudentAccountForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
-        <div className={styles.profilePicture}>
-          {profilePicture ? (
-            <img src={profilePicture} alt="Profile" />
-          ) : (
-            <img src="/default-profile.png" alt="Default Profile" />
-          )}
+        <div className={styles.avatarContainer}>
+          <Avatar className="h-32 w-32"> {/* make avatar larger */}
+            <AvatarImage src={profilePicture || "/default-profile.png"} alt="Profile" />
+            <AvatarFallback>Profile Picture</AvatarFallback>
+          </Avatar>
+          <label htmlFor="profile-upload" className={styles.cameraIcon}>
+            <Camera />
+          </label>
+          <input
+            type="file"
+            id="profile-upload"
+            accept="image/*"
+            onChange={handleFileChange}
+            className={styles.fileInput}
+          />
         </div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className={styles.fileInput}
-        />
+        
         <form onSubmit={handleLogin}>
           <input
             className={styles.input}
@@ -153,9 +160,10 @@ const StudentAccountForm = () => {
             ))}
           </div>
 
-          <button className={styles.button} type="submit">
+          <Button variant="custom">
             Create Account
-          </button>
+          </Button>
+
         </form>
       </div>
 
@@ -170,4 +178,4 @@ const StudentAccountForm = () => {
   );
 };
 
-export default StudentAccountForm;
+export default Account;

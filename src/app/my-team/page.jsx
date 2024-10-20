@@ -2,16 +2,16 @@
 
 import React from "react";
 import styles from "./profile.module.css";
-import StudentAccountForm from "@/components/StudentAccountForm/StudentAccountForm";
+import Account from "./createaccount/page"; 
 
 //export default function Team() {
 //  return <h1> My team </h1>;
 //}
 
-export default function Account() {
+export default function MyTeam() {
   return (
     <div className={styles.container}>
-      <StudentAccountForm />
+      <Account />
     </div>
   );
 }
