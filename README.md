@@ -176,6 +176,6 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
 
 ## 📜 License
 
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the GPLv3 License. See the [LICENSE](./LICENSE) file for details.
 
 
