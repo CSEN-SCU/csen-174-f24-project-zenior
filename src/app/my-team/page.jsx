@@ -1,17 +1,15 @@
-"use client";
-
 import React from "react";
 import styles from "./profile.module.css";
-import Account from "./createaccount/page"; 
+import StudentAccountForm from "@/components/StudentAccountForm";
+import { user } from "@/lib/server/actions";
+import { auth } from "@/lib/auth";
 
-//export default function Team() {
-//  return <h1> My team </h1>;
-//}
-
-export default function MyTeam() {
+export default async function MyTeam() {
+  const session = await auth();
+  const currentUser = await user.get({ email: session.user.email });
   return (
-    <div className={styles.container}>
-      <Account />
-    </div>
+    <main className={styles.container}>
+      <StudentAccountForm user={currentUser[0]} userUpdate={user.update} />
+    </main>
   );
 }

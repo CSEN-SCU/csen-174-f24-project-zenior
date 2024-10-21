@@ -1,19 +1,13 @@
 import React from "react";
-import { getSortedPostsData } from "@/lib/posts";
-
-// get statick props is not supported in app router
-//
-// export async function getStaticProps() {
-//   const allPostsData = getSortedPostsData();
-//   return {
-//     props: {
-//       allPostsData,
-//     },
-//   };
-// }
+import { projects } from "@/lib/server/actions";
+import Projects from "@/components/Projects";
 
 export default async function Student() {
-  // just get the data from file. await if needed
-  const allPostsData = getSortedPostsData();
-  return <h1>Student Proposals Page</h1>;
+  const allProjects = await projects.get();
+
+  if (!projects || !projects.length) {
+    return <h1>No projects found</h1>;
+  } else {
+    return <Projects projects={allProjects} />;
+  }
 }
