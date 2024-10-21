@@ -45,7 +45,7 @@ const ProposalForm = () => {
   });
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    //setFormData({ ...formData, [e.target.name]: e.target.value });
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -56,7 +56,7 @@ const ProposalForm = () => {
   const isFormValid =
     formData.title.trim() !== "" &&
     formData.description !== "" &&
-    formData.skills !== "";
+    formData.skills.length > 0;
 
   const [skillInput, setSkillInput] = useState(""); // track input for skills
 
@@ -85,9 +85,16 @@ const ProposalForm = () => {
     });
   };
 
+  //handle form submission
+  const handleSubmit = (data) => {
+    //send to server
+    console.log("Form submitted", {...formData, ...data});
+    //route to new page
+  };
+
   return (
     <FormProvider {...form}>
-      <form className="my-2 mx-8 space-y-6">
+      <form className="my-2 mx-8 space-y-6" onSubmit={handleSubmit}>
         <h1 className="text-4xl font-extrabold">Proposal Form</h1>
         <p>
           This form creates a SD project proposal, which will be shown on your
@@ -110,13 +117,13 @@ const ProposalForm = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="descr" className="font-bold">
+            <label htmlFor="description" className="font-bold">
               Project Description<span className="text-red-500"> *</span>
             </label>
             <textarea
-              name="descr"
+              name="description"
               placeholder="Enter a brief description of your project"
-              value={formData.descr}
+              value={formData.description}
               onChange={handleInputChange}
               rows = "4"
               required
