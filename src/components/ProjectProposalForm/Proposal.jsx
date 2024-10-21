@@ -15,18 +15,10 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 
-// what does this do?
-// export function CheckboxReactHookFormMultiple() {
-//     const form = useForm<z.infer<typeof FormSchema>>({
-//       resolver: zodResolver(FormSchema),
-//       defaultValues: {items: ["coen"]},
-//     })
-// }
-
 const ProposalForm = () => {
   const [formData, setFormData] = useState({
-    projectTitle: "",
-    projectDesc: "",
+    title: "",
+    description: "",
     projectMem: "",
     projectAd: "",
     skills: [],
@@ -62,8 +54,8 @@ const ProposalForm = () => {
   };
 
   const isFormValid =
-    formData.projectTitle.trim() !== "" &&
-    formData.projectDesc !== "" &&
+    formData.title.trim() !== "" &&
+    formData.description !== "" &&
     formData.skills !== "";
 
   const [skillInput, setSkillInput] = useState(""); // track input for skills
@@ -121,15 +113,15 @@ const ProposalForm = () => {
             <label htmlFor="descr" className="font-bold">
               Project Description<span className="text-red-500"> *</span>
             </label>
-            <input
-              type="textarea"
+            <textarea
               name="descr"
               placeholder="Enter a brief description of your project"
               value={formData.descr}
               onChange={handleInputChange}
+              rows = "4"
               required
               className="block w-1/2 px-3 py-2 ps-1 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
-            ></input>
+            ></textarea>
           </div>
 
           <div className="flex items-center mb-4 space-x-4">
