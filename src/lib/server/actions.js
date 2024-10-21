@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // Interface to interact with the projects table.
 // Can be used on server side and client side as an server action.
@@ -17,7 +18,11 @@ export const projects = {
     return await prisma.project.findMany({
       where,
       include: {
-        members: true,
+        members: {
+          include: {
+            student: true,
+          },
+        },
         AdvisorRequest: true,
         GroupRequest: true,
       },
@@ -30,6 +35,10 @@ export const projects = {
   // Returns: The created project as an object.
   create: async (data) => {
     "use server";
+    const members = data.members;
+    if (members) {
+      delete data.members;
+    }
     const newProject = await prisma.project.create({
       data,
       include: {
@@ -38,7 +47,21 @@ export const projects = {
         GroupRequest: true,
       },
     });
+    if (members) {
+      newProject.members = [];
+      for (const member of members) {
+        const newMember = await prisma.projectMember.create({
+          data: {
+            projectId: newProject.id,
+            studentId: member.student.id,
+          },
+        });
+        newProject.members.push(newMember);
+      }
+    }
     revalidatePath("/");
+    revalidatePath("/my-team");
+    redirect("/my-team");
     return newProject;
   },
   // Parameters:
