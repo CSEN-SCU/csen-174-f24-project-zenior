@@ -53,8 +53,14 @@ const form = useForm({
 
 const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+        ...prevData, [name]: value,
+    }));
 };
-   
+
+const isFormValid = formData.projectTitle.trim() !== '' && formData.projectDesc !== '' && formData.skills !== '';
+
 const [skillInput, setSkillInput] = useState("");// track input for skills
     
 const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
@@ -90,27 +96,54 @@ const handleLogin = (e) => {
 
 return (
     <FormProvider {...form}>
-     <form>
-        <div className={styles.container}>
-            <label htmlFor="title">Project Title</label>
-            <input type="text" name="title" placeholder="Enter project title" value={formData.title} onChange={handleInputChange} required></input>
-      
-            <label htmlFor="descr">Project Description</label>
-            <input type="textarea" name="descr" placeholder="Enter a brief description of your project" value={formData.descr} onChange={handleInputChange} required></input>
+     <form className="space-y-6 mx-8 my-2">
+        <h1 class="text-4xl font-extrabold">Proposal Form</h1>
+        <p>This form creates a SD project proposal, which will be shown on your profile. You may edit any of the fields, at any time</p>
+        <div className="w-full">
+            <div class="mb-4 flex items-center space-x-4">
+                <label htmlFor="title" class="font-bold">Project Title<span className="text-red-500"> *</span></label>
+                <input type="text" name="title" placeholder="Enter project title" value={formData.title} onChange={handleInputChange} required
+                className="mt-1 w-1/2 px-3 py-2 ps-1 border focus:outline-none mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"></input>
+            </div>
 
-            <label htmlFor="members">Project Team Members</label>
-            <aside>Add the namesm of people who have already agreed to be members of this project. You may leave this section blank for now.</aside>
+            <div className="mb-4">
+                <label htmlFor="descr" class="font-bold">Project Description<span className="text-red-500"> *</span></label>
+                <input type="textarea" name="descr" placeholder="Enter a brief description of your project" value={formData.descr} onChange={handleInputChange} required
+                className="block mt-1 w-1/2 px-3 py-2 ps-1 border focus:outline-none mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"></input>
+            </div>
 
-            <label htmlFor="advisor">Project Advisor(s)</label>
-            <aside>Add the names of a faculty member who has already agreed to be an advisor for this project. You may leave this section blank for now.</aside>
+            <div className="mb-4 flex items-center space-x-4">
+                <div>
+                    <label htmlFor="members" class="font-bold">Project Team Members</label>
+                    <aside class="text-xs w-48">Add the names of people who have already agreed to be members of this project. You may leave this section blank for now.</aside>
+                </div>
+                <div class="w-full max-w-sm min-w-[200px]">
+                    <div class="relative">            
+                        <input type="text" class="w-full pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow" placeholder="Type here..." />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="absolute w-5 h-5 top-2.5 right-2.5 text-slate-600">
+                            <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
+            <div className="mb-4 flex items-center space-x-4">
+                <div>
+                    <label htmlFor="advisor" class="font-bold">Project Advisor(s)</label>
+                    <aside class="text-xs w-48">Add the names of a faculty member who has already agreed to be an advisor for this project. You may leave this section blank for now.</aside>
+                </div>
+                <input type="text" class="w-96 pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow" placeholder="Type here..." />
+            </div>
+        
+            <div className="mb-4">
             <FormField control={form.control} name="majors" 
                 render={() => (
                     <FormItem>
                         <div className="mb-4">
-                            <FormLabel className="text-base">Interdisciplinary</FormLabel>
+                            <FormLabel className="text-base font-bold">Departments</FormLabel>
                             <FormDescription>If this project is interdisciplinary, then what other majors/departments (other than your own) will be involved?</FormDescription>
                         </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {majors.map((item) => (
                             <FormField
                                 key={item.id}
@@ -118,7 +151,7 @@ return (
                                 name="items"
                                 render={({ field }) => {
                                     return (
-                                        <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                        <FormItem key={item.id} className="flex items-start space-x-3">
                                             <FormControl>
                                                 <Checkbox
                                                     checked={field.value?.includes(item.id)}
@@ -133,17 +166,17 @@ return (
                                     );
                                 }}
                             />
-                        ))}
+                        ))}</div>
                     </FormItem>
                 )}/>
-        
+                </div>
+                <label class="font-bold">Desired Skillsets<span className="text-red-500"> *</span></label>
                 {/* Skills input box */}
-                <div className={styles.skillsInputContainer}>
+                <div className="mb-4 ">
                     <input
-                        className={styles.input}
+                        className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
                         type="text"
                         name="skills"
-                        placeholder="Type your skills and press Enter"
                         value={skillInput}
                         onChange={handleSkillInputChange}
                         onKeyDown={handleSkillKeyDown}
@@ -151,7 +184,7 @@ return (
                 </div>
 
                 {/* Skills list below the input */}
-                <div className={styles.skillsContainer}>
+                <div className="flex flex-wrap gap-2">
                     {formData.skills.map((skill, index) => (
                         <div key={index} className={styles.skillTag}>
                             {skill}{" "}
@@ -162,6 +195,11 @@ return (
 
             </div>
         </form>
+        <button
+            type="submit"
+            className="bg-[#b30738] text-white cursor-pointer py-2 px-4 m-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled = {!isFormValid}>
+        Create Project</button>
         </FormProvider>
     );
   };
