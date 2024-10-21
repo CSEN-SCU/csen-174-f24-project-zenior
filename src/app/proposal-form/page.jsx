@@ -1,11 +1,10 @@
-"use client"
 import React from "react";
 import ProposalForm from "../../components/ProjectProposalForm/Proposal";
 
 export default function Faculty() {
-  return(
+  return (
     <section>
-        <ProposalForm/>
+      <ProposalForm />
     </section>
   );
 }

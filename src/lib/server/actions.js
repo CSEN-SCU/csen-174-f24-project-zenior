@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 // Interface to interact with the projects table.
 // Can be used on server side and client side as an server action.
@@ -29,7 +30,7 @@ export const projects = {
   // Returns: The created project as an object.
   create: async (data) => {
     "use server";
-    return await prisma.project.create({
+    const newProject = await prisma.project.create({
       data,
       include: {
         members: true,
@@ -37,6 +38,8 @@ export const projects = {
         GroupRequest: true,
       },
     });
+    revalidatePath("/");
+    return newProject;
   },
   // Parameters:
   // - id: String. Required. ID of the project to update.
@@ -46,7 +49,7 @@ export const projects = {
   // Returns: The updated project as an object.
   update: async (id, data) => {
     "use server";
-    return await prisma.project.update({
+    const updatedProject = await prisma.project.update({
       where: { id },
       data,
       include: {
@@ -55,6 +58,8 @@ export const projects = {
         GroupRequest: true,
       },
     });
+    revalidatePath("/");
+    return updatedProject;
   },
   // Parameters:
   // - id: String. Required. ID of the project to delete.
@@ -63,7 +68,7 @@ export const projects = {
   // Returns: The deleted project as an object.
   delete: async (id) => {
     "use server";
-    return await prisma.project.delete({
+    const deletedProject = await prisma.project.delete({
       where: { id },
       include: {
         members: true,
@@ -71,6 +76,8 @@ export const projects = {
         GroupRequest: true,
       },
     });
+    revalidatePath("/");
+    return deletedProject;
   },
 };
 
@@ -93,8 +100,170 @@ export const faculty = {
         expertiseAreas: true,
         advisedProjects: true,
         coAdvisedProjects: true,
-        skills: true,
+        skills: {
+          include: {
+            skill: true,
+          },
+        },
       },
     });
+  },
+};
+
+export const user = {
+  get: async (where = {}) => {
+    "use server";
+    const users = await prisma.user.findMany({
+      where,
+    });
+    if (users.length > 0) {
+      for (const user of users) {
+        if (user.role === "faculty") {
+          user.faculty = await prisma.faculty.findUnique({
+            where: { userId: user.id },
+            include: {
+              researchInterests: true,
+              expertiseAreas: true,
+              advisedProjects: true,
+              coAdvisedProjects: true,
+              skills: {
+                include: {
+                  skill: true,
+                },
+              },
+            },
+          });
+        } else {
+          user.student = await prisma.student.findUnique({
+            where: { userId: user.id },
+            include: {
+              skills: {
+                include: {
+                  skill: true,
+                },
+              },
+              projects: true,
+              AdvisorRequest: true,
+              GroupRequest: true,
+            },
+          });
+        }
+      }
+    }
+    return users;
+  },
+  update: async (id, data) => {
+    "use server";
+    if (data.Student) {
+      const student = await prisma.student.findUnique({
+        where: { userId: id },
+      });
+      if (data.Student.skills) {
+        for (const skill of data.Student.skills) {
+          const existingSkill = await prisma.skill.findUnique({
+            where: { name: skill },
+          });
+          if (existingSkill) {
+            const existingStudentSkill = await prisma.studentSkill.findFirst({
+              where: {
+                studentId: student.id,
+                skillId: existingSkill.id,
+              },
+            });
+            if (!existingStudentSkill) {
+              await prisma.studentSkill.create({
+                data: {
+                  studentId: student.id,
+                  skillId: existingSkill.id,
+                },
+              });
+            }
+          } else {
+            const newSkill = await prisma.skill.create({
+              data: {
+                name: skill,
+              },
+            });
+            await prisma.studentSkill.create({
+              data: {
+                studentId: student.id,
+                skillId: newSkill.id,
+              },
+            });
+          }
+        }
+        const studentSkills = await prisma.studentSkill.findMany({
+          where: { studentId: student.id },
+          include: {
+            skill: true,
+          },
+        });
+        for (const studentSkill of studentSkills) {
+          if (!data.Student.skills.includes(studentSkill.skill.name)) {
+            console.log("deleting", studentSkill.skill.name);
+            await prisma.studentSkill.delete({
+              where: {
+                studentId_skillId: {
+                  studentId: student.id,
+                  skillId: studentSkill.skillId,
+                },
+              },
+            });
+          }
+        }
+        delete data.Student.skills;
+      }
+      await prisma.student.update({
+        where: { userId: id },
+        data: data.Student,
+      });
+      delete data.Student;
+    }
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        new: data.new,
+      },
+    });
+    if (updatedUser.role === "faculty") {
+      updatedUser.faculty = await prisma.faculty.findUnique({
+        where: { userId: id },
+        include: {
+          researchInterests: true,
+          expertiseAreas: true,
+          advisedProjects: true,
+          coAdvisedProjects: true,
+          skills: {
+            include: {
+              skill: true,
+            },
+          },
+        },
+      });
+    } else {
+      updatedUser.student = await prisma.student.findUnique({
+        where: { userId: id },
+        include: {
+          skills: {
+            include: {
+              skill: true,
+            },
+          },
+          projects: true,
+          AdvisorRequest: true,
+          GroupRequest: true,
+        },
+      });
+    }
+    revalidatePath("/");
+    return updatedUser;
+  },
+  delete: async (id) => {
+    "use server";
+    const deletedUser = await prisma.user.delete({
+      where: { id },
+    });
+    revalidatePath("/");
+    return deletedUser;
   },
 };

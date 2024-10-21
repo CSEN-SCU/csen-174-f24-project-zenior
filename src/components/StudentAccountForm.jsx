@@ -1,27 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
+import { usePathname } from "next/navigation";
 
-const Account = () => {
+const StudentAccountForm = ({ user, userUpdate }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    major: "",
-    minor: "",
-    skills: [],
+    name: user.student.firstName + " " + user.student.lastName,
+    major: user.student.major,
+    minor: user.student.minor,
+    skills: user.student.skills.map((skill) => skill.skill.name),
   });
 
   // track input for skills
   const [skillInput, setSkillInput] = useState("");
 
-  // State to track login status
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // State for profile picture
   const [profilePicture, setProfilePicture] = useState(null);
+
+  const pathname = usePathname();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,11 +51,6 @@ const Account = () => {
       ...formData,
       skills: formData.skills.filter((skill) => skill !== skillToRemove),
     });
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(true);
   };
 
   const handleFileChange = (e) => {
@@ -90,7 +86,20 @@ const Account = () => {
           />
         </div>
 
-        <form onSubmit={handleLogin}>
+        <form
+          action={() =>
+            userUpdate(user.id, {
+              new: false,
+              Student: {
+                firstName: formData.name.split(" ")[0],
+                lastName: formData.name.split(" ")[1],
+                major: formData.major,
+                minor: formData.minor,
+                skills: formData.skills,
+              },
+            })
+          }
+        >
           <input
             className={styles.input}
             type="text"
@@ -165,19 +174,23 @@ const Account = () => {
             ))}
           </div>
 
-          <Button variant="custom">Create Account</Button>
+          <Button variant="custom">
+            {pathname === "/my-team" ? "Update Profile" : "Create Profile"}
+          </Button>
         </form>
       </div>
-
-      {!isLoggedIn && (
-        <div className={styles.instructionContainer}>
-          <p className={styles.instructionText}>
-            Enter your information on the left to create an account.
-          </p>
-        </div>
-      )}
+      <div className={styles.instructionContainer}>
+        <p className={styles.instructionText}>
+          Enter your information on the left to create an account.
+        </p>
+      </div>
     </div>
   );
 };
 
-export default Account;
+StudentAccountForm.propTypes = {
+  user: PropTypes.object.isRequired,
+  userUpdate: PropTypes.func.isRequired,
+};
+
+export default StudentAccountForm;

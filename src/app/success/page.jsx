@@ -11,9 +11,9 @@ const Success = async () => {
     redirect("/");
   }
   if (user.new) {
-    redirect("/new-user");
+    redirect("/success/new-user");
   } else {
-    redirect("/my-team");
+    redirect("/student-proposals");
   }
 };
 
