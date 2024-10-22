@@ -1,4 +1,4 @@
-@startuml Schema
+@startuml schema
 !theme vibrant
 title Zenior Database Schema
 

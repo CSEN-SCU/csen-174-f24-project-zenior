@@ -123,7 +123,7 @@ npx prisma studio
 </details>
 
 <details>
-  <summary><strong>📚 Learn More</strong></summary>
+  <summary><strong>💡 Learn More</strong></summary>
 
 To learn more about the technology used in this project, take a look at the following resources:
 
@@ -137,7 +137,7 @@ To learn more about the technology used in this project, take a look at the foll
 </details>
 
 <details>
-  <summary><strong>🖼️ PlantUML for Diagrams</strong></summary>
+  <summary><strong>🍃 PlantUML for Diagrams</strong></summary>
 
 The "diagrams" folder will be to hold diagrams that may change over time. Check out [PlantUML](https://plantuml.com/).  
  You can generate the images directly with the VS Code extension called "PlantUML." Go to settings and find Plantuml: Server and make sure it is set to "https://www.plantuml.com/plantuml",
