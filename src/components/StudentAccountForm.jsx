@@ -8,7 +8,7 @@ import { Camera } from "lucide-react"; // importing camera icon from Lucide icon
 import styles from "@/styles/StudentAccountForm.module.css";
 import { usePathname } from "next/navigation";
 
-const StudentAccountForm = ({ user, userUpdate }) => {
+const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
   const [formData, setFormData] = useState({
     name: user.student.firstName + " " + user.student.lastName,
     major: user.student.major,
@@ -179,11 +179,14 @@ const StudentAccountForm = ({ user, userUpdate }) => {
           </Button>
         </form>
       </div>
+      {/* Conditionally rendering the instruction text */}
+      {!hideInstruction && (
       <div className={styles.instructionContainer}>
         <p className={styles.instructionText}>
           Enter your information on the left to create an account.
         </p>
       </div>
+      )}
     </div>
   );
 };

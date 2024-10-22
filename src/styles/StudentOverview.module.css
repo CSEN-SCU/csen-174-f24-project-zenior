@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    justify-content: flex-start; /* Align items to the left */
+    margin: 20px; /* Add some margin for spacing */
+    flex-wrap: wrap; /* Allows the content to wrap on smaller screens */
+}
+
+.formCard {
+    background-color: #D9D9D9;
+    padding: 5px;
+    border: 2px solid #100105;
+    text-align: center;
+    width: 100%;
+    max-width: 100%; /* Ensure the form takes full width on small screens */
+}
+
+/* Adjust the button grid layout based on screen size */
+.buttonGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 buttons per row on larger screens */
+    gap: 10px; /* Space between buttons */
+}
+
+@media (max-width: 768px) {
+    .buttonGrid {
+        grid-template-columns: 1fr; /* Stack buttons vertically on smaller screens */
+    }
+}

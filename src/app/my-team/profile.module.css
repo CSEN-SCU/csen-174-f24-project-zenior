@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Aligns the containers at the top */
+    gap: 0; /* Ensure there is no gap between the containers */
+}
+
+.formContainer {
+    flex: 1; /* This container will take 1 part of the available space */
+    margin-right: 0; /* Remove right margin to align flush */
+}
+
+.overviewContainer {
+    flex: 2; /* This container will take 2 parts of the available space, making it bigger */
+}
