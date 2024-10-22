@@ -1,3 +1,3 @@
-import Layout from "@/components/protected/StudentOrFaculty";
+import Layout from "@/components/protected/AuthUser";
 
 export default Layout;

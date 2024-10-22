@@ -6,9 +6,10 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["admin", "student"];
+  const roles = ["student"];
 
   if (!roles.includes(user?.role)) {
+    //!@note: Should we throw a deny?
     redirect("/");
   }
 

@@ -9,6 +9,7 @@ const Layout = async ({ children }) => {
   const roles = ["admin", "faculty", "student"];
 
   if (!roles.includes(user?.role)) {
+    //!@note: Should we throw a deny?
     redirect("/");
   }
 
