@@ -15,21 +15,11 @@ const StudentOverview = ({ user }) => {
         description: "", 
         members: [], 
         advisor: null, 
-        progress: 0
+   //     progress: 0
     }); 
 
     const handleInputChange = (e) => {
         setProject({ ...project, [e.target.name]: e.target.value}); 
-    }; 
-
-    // function to calculate progress based on fields filled
-    const updateProgress = () => {
-        let completed = 0; 
-        if (project.title) completed += 25; 
-        if (project.description) completed += 25; 
-        if (project.members.length) completed += 25; 
-        if (project.advisor) completed += 25
-        setProject({...project, progress: completed }); 
     }; 
 
     return (
