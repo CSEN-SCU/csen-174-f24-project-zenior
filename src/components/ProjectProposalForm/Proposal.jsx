@@ -22,6 +22,8 @@ const ProposalForm = () => {
     projectMem: "",
     projectAd: "",
     skills: [],
+    prereqs: [],
+    recs: [],
   });
 
   const majors = [
@@ -59,10 +61,20 @@ const ProposalForm = () => {
     formData.skills.length > 0;
 
   const [skillInput, setSkillInput] = useState(""); // track input for skills
+  const [prereqInput, setPrereqsInput] = useState("");
+  const[recsInput, setRecsInput] = useState("");
 
   // handle input for skills
   const handleSkillInputChange = (e) => {
     setSkillInput(e.target.value);
+  };
+
+  const handlePrereqsInputChange = (e) => {
+    setPrereqsInput(e.target.value);
+  };
+
+  const handleRecsInputChange = (e) => {
+    setRecsInput(e.target.value);
   };
 
   // add the skill to the list when "Enter" is pressed
@@ -77,11 +89,47 @@ const ProposalForm = () => {
     }
   };
 
+  const handlePrereqsKeyDown = (e) => {
+    if (e.key === "Enter" && prereqInput.trim() !== "") {
+      e.preventDefault(); // prevent form submission
+      setFormData({
+        ...formData,
+        prereqs: [...formData.prereqs, prereqInput.trim()],
+      });
+      setPrereqsInput(""); // clear the input after adding
+    }
+  };
+
+  const handleRecKeyDown = (e) => {
+    if (e.key === "Enter" && recsInput.trim() !== "") {
+      e.preventDefault(); // prevent form submission
+      setFormData({
+        ...formData,
+        recs: [...formData.recs, recsInput.trim()],
+      });
+      setRecsInput(""); // clear the input after adding
+    }
+  };
+
   // remove a skill with the 'x'
   const handleRemoveSkill = (skillToRemove) => {
     setFormData({
       ...formData,
       skills: formData.skills.filter((skill) => skill !== skillToRemove),
+    });
+  };
+
+  const handleRemovePrereq = (prereqToRemove) => {
+    setFormData({
+      ...formData,
+      prereqs: formData.prereqs.filter((prereq) => prereq !== prereqToRemove),
+    });
+  };
+
+  const handleRemoveRec = (recToRemove) => {
+    setFormData({
+      ...formData,
+      recs: formData.recs.filter((rec) => rec !== recToRemove),
     });
   };
 
@@ -137,8 +185,7 @@ const ProposalForm = () => {
                 Project Team Members
               </label>
               <aside className="w-48 text-xs">
-                Add the names of people who have already agreed to be members of
-                this project. You may leave this section blank for now.
+                Add the names of people who you would like to request as members of this project. You may leave this section blank for now.
               </aside>
             </div>
             <div className="w-full max-w-sm min-w-[200px]">
@@ -166,9 +213,7 @@ const ProposalForm = () => {
                 Project Advisor(s)
               </label>
               <aside className="w-48 text-xs">
-                Add the names of a faculty member who has already agreed to be
-                an advisor for this project. You may leave this section blank
-                for now.
+                Add the names of a faculty member who you would like to request as an advisor for this project. You may leave this section blank for now.
               </aside>
             </div>
             <input
@@ -265,6 +310,85 @@ const ProposalForm = () => {
               </div>
             ))}
           </div>
+          
+          {/* Prerequisit Courses */}
+          <div className="flex items-center mb-4 space-x-4">
+            <div>
+              <label htmlFor="prereqs" className="font-bold">
+                Prerequisite Courses
+              </label>
+              <aside className="w-48 text-xs">
+                If applicable, add course titles that are prerequisites to joining this project.
+              </aside>
+            </div>
+
+            <div className="mb-4">
+              <input
+                className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
+                type="text"
+                name="prereqs"
+                value={prereqInput}
+                onChange={handlePrereqsInputChange}
+                onKeyDown={handlePrereqsKeyDown}
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {formData.prereqs.map((prereq, index) => (
+                <div key={index} className={styles.prereqsTag}>
+                  {prereq}{" "}
+                  <span
+                    onClick={() => handleRemovePrereq(prereq)}
+                    className={styles.removePrereq}
+                  >
+                    {" "}
+                    x{" "}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* END Prerequisit Courses */}
+
+          {/* Recommended Courses */}
+          <div className="flex items-center mb-4 space-x-4">
+            <div>
+              <label htmlFor="recs" className="font-bold">
+                Recommended Course(s)
+              </label>
+              <aside className="w-48 text-xs">
+                If applicable, add course titles that are recommended to project team members.</aside>
+            </div>
+
+            <div className="mb-4">
+              <input
+                className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
+                type="text"
+                name="recs"
+                value={recsInput}
+                onChange={handleRecsInputChange}
+                onKeyDown={handleRecKeyDown}
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {formData.recs.map((rec, index) => (
+                <div key={index} className={styles.recsTag}>
+                  {rec}{" "}
+                  <span
+                    onClick={() => handleRemoveRec(rec)}
+                    className={styles.removeRec}
+                  >
+                    {" "}
+                    x{" "}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+          {/* END Recommended Courses */}
+
         </div>
       </form>
       <button
