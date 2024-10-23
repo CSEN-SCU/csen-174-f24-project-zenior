@@ -2,7 +2,8 @@ import React from "react";
 import styles from "./profile.module.css";
 import StudentAccountForm from "@/components/StudentAccountForm";
 import StudentProjects from "@/components/StudentProjects";
-import StudentOverview from "@/components/StudentOverview"; 
+import StudentOverview from "@/components/StudentOverview";
+import { Checklist } from "@/components/Checklist"
 import { user } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 
@@ -15,12 +16,25 @@ export default async function MyTeam() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.formContainer}>
-      <StudentAccountForm user={currentUser[0]} userUpdate={user.update} hideInstruction={isAccountComplete} />
-      </div>
+      <div className={styles.leftContainer}>
+        <div className={styles.formContainer}>
+          <StudentAccountForm 
+            user={currentUser[0]} 
+            userUpdate={user.update} 
+            hideInstruction={isAccountComplete} 
+          />
+        </div>
+
+      {isAccountComplete && (
+        <div className={styles.progressContainer}>
+          <Checklist />
+        </div>
+      )}
+    </div>
+
     {/*  <StudentProjects user={currentUser[0]} /> */}
       {isAccountComplete && (
-        <div className = {styles.overviewContainer}>
+        <div className = {styles.rightContainer}>
           <StudentOverview user={currentUser[0]} />
         </div>
       )}
