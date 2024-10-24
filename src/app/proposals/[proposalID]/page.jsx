@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default function FacultyProposalDetails({ params }) {
+export default function ProposalDetails({ params }) {
   return <h1>Details about proposal {params.proposalID}</h1>;
 }
 
-FacultyProposalDetails.propTypes = {
+ProposalDetails.propTypes = {
   params: PropTypes.shape({
     proposalID: PropTypes.string.isRequired,
   }).isRequired,

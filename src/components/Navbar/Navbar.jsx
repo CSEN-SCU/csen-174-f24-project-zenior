@@ -33,18 +33,18 @@ const Navbar = () => {
       <div className={`${styles.navbarMain} ${isOpen ? styles.showMenu : " "}`}>
         <ul className={styles.navLinks}>
           <li>
-            <Link href="/student-proposals" replace={true}>
-              Student Project Proposals
-            </Link>
-          </li>
-          <li>
-            <Link href="/faculty-proposals" replace={true}>
-              Faculty Advisor Project Proposals
+            <Link href="/proposals" replace={true}>
+              Project Proposals
             </Link>
           </li>
           <li>
             <Link href="/advisor-directory" replace={true}>
               Faculty Advisor Directory
+            </Link>
+          </li>
+          <li>
+            <Link href="/archive" replace={true}>
+              Senior Design Archive
             </Link>
           </li>
           <li>
