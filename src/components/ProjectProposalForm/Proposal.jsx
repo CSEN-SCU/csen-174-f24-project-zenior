@@ -22,8 +22,8 @@ const ProposalForm = () => {
     projectMem: "",
     projectAd: "",
     skills: [],
-    prereqs: [],
-    recs: [],
+    //prereqs: [],
+    //recs: [],
   });
 
   const majors = [
@@ -69,13 +69,13 @@ const ProposalForm = () => {
     setSkillInput(e.target.value);
   };
 
-  const handlePrereqsInputChange = (e) => {
-    setPrereqsInput(e.target.value);
-  };
+  //const handlePrereqsInputChange = (e) => {
+  //  setPrereqsInput(e.target.value);
+  //};
 
-  const handleRecsInputChange = (e) => {
-    setRecsInput(e.target.value);
-  };
+  //const handleRecsInputChange = (e) => {
+  //  setRecsInput(e.target.value);
+  //};
 
   // add the skill to the list when "Enter" is pressed
   const handleSkillKeyDown = (e) => {
@@ -89,6 +89,7 @@ const ProposalForm = () => {
     }
   };
 
+  /*
   const handlePrereqsKeyDown = (e) => {
     if (e.key === "Enter" && prereqInput.trim() !== "") {
       e.preventDefault(); // prevent form submission
@@ -109,7 +110,7 @@ const ProposalForm = () => {
       });
       setRecsInput(""); // clear the input after adding
     }
-  };
+  }; */
 
   // remove a skill with the 'x'
   const handleRemoveSkill = (skillToRemove) => {
@@ -119,6 +120,7 @@ const ProposalForm = () => {
     });
   };
 
+  /*
   const handleRemovePrereq = (prereqToRemove) => {
     setFormData({
       ...formData,
@@ -132,7 +134,7 @@ const ProposalForm = () => {
       recs: formData.recs.filter((rec) => rec !== recToRemove),
     });
   };
-
+  */
   //handle form submission
   const handleSubmit = (data) => {
     //send to server
@@ -170,7 +172,7 @@ const ProposalForm = () => {
             </label>
             <textarea
               name="description"
-              placeholder="Enter a brief description of your project"
+              placeholder="Enter a brief description of your project. If applicable, please include any courses that are recommended to and/or required for students who join this project."
               value={formData.description}
               onChange={handleInputChange}
               rows = "4"
