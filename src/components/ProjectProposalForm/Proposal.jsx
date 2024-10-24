@@ -312,6 +312,7 @@ const ProposalForm = () => {
           </div>
           
           {/* Prerequisit Courses */}
+          {/*
           <div className="flex items-center mb-4 space-x-4">
             <div>
               <label htmlFor="prereqs" className="font-bold">
@@ -348,9 +349,9 @@ const ProposalForm = () => {
               ))}
             </div>
           </div>
-          {/* END Prerequisit Courses */}
+          */}
 
-          {/* Recommended Courses */}
+          {/* Recommended Courses 
           <div className="flex items-center mb-4 space-x-4">
             <div>
               <label htmlFor="recs" className="font-bold">
@@ -387,7 +388,7 @@ const ProposalForm = () => {
             </div>
 
           </div>
-          {/* END Recommended Courses */}
+          */}
 
         </div>
       </form>
