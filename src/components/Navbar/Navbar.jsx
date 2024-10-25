@@ -1,58 +1,82 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "@/styles/Navbar.module.css";
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
-  //manage menu visibility
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
-  //toggle the menu open/closed
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
   };
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbarLeft}>
-        <a href="/" className={styles.logo}>
+    <nav className="bg-[#b30738] text-white py-4 px-6 rounded-lg shadow-lg m-4">
+      <div className="flex justify-between items-center">
+        <a href="/" className="flex items-center">
           <Image
             src="/images/Logo.png"
             alt="ZENior logo"
-            width={150}
-            height={50}
+            width={120}
+            height={40}
+            className="mr-2"
           />
         </a>
-      </div>
-      <button className={styles.hamburger} onClick={toggleMenu}>
-        &#9776;
-      </button>
 
-      <div className={`${styles.navbarMain} ${isOpen ? styles.showMenu : " "}`}>
-        <ul className={styles.navLinks}>
-          <li>
-            <Link href="/proposals" replace={true}>
-              Project Proposals
-            </Link>
-          </li>
-          <li>
-            <Link href="/advisor-directory" replace={true}>
-              Faculty Advisor Directory
-            </Link>
-          </li>
-          <li>
-            <Link href="/archive" replace={true}>
-              Senior Design Archive
-            </Link>
-          </li>
-          <li>
-            <Link href="/my-team" replace={true}>
-              My Project and Team
-            </Link>
-          </li>
-        </ul>
+        <button
+          className="text-white text-2xl md:hidden"
+          onClick={toggleMenu}
+        >
+          &#9776;
+        </button>
+
+        {/* Navbar links */}
+        <div
+          className={`${
+            isOpen ? "block" : "hidden"
+          } md:flex md:justify-end items-center mt-4 md:mt-0`}
+        >
+          <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+            <li>
+              <Link href="/proposals" className="hover:text-gray-300 transition-colors">
+                Project Proposals
+              </Link>
+            </li>
+            <li>
+              <Link href="/advisor-directory" className="hover:text-gray-300 transition-colors">
+                Faculty Advisor Directory
+              </Link>
+            </li>
+            <li>
+              <Link href="/archive" className="hover:text-gray-300 transition-colors">
+                Senior Design Archive
+              </Link>
+            </li>
+            {session ? (
+              <li>
+                <Link
+                  href="/account"
+                  className="hover:text-gray-300 transition-colors"
+                >
+                  My Account
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  href="#"
+                  className="hover:text-gray-300 transition-colors"
+                  onClick={() => signIn("google")}
+                >
+                  Login
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
