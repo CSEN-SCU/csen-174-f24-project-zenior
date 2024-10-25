@@ -15,7 +15,7 @@ const Home = async () => {
   const user = session?.user;
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+    <main className="flex items-center justify-center min-h-screen bg-white">
       <section className="w-full max-w-md p-4">
         <Card
           className="w-full md:w-[400px] bg-gradient-to-b from-[#811e2d] via-[#b30738] to-[#b30738] shadow-md rounded-md p-6 text-white transition-transform transform hover:shadow-lg hover:scale-105"
