@@ -1,10 +1,10 @@
 import React from "react";
+import Image from "next/image";
 import AuthButton from "@/components/AuthButton";
 import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
@@ -15,27 +15,43 @@ const Home = async () => {
   const user = session?.user;
 
   return (
-    <main>
-      <section className="grid place-items-center h-dvh">
-        <Card className="w-[450px]">
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+      <section className="w-full max-w-md p-4">
+        <Card
+          className="w-full md:w-[400px] bg-gradient-to-b from-[#811e2d] via-[#b30738] to-[#b30738] shadow-md rounded-md p-6 text-white transition-transform transform hover:shadow-lg hover:scale-105"
+        >
+          {/* Original for reference with no gradient:
+          <Card className="w-full md:w-[400px] bg-[#b30738] shadow-md rounded-md p-6 text-white">
+          */}
           <CardHeader>
-            <CardTitle>Welcome to Zenior</CardTitle>
-            <CardDescription>
-              Get started by logging in with your SCU email.
-            </CardDescription>
+            <CardTitle className="text-center text-2xl md:text-3xl font-bold mb-4 shadow-sm">
+              Welcome to Zenior
+            </CardTitle>
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/images/SCUseal.png"
+                alt="Santa Clara University Seal"
+                width={150}
+                height={150}
+                className="object-contain"
+              />
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0 pt-0">
             {user ? (
-              <p>
-                You&apos;re a <strong>{user.role}</strong> signed in as{" "}
+              <p className="text-center text-lg font-semibold">
+                You&apos;re a <strong>{user.role}</strong> signed in as{" "}.
                 <strong>{user.email}</strong>
               </p>
             ) : (
-              <p>You&apos;re not signed in</p>
+              <p className="text-center text-lg font-semibold">
+                You&apos;re not signed in.
+              </p>
             )}
           </CardContent>
-          <CardFooter>
-            <AuthButton className="w-full" />
+          <CardFooter className="flex justify-center mt-4">
+            <AuthButton className="w-full hover:bg-[#93052c] transition-colors" aria-label="Sign in or sign out">
+            </AuthButton>
           </CardFooter>
         </Card>
       </section>
