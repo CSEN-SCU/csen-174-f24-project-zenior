@@ -15,14 +15,11 @@ const Home = async () => {
   const user = session?.user;
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+    <main className="flex items-center justify-center min-h-screen bg-white">
       <section className="w-full max-w-md p-4">
         <Card
-          className="w-full md:w-[400px] bg-gradient-to-b from-[#811e2d] via-[#b30738] to-[#b30738] shadow-md rounded-md p-6 text-white transition-transform transform hover:shadow-lg hover:scale-105"
+          className="w-full md:w-[400px] bg-[#b30738] shadow-md rounded-md p-6 text-white"
         >
-          {/* Original for reference with no gradient:
-          <Card className="w-full md:w-[400px] bg-[#b30738] shadow-md rounded-md p-6 text-white">
-          */}
           <CardHeader>
             <CardTitle className="text-center text-2xl md:text-3xl font-bold mb-4 shadow-sm">
               Welcome to Zenior
@@ -40,8 +37,7 @@ const Home = async () => {
           <CardContent className="p-0 pt-0">
             {user ? (
               <p className="text-center text-lg font-semibold">
-                You&apos;re a <strong>{user.role}</strong> signed in as{" "}.
-                <strong>{user.email}</strong>
+                You&apos;re a <strong>{user.role}</strong> signed in as <strong>{user.email}</strong>
               </p>
             ) : (
               <p className="text-center text-lg font-semibold">

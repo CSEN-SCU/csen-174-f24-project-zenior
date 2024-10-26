@@ -3,11 +3,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Spinner } from "@/components/ui/spinner";
-import { FcGoogle } from 'react-icons/fc'; 
-import styles from "../styles/AuthButton.module.css";
+import { FcGoogle } from "react-icons/fc";
 
 const AuthButton = ({ className }) => {
   const { data: session } = useSession();
@@ -20,10 +17,7 @@ const AuthButton = ({ className }) => {
     setError(null);
     try {
       await signIn("google", { redirectTo: "/success" });
-      toast({
-        title: "Signing in",
-        description: "Redirecting to sign in",
-      });
+      toast({ title: "Signing in", description: "Redirecting to sign in" });
     } catch (err) {
       setError("There was an issue signing in. Please try again.");
       setLoading(false);
@@ -34,47 +28,37 @@ const AuthButton = ({ className }) => {
     setLoading(true);
     try {
       await signOut();
-      toast({
-        title: "Signed out",
-        description: "You have been signed out",
-      });
+      toast({ title: "Signed out", description: "You have been signed out" });
     } catch (err) {
       setError("Error signing out. Please try again.");
       setLoading(false);
     }
   };
 
-  if (session) {
-    return (
-      <Button
-        className={`${styles.authButton} ${className}`}
-        onClick={handleSignOut}
-        disabled={loading}
-      >
-        {loading ? <Loading /> : "Sign out"}
-      </Button>
-    );
-  }
-
-  return (
+  return session ? (
+    <button
+      onClick={handleSignOut}
+      className={`flex items-center justify-center w-full p-3 bg-white text-black font-bold rounded-md transition-colors hover:bg-secondaryRed hover:text-white ${className}`}
+      disabled={loading}
+    >
+      {loading ? "Loading..." : "Sign out"}
+    </button>
+  ) : (
     <>
-      {error && <p className={styles.errorText}>{error}</p>}
-      <Button
-        className={`${styles.authButton} ${className}`}
+      {error && <p className="text-danger font-bold text-sm text-center mb-4">{error}</p>}
+      <button
         onClick={handleSignIn}
+        className={`flex items-center justify-center w-full p-3 bg-white text-black font-bold rounded-md transition-colors hover:bg-secondaryRed hover:text-white ${className}`}
         disabled={loading}
       >
         {loading ? (
-          <Loading />
+          "Loading..."
         ) : (
           <>
-            <span className={styles.iconContainer}>
-              <FcGoogle />
-            </span>
-            Sign in with Google
+            <FcGoogle className="mr-2" /> Sign in with Google
           </>
         )}
-      </Button>
+      </button>
     </>
   );
 };
@@ -83,13 +67,5 @@ AuthButton.propTypes = {
   className: PropTypes.string,
 };
 
-const Loading = () => {
-  return (
-    <>
-      <Spinner className={styles.spinner} />
-      Loading...
-    </>
-  );
-};
-
 export default AuthButton;
+ 
