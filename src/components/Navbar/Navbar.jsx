@@ -1,81 +1,72 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen((prevState) => !prevState);
-  };
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   return (
-    <nav className="bg-[#b30738] text-white py-4 px-6 rounded-lg shadow-lg m-4">
-      <div className="flex justify-between items-center">
-        <a href="/" className="flex items-center">
-          <Image
-            src="/images/Logo.png"
-            alt="ZENior logo"
-            width={120}
-            height={40}
-            className="mr-2"
-          />
-        </a>
+    <nav className="bg-[#b30738] text-white">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-6 py-4">
+        {/* Logo */}
+        <div className="flex items-center">
+          <a href="/" className="flex items-center space-x-3">
+            <Image src="/images/square-whitetree-nobg.png" alt="Zenior logo" width={32} height={32} />
+            <span className="text-2xl font-semibold">Zenior</span>
+          </a>
+        </div>
 
-        <button
-          className="text-white text-2xl md:hidden"
-          onClick={toggleMenu}
-        >
-          &#9776;
-        </button>
+        {/* Right Section: Navigation Links and Profile/Sign-In */}
+        <div className="flex items-center space-x-8">
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-8">
+            <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
+            <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
+            <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
+          </div>
 
-        {/* Navbar links */}
-        <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } md:flex md:justify-end items-center mt-4 md:mt-0`}
-        >
-          <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
-            <li>
-              <Link href="/proposals" className="hover:text-gray-300 transition-colors">
-                Project Proposals
-              </Link>
-            </li>
-            <li>
-              <Link href="/advisor-directory" className="hover:text-gray-300 transition-colors">
-                Faculty Advisor Directory
-              </Link>
-            </li>
-            <li>
-              <Link href="/archive" className="hover:text-gray-300 transition-colors">
-                Senior Design Archive
-              </Link>
-            </li>
+          {/* Profile or Sign-In Button */}
+          <div className="relative">
             {session ? (
-              <li>
-                <Link
-                  href="/account"
-                  className="hover:text-gray-300 transition-colors"
-                >
-                  My Account
-                </Link>
-              </li>
+              <>
+                <button onClick={toggleDropdown} className="flex items-center">
+                  <Image
+                    src={session.user.image || "/images/default-avatar.png"}
+                    alt="user photo"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-lg dark:bg-gray-700">
+                    <div className="px-4 py-3">
+                      <span className="block text-sm font-medium">{session.user.name}</span>
+                      <span className="block text-sm text-gray-500 truncate">{session.user.email}</span>
+                    </div>
+                    <ul className="py-2">
+                      <li>
+                        <Link href="/settings" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Settings</Link>
+                      </li>
+                      <li>
+                        <button onClick={() => signOut()} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                          Sign out
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </>
             ) : (
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-gray-300 transition-colors"
-                  onClick={() => signIn("google")}
-                >
-                  Login
-                </Link>
-              </li>
+              <button onClick={() => signIn("google")} className="hover:text-gray-300">Login</button>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>

@@ -1,11 +1,9 @@
 <p align="center">
-  <img src="./public/images/Logo.png" alt="Zeinor Logo" width="400" style="border-radius: 20px;">
+  <img src="./public/images/logo-nobg.png" alt="Zeinor Logo" width="400" style="border-radius: 20px;">
 </p>
 
-<h1 align="center" style="font-size: 70px;">Zeinor</h1>
-
 <p align="center" style="font-size: 36px;">
-  <em>A Next-Generation Platform for Engineering Students and Faculty Collaboration</em>
+  <em> Zenior: A Next-Generation Platform for Engineering Students and Faculty Collaboration</em>
 </p>
 
 <p align="center">
