@@ -135,6 +135,50 @@ To learn more about the technology used in this project, take a look at the foll
 </details>
 
 <details>
+    <summary><strong>🚀 Technology Choices Explained</strong></summary>
+
+- **React** - React is a JavaScript library for building user interfaces.
+  It is backed by a large company and maintained a community of individual developers, making it
+  both reliable and open, with a large number of libraries and tools available.
+  Compared to Vue, Angular, and Svelte (other popular frontend frameworks), React is the most
+  popular and has the most libraries and packages avaliable. It's also the most widely used
+  frontend framework in the industry, making it a great skill to learn.
+- **Next.js** - Next.js is a React framework that provides a solution for server-side rendering,
+  static site generation, and more. It's backed by Vercel, a company that provides hosting and
+  ecosystem for React and Next.js.
+- **Prisma** - Prisma is a modern database toolkit that makes it easy to work with databases.
+  It provides an ORM (Object-Relational Mapping) that allows you to interact with the database
+  using JavaScript objects. It also provides a schema migration tool that allows you to easily
+  update the database schema. Prisma is a great choice for this project because it provides a
+  simple and easy-to-use API for working with databases and a studio web client to visually
+  interact wit hthe database without the need to share Supabase accounts and credentials.
+- **Supabase** - Supabase is an open-source alternative to Firebase that provides a suite of
+  tools for building web applications. It includes a database, authentication, and storage
+  services, as well as a real-time subscription service. Supabase is a great choice for this
+  project because it is free and open source, which doesn't tie us to a proprietary platform
+  and allows us to host the database ourselves if we decide to. Compared to Firebase, Supabase
+  is more open and flexible, and it provides a more modern and developer-friendly API that
+  integrates with Prisma and allows us to easily switch database providers.
+- **Tailwind CSS** - Tailwind CSS is a utility-first CSS framework that provides a set of
+  utility classes that can be used to style HTML elements. It is a great choice for this project
+  because it allows us to quickly style the UI without writing custom CSS. It also provides a
+  consistent and maintainable way to style the UI, making it easy to update and modify the
+  styles as needed. Compared to other CSS frameworks like Bootstrap and Material-UI, Tailwind CSS
+  is more flexible and customizable, allowing us to create a unique and modern design for the
+  project that doesn't look like a generic template.
+- **Shadcn/ui** - Shadcn/ui is a React component library that provides a set of reusable UI
+  components that can be used to build web applications. It is a great choice for this project
+  because it provides a set of modern and responsive components that can be easily customized
+  and styled using Tailwind CSS. It also provides a consistent and cohesive design for the
+  project, making it easy to create a professional and polished UI. Compared to other component
+  libraries like Material-UI and Ant Design, Shadcn/ui is more lightweight and flexible, allowing
+  us to easily integrate it with Tailwind CSS and customize the components to fit the design of
+  the project. It also gives us the access to the source code of the used components, which
+  allows us to change and modify them as needed, to achive a unique design for the project.
+
+</details>
+
+<details>
   <summary><strong>🍃 PlantUML for Diagrams</strong></summary>
 
 The "diagrams" folder will be to hold diagrams that may change over time. Check out [PlantUML](https://plantuml.com/).  
