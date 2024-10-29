@@ -9,8 +9,8 @@ const Layout = async ({ children }) => {
   const roles = ["admin"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should we throw a deny?
-    redirect("/");
+    //!@note: Unauthorized access by non-admin user
+    redirect("/403");
   }
 
   return <>{children}</>;

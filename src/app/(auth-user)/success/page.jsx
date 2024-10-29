@@ -13,7 +13,7 @@ const Success = async () => {
   if (user.new) {
     redirect("/success/new-user");
   } else {
-    redirect("/student-proposals");
+    redirect("/proposals");
   }
 };
 

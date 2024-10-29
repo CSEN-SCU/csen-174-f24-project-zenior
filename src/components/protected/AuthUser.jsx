@@ -9,8 +9,8 @@ const Layout = async ({ children }) => {
   const roles = ["admin", "faculty", "student"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should we throw a deny?
-    redirect("/");
+    //!@note: Redirects if user failed to submit new user form
+    redirect("/success/new-user");
   }
 
   return <>{children}</>;

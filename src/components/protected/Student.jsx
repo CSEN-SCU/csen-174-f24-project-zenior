@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["student"];
+  const roles = ["admin","student"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should we throw a deny?
-    redirect("/");
+    //!@note: Should occur when accessing admin or faculty only pages
+    redirect("/403");
   }
 
   return <>{children}</>;
