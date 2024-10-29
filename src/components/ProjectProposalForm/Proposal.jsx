@@ -23,7 +23,7 @@ const ProposalForm = ({ user, create }) => {
     academicYear: "",
   });
 
-  const departments = [
+  const department = [
     { id: "bioe", label: "Bioengineering" },
     { id: "ceng", label: "Civil, Environmental, and Sustainable Engineering" },
     { id: "coen", label: "Computer Science and Engineering" },
@@ -33,14 +33,14 @@ const ProposalForm = ({ user, create }) => {
   ];
 
   const FormSchema = z.object({
-    items: z.array(z.string()).refine((value) => value.some((item) => item), {
+    department: z.array(z.string()).refine((value) => value.some((department) => department), {
       message: "You have to select at least one item.",
     }),
   });
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: { items: user?.department ? [user.department] : [], },
+    defaultValues: { department: user?.department ? [user.department] : [], },
   });
 
   const handleInputChange = (e) => {
@@ -89,7 +89,7 @@ const ProposalForm = ({ user, create }) => {
       const project = await create({
         ...formData, 
         ...data,
-        isInterdisciplinary: data.items.length > 1,
+        isInterdisciplinary: data.department.length > 1,
       });
       console.log("Project created: ", project)
     } catch (error) {;
@@ -183,7 +183,7 @@ const ProposalForm = ({ user, create }) => {
           <div className="mb-4">
             <FormField
               control={form.control}
-              name="departments"
+              name="department"
               render={() => (
                 <FormItem>
                   <div className="mb-4">
@@ -196,36 +196,36 @@ const ProposalForm = ({ user, create }) => {
                     </FormDescription>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    {departments.map((item) => (
+                    {department.map((department) => (
                       <FormField
-                        key={item.id}
+                        key={department.id}
                         control={form.control}
-                        name="items"
+                        name="department"
                         render={({ field }) => {
                           return (
                             <FormItem
-                              key={item.id}
+                              key={department.id}
                               className="flex items-start space-x-3"
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(item.id)}
+                                  checked={field.value?.includes(department.id)}
                                   onCheckedChange={(checked) => {
                                     return checked
                                       ? field.onChange([
                                         ...field.value,
-                                        item.id,
+                                        department.id,
                                       ])
                                       : field.onChange(
                                         field.value?.filter(
-                                          (value) => value !== item.id,
+                                          (value) => value !== department.id,
                                         ),
                                       );
                                   }}
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                {item.label}
+                                {department.label}
                               </FormLabel>
                             </FormItem>
                           );
