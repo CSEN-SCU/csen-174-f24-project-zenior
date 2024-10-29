@@ -9,7 +9,7 @@ const Layout = async ({ children }) => {
   const roles = ["admin","student"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should occur when non-student or admin access this route group
+    //!@note: Should occur when faculty access this route group
     redirect("/403");
   }
 
