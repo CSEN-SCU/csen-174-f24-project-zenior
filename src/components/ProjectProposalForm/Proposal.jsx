@@ -267,14 +267,15 @@ const ProposalForm = ({ user, create }) => {
             ))}
           </div>
         </div>
-      </form>
-      <button
+        <button
         type="submit"
         className="bg-[#b30738] text-white cursor-pointer py-2 px-4 m-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
         disabled={!isFormValid}
       >
         Create Project
       </button>
+      </form>
+      
     </FormProvider>
   );
 };
