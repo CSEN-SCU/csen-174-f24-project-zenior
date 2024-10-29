@@ -20,9 +20,10 @@ const ProposalForm = ({ user, create }) => {
     title: "",
     description: "",
     skills: [],
+    academicYear: "",
   });
 
-  const majors = [
+  const departments = [
     { id: "bioe", label: "Bioengineering" },
     { id: "ceng", label: "Civil, Environmental, and Sustainable Engineering" },
     { id: "coen", label: "Computer Science and Engineering" },
@@ -39,7 +40,7 @@ const ProposalForm = ({ user, create }) => {
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: { items: user?.major ? [user.major] : [], },
+    defaultValues: { items: user?.department ? [user.department] : [], },
   });
 
   const handleInputChange = (e) => {
@@ -182,7 +183,7 @@ const ProposalForm = ({ user, create }) => {
           <div className="mb-4">
             <FormField
               control={form.control}
-              name="majors"
+              name="departments"
               render={() => (
                 <FormItem>
                   <div className="mb-4">
@@ -195,7 +196,7 @@ const ProposalForm = ({ user, create }) => {
                     </FormDescription>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    {majors.map((item) => (
+                    {departments.map((item) => (
                       <FormField
                         key={item.id}
                         control={form.control}
