@@ -9,7 +9,7 @@ const Layout = async ({ children }) => {
   const roles = ["admin","faculty"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should occur when accessing admin pages
+    //!@note: Should when students are attempting to access faculty only pages. 
     redirect("/403");
   }
 
