@@ -25,7 +25,7 @@ const Checklist = () => {
     }
 
     return (
-        <div className="border x-8 max-w-xs bg-gray-50 rounded-none shadow-md">
+        <div className="border-solid border-4 bg-gray-40 border-spacing-10 max-w-xs p-6 m-6">
             <h1 className="text-lg font-bold"> Progress </h1>
             <div className="mt-2"> 
                 {items.map((item, index) => (
