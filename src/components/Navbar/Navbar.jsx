@@ -22,29 +22,52 @@ const Navbar = () => {
           </a>
         </div>
 
-      <div className={`${styles.navbarMain} ${isOpen ? styles.showMenu : " "}`}>
-        <ul className={styles.navLinks}>
-          <li>
-            <Link href="/proposals" replace={true}>
-              Project Proposals
-            </Link>
-          </li>
-          <li>
-            <Link href="/advisor-directory" replace={true}>
-              Faculty Advisor Directory
-            </Link>
-          </li>
-          <li>
-            <Link href="/archive" replace={true}>
-              Senior Design Archive
-            </Link>
-          </li>
-          <li>
-            <Link href="/my-team" replace={true}>
-              My Project and Team
-            </Link>
-          </li>
-        </ul>
+        {/* Right Section: Navigation Links and Profile/Sign-In */}
+        <div className="flex items-center space-x-8">
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-8">
+            <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
+            <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
+            <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
+          </div>
+
+          {/* Profile or Sign-In Button */}
+          <div className="relative">
+            {session ? (
+              <>
+                <button onClick={toggleDropdown} className="flex items-center">
+                  <Image
+                    src={session.user.image || "/images/default-avatar.png"}
+                    alt="user photo"
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-lg dark:bg-gray-700">
+                    <div className="px-4 py-3">
+                      <span className="block text-sm font-medium">{session.user.name}</span>
+                      <span className="block text-sm text-gray-500 truncate">{session.user.email}</span>
+                    </div>
+                    <ul className="py-2">
+                      <li>
+                        <Link href="/settings" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Settings</Link>
+                      </li>
+                      <li>
+                        <button onClick={() => signOut()} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                          Sign out
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button onClick={() => signIn("google")} className="hover:text-gray-300">Login</button>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );
