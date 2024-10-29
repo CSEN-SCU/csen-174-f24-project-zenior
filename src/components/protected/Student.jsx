@@ -6,10 +6,11 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["admin", "student"];
+  const roles = ["admin","student"];
 
   if (!roles.includes(user?.role)) {
-    redirect("/");
+    //!@note: Should occur when faculty access this route group
+    redirect("/403");
   }
 
   return <>{children}</>;
