@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["admin","faculty"];
+  const roles = ["admin", "faculty", "student"];
 
   if (!roles.includes(user?.role)) {
-    //!@note: Should when students are attempting to access faculty only pages. 
-    redirect("/403");
+    //!@note: Redirects if user failed to submit new user form
+    redirect("/success/new-user");
   }
 
   return <>{children}</>;

@@ -4,9 +4,6 @@ import styles from "@/styles/StudentOverview.module.css";
 import { useState } from "react"; 
 import { Button } from "@/components/ui/button"; 
 import { Input } from "@/components/ui/input"; 
-import { Progress } from "@/components/ui/progress";
-import { Checkbox } from "@/components/ui/checkbox"; 
-import { Card } from "@/components/ui/card"; 
 
 // project dashboard fields 
 const StudentOverview = ({ user }) => {
@@ -15,7 +12,6 @@ const StudentOverview = ({ user }) => {
         description: "", 
         members: [], 
         advisor: null, 
-   //     progress: 0
     }); 
 
     const handleInputChange = (e) => {

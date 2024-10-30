@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/Navbar/Navbar";
 //import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import Footer from "@/components/Footer/Footer";
 
 // Default fonts - need to be changed to use SCU fonts
 const geistSans = localFont({
@@ -36,7 +37,8 @@ export default async function RootLayout({ children }) {
       >
         <AuthProvider session={session}>
           <Navbar />
-          {children}
+          <main className="flex-grow">{children}</main>
+          <Footer />
           <Toaster />
         </AuthProvider>
       </body>
