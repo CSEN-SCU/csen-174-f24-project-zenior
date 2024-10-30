@@ -1,7 +1,10 @@
 import React from "react";
 import { projects } from "@/lib/server/actions";
-import Projects from "@/components/Projects";
+//import Projects from "@/components/Projects";
 import PaginationControls from '@/components/PaginationControls'
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+
+/* 
 
 const data = [
   'proposal 1',
@@ -36,4 +39,9 @@ export default async function Student() {
       </div>
     )
   }
+}
+*/
+
+export default async function Proposals() {
+  <AppSidebar/>
 }
