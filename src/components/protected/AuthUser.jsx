@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["admin", "faculty", "student"];
+  const roles = ["super_admin", "admin", "faculty", "student"];
 
   if (!roles.includes(user?.role)) {
     //!@note: Redirects if user failed to submit new user form
-    redirect("/success/new-user");
+    redirect("/");
   }
 
   return <>{children}</>;

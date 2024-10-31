@@ -15,12 +15,24 @@ const getOrCreateUser = async (profile) => {
       where: { email },
     });
 
+    if (!user.profilePictureUrl) {
+      await prisma.user.update({
+        where: { email },
+        data: {
+          profilePictureUrl: profile.picture,
+        },
+      });
+
+      user.profilePictureUrl = profile.picture;
+    }
+
     if (!user) {
       const role = getRole(email);
       const newUser = await prisma.user.create({
         data: {
           email,
           role,
+          profilePictureUrl: profile.picture,
         },
       });
 
@@ -65,6 +77,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const user = await getOrCreateUser(profile);
         if (user) {
           profile.role = user.role;
+          profile.picture = user.profilePictureUrl;
         }
         return profile;
       },
@@ -77,11 +90,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.picture = user.picture;
       }
       return token;
     },
     session({ session, token }) {
       session.user.role = token.role;
+      session.user.image = token.picture;
       return session;
     },
   },

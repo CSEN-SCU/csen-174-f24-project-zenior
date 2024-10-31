@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 const Layout = async ({ children }) => {
   const session = await auth();
   const user = session?.user;
-  const roles = ["admin"];
+  const roles = ["admin", "super_admin"];
 
   if (!roles.includes(user?.role)) {
     //!@note: Unauthorized access by non-admin user
-    redirect("/403");
+    redirect("/");
   }
 
   return <>{children}</>;

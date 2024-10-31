@@ -1,72 +1,88 @@
-"use client";
-
-import React, { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import React from "react";
+import { auth } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Login, Logout } from "./AuthButtons";
 
-const Navbar = () => {
-  const { data: session } = useSession();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+const Navbar = async () => {
+  const session = await auth();
 
   return (
     <nav className="bg-[#b30738] text-white">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-6 py-4">
+      <div className="flex justify-between items-center py-4 px-6 mx-auto max-w-screen-xl">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="flex items-center space-x-3">
-            <Image src="/images/square-whitetree-nobg.png" alt="Zenior logo" width={32} height={32} />
-            <span className="text-2xl font-semibold">Zenior</span>
+          <a href="/" className="flex items-center -my-2 space-x-3">
+            <Image
+              src="/images/square-whitetree-nobg.png"
+              alt="Zenior logo"
+              width={58}
+              height={58}
+            />
+            <span className="font-semibold tracking-wide text-[1.9rem]/none">
+              ZEN
+              <br />
+              <span className="text-4xl/none">IOR</span>
+            </span>
           </a>
         </div>
 
         {/* Right Section: Navigation Links and Profile/Sign-In */}
         <div className="flex items-center space-x-8">
           {/* Navigation Links */}
-          <div className="hidden md:flex space-x-8">
-            <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
-            <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
-            <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
+          <div className="hidden space-x-8 md:flex">
+            <Link href="/proposals" className="hover:text-gray-300">
+              Project Proposals
+            </Link>
+            <Link href="/advisor-directory" className="hover:text-gray-300">
+              Faculty Advisor Directory
+            </Link>
+            <Link href="/archive" className="hover:text-gray-300">
+              Senior Design Archive
+            </Link>
           </div>
 
           {/* Profile or Sign-In Button */}
-          <div className="relative">
-            {session ? (
-              <>
-                <button onClick={toggleDropdown} className="flex items-center">
+          {session ? (
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
                   <Image
                     src={session.user.image || "/images/default-avatar.png"}
-                    alt="user photo"
-                    width={32}
-                    height={32}
-                    className="rounded-full"
+                    width={40}
+                    height={40}
+                    alt={session.user.name + " photo" || "default avatar"}
+                    className="rounded-full transition duration-100 grayscale hover:grayscale-0"
                   />
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-lg dark:bg-gray-700">
-                    <div className="px-4 py-3">
-                      <span className="block text-sm font-medium">{session.user.name}</span>
-                      <span className="block text-sm text-gray-500 truncate">{session.user.email}</span>
-                    </div>
-                    <ul className="py-2">
-                      <li>
-                        <Link href="/settings" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Settings</Link>
-                      </li>
-                      <li>
-                        <button onClick={() => signOut()} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                          Sign out
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </>
-            ) : (
-              <button onClick={() => signIn("google")} className="hover:text-gray-300">Login</button>
-            )}
-          </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48">
+                  <DropdownMenuLabel>
+                    <span className="block text-sm font-medium">
+                      {session.user.name}
+                    </span>
+                    <span className="block text-sm text-gray-500 truncate">
+                      {session.user.email}
+                    </span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/my-team">My Team</Link>
+                  </DropdownMenuItem>
+                  <Logout />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            <Login />
+          )}
         </div>
       </div>
     </nav>
