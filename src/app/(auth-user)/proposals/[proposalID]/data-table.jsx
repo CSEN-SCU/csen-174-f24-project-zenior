@@ -1,15 +1,27 @@
 "use client"
 import React from "react";
-
+import { columns } from "../columns"
+import { data } from "../columns"
 
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 
-export function DataTable({ columns, data }) {
+interface DataTableProps <TData, TValue> {
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+}
+
+export function DataTable<TData,TValue> ({
+    columns,
+    data,
+    }; 
+    DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data, columns, getCoreRowModel: getCoreRowModel(),
     });
+
     return (
+        
         <div>
             <Table>
                 <TableHeader>
@@ -32,7 +44,7 @@ export function DataTable({ columns, data }) {
                 <TableBody>
                     {table.getRowModel().rows?.length? (
                         table.getRowModel().rows.map((row) => (
-                            <TableRow key= {row.id} data-state = {row.getIsSelected() && "selected"}>
+                            <TableRow key= {row.id} data-state = {row.getIsSelected() ? "selected" : undefined}>
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key = {cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -51,4 +63,4 @@ export function DataTable({ columns, data }) {
             </Table>
         </div>
     );
-}
+})
