@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthProvider } from "@/lib/providers";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { auth } from "@/lib/auth";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -41,6 +43,8 @@ export default async function RootLayout({ children }) {
           <Footer />
           <Toaster />
         </AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
