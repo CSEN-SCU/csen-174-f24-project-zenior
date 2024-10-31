@@ -1,7 +1,8 @@
 import React from "react";
-import { projects } from "@/lib/server/actions";
+//import { projects } from "@/lib/server/actions";
 //import Projects from "@/components/Projects";
-import PaginationControls from '@/components/PaginationControls'
+// import PaginationControls from '@/components/PaginationControls'
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 
 /* 
@@ -43,5 +44,14 @@ export default async function Student() {
 */
 
 export default async function Proposals() {
-  <AppSidebar/>
+  return(
+    <main>
+      <SidebarProvider>
+        <AppSidebar/>
+        <div>
+          <SidebarTrigger />
+        </div>
+      </SidebarProvider>     
+    </main>
+  )
 }

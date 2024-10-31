@@ -7,7 +7,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/Navbar/Navbar";
 //import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+//import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Footer from "@/components/Footer/Footer";
 
 // Default fonts - need to be changed to use SCU fonts
