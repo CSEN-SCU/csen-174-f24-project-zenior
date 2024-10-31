@@ -126,7 +126,7 @@ const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
               <option value="bioe">Bioengineering</option>
               <option value="mech">Mechanical Engineering</option>
               <option value="web">Web Design and Engineering</option>
-              <option value="civil">Civil Engineering</option>
+              <option value="civil">Civil, Environmental, and Sustainable Engineering</option>
               <option value="ecen">Electrical and Computer Engineering</option>
               <option value="gen">General Engineering</option>
             </select>

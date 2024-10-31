@@ -109,20 +109,26 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             required
           />
 
-
-          <input
-            className={styles.input}
-            type="text"
+          <select
+            className={styles.select}
             name="department"
-            placeholder="Engineering Department"
             value={formData.department}
             onChange={handleInputChange}
             required
-          />
+          >
+            <option value=""> Engineering Department </option>
+            <option value="csen">Computer Science and Engineering</option>
+            <option value="bioe">Bioengineering</option>
+            <option value="mech">Mechanical Engineering</option>
+            <option value="web">Web Design and Engineering</option>
+            <option value="civil">Civil, Environmental, and Sustainable Engineering</option>
+            <option value="ecen">Electrical and Computer Engineering</option>
+            <option value="gen">General Engineering</option>
+          </select>
 
 
           {/* biography portion */}
-          <label className={styles.label}> Biography </label>
+          <label className={styles.label}> Biography: </label>
           <textarea
             className={styles.textarea}
             name="biography"
