@@ -1,9 +1,13 @@
 import React from "react";
 //import { projects } from "@/lib/server/actions";
 //import Projects from "@/components/Projects";
-// import PaginationControls from '@/components/PaginationControls'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
+
+import {
+  Pagination, PaginationContent, PaginationEllipsis,
+  PaginationItem, PaginationLink, PaginationNext, PaginationPrevious,
+} from "@/components/ui/pagination"
 
 /* 
 
@@ -51,7 +55,24 @@ export default async function Proposals() {
         <div>
           <SidebarTrigger />
         </div>
-      </SidebarProvider>     
+      </SidebarProvider> 
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis/>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href='#' />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>    
     </main>
   )
 }
