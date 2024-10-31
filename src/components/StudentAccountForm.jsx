@@ -10,10 +10,10 @@ import { usePathname } from "next/navigation";
 
 const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
   const [formData, setFormData] = useState({
-    name: user.student.firstName + " " + user.student.lastName,
-    major: user.student.major,
-    minor: user.student.minor,
-    skills: user.student.skills.map((skill) => skill.skill.name),
+    name: user.student ? `${user.student.firstName} ${user.student.lastName}` : "",
+    major: user.student?.major || "",
+    minor: user.student?.minor || "",
+    skills: user.student?.skills?.map((skill) => skill.skill.name) || [],
   });
 
   // track input for skills
