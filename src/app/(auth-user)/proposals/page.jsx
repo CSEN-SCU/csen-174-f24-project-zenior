@@ -49,7 +49,7 @@ export default async function Student() {
 
 export default async function Proposals() {
   return(
-    <main>
+    <div>
       <SidebarProvider>
         <AppSidebar/>
         <div>
@@ -57,6 +57,10 @@ export default async function Proposals() {
         </div>
       </SidebarProvider> 
 
+      <div>
+
+      </div>
+      
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -73,6 +77,6 @@ export default async function Proposals() {
           </PaginationItem>
         </PaginationContent>
       </Pagination>    
-    </main>
+    </div>
   )
 }

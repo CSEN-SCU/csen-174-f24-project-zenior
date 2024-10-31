@@ -73,13 +73,13 @@ export function AppSidebar() {
     };
 
     return (
-        <Sidebar variant="floating">
+        <Sidebar variant="floating" collapsible="none">
             <SidebarHeader />
             <SidebarContent>
                 <div className="p-4">
                     <h2 className="font-semibold text-lg mb-4">Filter</h2>
                     {categories.map((category) => (
-                        <SidebarGroup key={category.category} className="mb-6">
+                        <SidebarGroup key={category.category} className="mb-6 p-1">
                             <h3 className="font-medium text-sm mb-2">{category.category}</h3>
                             {category.type === "checkbox" ? (
                                 <ul>
@@ -112,6 +112,7 @@ export function AppSidebar() {
                                                 value = {option.id}
                                                 checked={radioSelections[category.category] === option.id}
                                                 className="mr-2 ring-2 ring-slate-950"
+                                                style={{transform: "scale(0.5)"}}
                                             />
                                         
                                             <label htmlFor = {`radio-${option.id}`} className = "text-xs">
