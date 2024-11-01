@@ -1,11 +1,5 @@
-//import React from "react";
-//import { projects } from "@/lib/server/actions";
-//import Projects from "@/components/Projects";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-//import { DataTable } from "./[proposalID]/data-table";
-//import { columns } from "./columns"
-//import { data } from "./columns"
 import{Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
 
 
@@ -14,7 +8,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
@@ -55,12 +48,7 @@ function createData(title, description, members, advisor) {
   return {title, description, members, advisor };
 }
 
-/*
-function createMembers(name, email, department) {
-  return {name, email, department};
-}*/
-
-
+/* Will need to pull data from the db */
 const rows = [
   createData(
     "AI in Healthcare",
@@ -93,9 +81,9 @@ const rows = [
 
 export default async function Proposals() {
   return(
-    <div>
+    <div className="px-8 m-9">
 
-      <div className="flex flex-row p-12 m-9">
+      <div className="flex flex-row">
       <div>
         <SidebarProvider>
           <AppSidebar/>
@@ -106,41 +94,34 @@ export default async function Proposals() {
       </div>
 
         <div>
+          <h1 className="font-black text-3xl pb-6">Project Proposals</h1>
         <TableContainer component = {Paper}>
           <Table>
             
-            <TableHead>
-              <TableRow>
-                <TableCell>Project Title</TableCell>
-                <TableCell>Project Description</TableCell>
-                <TableCell>Project Members</TableCell>
-                <TableCell>Project Advisor</TableCell>
-              </TableRow>
-            </TableHead>
-
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={row.name} sx={{'&:last-child td, &last-child th':{border:0}}}>
                   <TableCell align="left" colSpan={4}>
                     <div className="flex flex-col p-4 rounded-lg space-y2">
-                      <div className="text-xl font-bold">{row.title}</div>
+                      <a href={`/proposals/${row.id}`} className="underline text-[#b30738] text-xl font-bold">{row.title}</a>
                       <div>
                         {
-                          row.description.length > 225 ? (
+                          row.description.length > 280 ? (
                             <>
-                              {row.description.slice(0,225)}...
-                              <a href={`/proposals/${row.id}`} className="textDecoration: 'underline' text-[#b30738]">Read more</a>
+                              {row.description.slice(0,280)}...
+                              <a href={`/proposals/${row.id}`} className="underline text-[#b30738]">Read more</a>
                             </>
                           ) : row.description
                         }
                       </div>
-                      <div> Members:</div>
-                      <ul className="space-y-1">
+                      <br></br>
+                      <ul className="flex flex-wrap">
+                        <li className="font-semibold">Members: </li>
                         {row.members.map((member, index) => (
                           <li key={index}>
                             <TooltipProvider>
                                   <Tooltip>
-                                    <TooltipTrigger className="text-[#b30738] underline decoration-solid text-xs">{member.name}</TooltipTrigger>
+                                    <TooltipTrigger className="text-[#b30738]"> {member.name}, </TooltipTrigger>
                                     <TooltipContent>
                                       <div>
                                         <ul>
@@ -155,7 +136,9 @@ export default async function Proposals() {
                           </li>           
                         ))}
                       </ul>
-                      <div>Advisor: <span>{row.advisor}</span></div>
+                      <div>
+                        <span className="font-semibold">Advisor</span>:  
+                        <span> {row.advisor}</span></div>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -168,7 +151,7 @@ export default async function Proposals() {
         </div>
       
         <div>
-        <Pagination>
+        <Pagination className="content-center">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious href="#" />
