@@ -1,37 +1,35 @@
-"use client";
+import React from "react";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import LoginCard from "@/components/LoginCard"; 
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import LoginCard from "@/components/LoginCard";
-
-export default function Home({ session }) {
-  const router = useRouter();
+export default async function Home() {
+  const session = await auth();
   const user = session?.user;
 
-  useEffect(() => {
-    if (user) {
-      switch (user.role) {
-        case "admin":
-          router.push("/admin");
-          break;
-        case "faculty":
-          router.push("/faculty");
-          break;
-        case "student":
-          router.push("/student");
-          break;
-        case "super_admin":
-          router.push("/super-admin");
-          break;
-        default:
-          break;
-      }
-    }
-  }, [user, router]);
+  if (!user) {
+    return (
+      <main className="flex items-center justify-center flex-grow bg-white">
+        <LoginCard />
+      </main>
+    );
+  }
 
-  return (
-    <main className="flex items-center justify-center flex-grow bg-white">
-      {!user && <LoginCard />} 
-    </main>
-  );
+  switch (user.role) {
+    case "admin":
+      redirect("/admin");
+      break;
+    case "faculty":
+      redirect("/faculty");
+      break;
+    case "student":
+      redirect("/student");
+      break;
+    case "super_admin":
+      redirect("/super-admin");
+      break;
+    default:
+      redirect("/"); 
+      break;
+  }
 }
