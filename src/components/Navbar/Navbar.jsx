@@ -29,11 +29,13 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-8">
-          <div className="hidden md:flex space-x-8">
-            <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
-            <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
-            <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
-          </div>
+          {session && (
+            <div className="hidden md:flex space-x-8">
+              <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
+              <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
+              <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
+            </div>
+          )}
 
           <div className="relative">
             {session ? (
@@ -80,3 +82,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
