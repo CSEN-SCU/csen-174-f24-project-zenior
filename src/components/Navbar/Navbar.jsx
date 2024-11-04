@@ -4,17 +4,23 @@ import React, { useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.push("/goodbye");
+  };
 
   return (
     <nav className="bg-[#b30738] text-white">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto px-6 py-4">
-        {/* Logo */}
         <div className="flex items-center">
           <a href="/" className="flex items-center space-x-3">
             <Image src="/images/square-whitetree-nobg.png" alt="Zenior logo" width={32} height={32} />
@@ -22,16 +28,13 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Right Section: Navigation Links and Profile/Sign-In */}
         <div className="flex items-center space-x-8">
-          {/* Navigation Links */}
           <div className="hidden md:flex space-x-8">
             <Link href="/proposals" className="hover:text-gray-300">Project Proposals</Link>
             <Link href="/advisor-directory" className="hover:text-gray-300">Faculty Advisor Directory</Link>
             <Link href="/archive" className="hover:text-gray-300">Senior Design Archive</Link>
           </div>
 
-          {/* Profile or Sign-In Button */}
           <div className="relative">
             {session ? (
               <>
@@ -52,10 +55,13 @@ const Navbar = () => {
                     </div>
                     <ul className="py-2">
                       <li>
+                        <Link href="/myprofile" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">My Profile</Link>
+                      </li>
+                      <li>
                         <Link href="/settings" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Settings</Link>
                       </li>
                       <li>
-                        <button onClick={() => signOut()} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <button onClick={handleSignOut} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                           Sign out
                         </button>
                       </li>
