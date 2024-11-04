@@ -1,37 +1,34 @@
-"use client";
-
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import React from "react";
+import { auth } from "@/lib/auth";
 import PropTypes from "prop-types";
 import LoginCard from "@/components/LoginCard";
 
-const AuthGuard = ({ requiredRole, children }) => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+export default async function AuthGuard({ requiredRole = "any", children }) {
+  const session = await auth();
   const user = session?.user;
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
   if (!user) {
-    return <LoginCard />;
+    return (
+      <main className="flex items-center justify-center min-h-screen bg-white">
+        <LoginCard />
+      </main>
+    );
   }
 
-  if (user.role !== requiredRole && requiredRole !== "any") {
-    return <p className="text-red-500 text-center mt-4">You do not have permission to view this page.</p>;
+  if (requiredRole !== "any" && user.role !== requiredRole) {
+    return (
+      <main className="flex items-center justify-center min-h-screen bg-white">
+        <p className="text-center text-red-500 text-lg">
+          You do not have permission to view this page.
+        </p>
+      </main>
+    );
   }
 
   return <>{children}</>;
-};
+}
 
 AuthGuard.propTypes = {
   requiredRole: PropTypes.oneOf(["student", "faculty", "admin", "super_admin", "any"]),
   children: PropTypes.node.isRequired,
 };
-
-AuthGuard.defaultProps = {
-  requiredRole: "any", // "any" allows any logged-in user to access the page
-};
-
-export default AuthGuard;
