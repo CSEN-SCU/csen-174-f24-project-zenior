@@ -1,7 +1,8 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider} from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import Link from 'next/link';
 import{Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
-
+import { Plus } from 'lucide-react';
 
 
 import * as React from 'react';
@@ -86,16 +87,21 @@ export default async function Proposals() {
 
       <div className="flex flex-row">
       <div>
-        <SidebarProvider>
+        <SidebarProvider className="pr-8">
           <AppSidebar/>
-          <div>
-            <SidebarTrigger />
-          </div>
-        </SidebarProvider> 
+        </SidebarProvider>
       </div>
 
         <div>
           <h1 className="font-black text-3xl pb-6">Project Proposals</h1>
+          <div className="flex flex-row ">
+            <p className="pr-4 pb-8">Add Your Own Proposal</p>
+            <Link href={`/proposal-form`}>
+              <Plus  size="20" color={'#b30738'}/>
+            </Link>
+          </div>
+          
+
         <TableContainer component = {Paper}>
           <Table>
             
