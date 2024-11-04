@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Login, Logout } from "./AuthButtons";
+import { Login, Logout } from "@/components/AuthButtons";
 
 const Navbar = async () => {
   const session = await auth();
