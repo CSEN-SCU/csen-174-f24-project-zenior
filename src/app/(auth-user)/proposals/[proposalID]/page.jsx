@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import{Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
 
-export default function ProposalDetails({ params }) {
+export default async function ProposalDetails({ params }) {
+  const currParams = await params;
   return (
     <div className="m-6 p-2">
       <div className="m-6 p-6 bg-slate-100">
-        <h1 className="text-2xl pb-2 font-bold">Title Placeholder {params.proposalID}</h1>
+        <h1 className="text-2xl pb-2 font-bold">Title Placeholder {currParams.proposalID}</h1>
         <p className="py-2">
           <span className="font-semibold">Proposed by: </span> 
             <TooltipProvider>

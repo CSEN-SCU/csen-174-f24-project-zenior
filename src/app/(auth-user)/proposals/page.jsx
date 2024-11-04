@@ -1,18 +1,14 @@
-//import React from "react";
-//import { projects } from "@/lib/server/actions";
-//import Projects from "@/components/Projects";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-//import { DataTable } from "./[proposalID]/data-table";
-//import { columns } from "./columns"
-//import { data } from "./columns"
+import{Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
+
+
 
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
@@ -49,46 +45,46 @@ export default async function Proposals() {
 }
 */
 
-function createData(id, title, description, members, advisor) {
-  return { id, title, description, members, advisor };
+function createData(title, description, members, advisor) {
+  return {title, description, members, advisor };
 }
 
+/* Will need to pull data from the db */
 const rows = [
   createData(
-    1,
     "AI in Healthcare",
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    ["Vani Aggarwal", "Vladimir Ceban"],
+    [
+      { name: "Vani Aggarwal", email: "vani@scu.edu", department: "Computer Science and Engineering" },
+      { name: "Vladimir Ceban", email: "vladimir@scu.edu", department: "Data Science" }
+    ],
     "Ahmed Amer",
   ),
   createData(
-    2,
     "Milk Guard",
     "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
-    "None",
+    [],
     "Prashanth Asur",
   ),
   createData(
-    3,
     "Embedded Systems",
     "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
-    "Jason Cisneros",
+    [{ name: "Jason Cisneros", email: "jcisneros@scu.edu", department: "Computer Science and Engineering" }],
     "None",
   ),
   createData(
-    4,
     "A Fourth Project",
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "Mia Lassiter",
+    [{ name: "Mia Lassiter", email: "mlassiter@scu.edu", department: "Web Design and Engineering" }],
     "Silvia Figuiera",
   ),
 ]
 
 export default async function Proposals() {
   return(
-    <div>
+    <div className="px-8 m-9">
 
-      <div className="flex flex-row m-6">
+      <div className="flex flex-row">
       <div>
         <SidebarProvider>
           <AppSidebar/>
@@ -99,29 +95,53 @@ export default async function Proposals() {
       </div>
 
         <div>
+          <h1 className="font-black text-3xl pb-6">Project Proposals</h1>
         <TableContainer component = {Paper}>
-          <Table sx={{ minWidth: 650 }}>
-
-            <TableHead>
-              <TableRow>
-                <TableCell>Project ID</TableCell>
-                <TableCell>Project Title</TableCell>
-                <TableCell>Project Description</TableCell>
-                <TableCell>Project Members</TableCell>
-                <TableCell>Project Advisor</TableCell>
-              </TableRow>
-            </TableHead>
-
+          <Table>
+            
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={row.name} sx={{'&:last-child td, &last-child th':{border:0}}}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
+                  <TableCell align="left" colSpan={4}>
+                    <div className="flex flex-col p-4 rounded-lg space-y2">
+                      <a href={`/proposals/${row.id}`} className="underline text-[#b30738] text-xl font-bold">{row.title}</a>
+                      <div>
+                        {
+                          row.description.length > 280 ? (
+                            <>
+                              {row.description.slice(0,280)}...
+                              <a href={`/proposals/${row.id}`} className="underline text-[#b30738]">Read more</a>
+                            </>
+                          ) : row.description
+                        }
+                      </div>
+                      <br></br>
+                      <ul className="flex flex-wrap">
+                        <li className="font-semibold">Members: </li>
+                        {row.members.map((member, index) => (
+                          <li key={index}>
+                            <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger className="text-[#b30738]"> {member.name}, </TooltipTrigger>
+                                    <TooltipContent>
+                                      <div>
+                                        <ul>
+                                          <li className="font-bold">{member.name}</li>
+                                          <li>flast@scu.edu</li>
+                                          <li>Computer Science and Engineering</li>
+                                        </ul>
+                                      </div>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                          </li>           
+                        ))}
+                      </ul>
+                      <div>
+                        <span className="font-semibold">Advisor</span>:  
+                        <span> {row.advisor}</span></div>
+                    </div>
                   </TableCell>
-                  <TableCell alight="right">{row.title}</TableCell>
-                  <TableCell alight="right">{row.description}</TableCell>
-                  <TableCell alight="right">{row.members}</TableCell>
-                  <TableCell alight="right">{row.advisor}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -132,7 +152,7 @@ export default async function Proposals() {
         </div>
       
         <div>
-        <Pagination>
+        <Pagination className="content-center">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious href="#" />
