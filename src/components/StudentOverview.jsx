@@ -72,7 +72,7 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
             {teamrequests.length > 0 ? (
                 teamrequests.map((request, index) => (
                     <div key={index} className={styles.requestCard}>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center">
                             <Avatar className="w-10 h-10">
                                 <AvatarImage
                                     src={"/images/default-avatar.png"}
@@ -86,7 +86,10 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
                                     {request.major.join(", ")}
                                 </p>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="gap-5">
+                                <p className="text-white">....... </p> {/* some other way to get spacing must happen */}
+                            </div>
+                            <div className="flex justify-end gap-2">
                                 <button
                                     onClick={() => handleAccept(request.id)}
                                     className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded"
