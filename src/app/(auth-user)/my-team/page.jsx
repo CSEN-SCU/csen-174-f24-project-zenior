@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./profile.module.css";
+import styles from "./studentprofile.module.css";
 import StudentAccountForm from "@/components/StudentAccountForm";
-import StudentProjects from "@/components/StudentProjects";
+//import StudentProjects from "@/components/StudentProjects";
 import StudentOverview from "@/components/StudentOverview";
 import { Checklist } from "@/components/Checklist"
 import { user } from "@/lib/server/actions";

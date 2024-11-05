@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./profile.module.css";
+import styles from "@/styles/facultyprofile.module.css"
 import FacultyAccountForm from "@/components/FacultyAccountForm";
 import { user } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";

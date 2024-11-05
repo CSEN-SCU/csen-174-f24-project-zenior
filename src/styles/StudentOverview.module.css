@@ -1,9 +1,9 @@
 .container {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
-    justify-content: flex-start; /* Align items to the left */
-    margin: 20px; /* Add some margin for spacing */
-    flex-wrap: wrap; /* Allows the content to wrap on smaller screens */
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 20px;
+    flex-wrap: wrap;
 }
 
 .formCard {
@@ -12,18 +12,52 @@
     border: 2px solid #100105;
     text-align: center;
     width: 100%;
-    max-width: 100%; /* Ensure the form takes full width on small screens */
+    max-width: 100%;
 }
 
-/* Adjust the button grid layout based on screen size */
+.groupRequestContainer, .teamRequestContainer {
+    background-color: #f3f3f3;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.requestCard {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+}
+
+.requestInfoContainer {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.requestInfo {
+    margin-left: 1rem;
+}
+
+.buttonContainer {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+
 .buttonGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 buttons per row on larger screens */
-    gap: 10px; /* Space between buttons */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
 @media (max-width: 768px) {
     .buttonGrid {
-        grid-template-columns: 1fr; /* Stack buttons vertically on smaller screens */
+        grid-template-columns: 1fr;
     }
 }
