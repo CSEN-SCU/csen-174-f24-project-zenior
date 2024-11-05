@@ -1,6 +1,5 @@
+import styles from "./profile.module.css";
 import FacultyAccountForm from "@/components/FacultyAccountForm";
-import React from "react";
-import styles from "@/styles/facultyprofile.module.css"
 import { user } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 

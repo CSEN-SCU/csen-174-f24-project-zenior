@@ -15,65 +15,6 @@
     max-width: 100%; /* Ensure the form takes full width on small screens */
 }
 
-.groupRequestContainer {
-    background-color: #fafafa;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 100%;
-}
-
-.groupBoxApproved {
-    border: 1px solid #28a745;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    background-color: #e6f8e6;
-}
-
-.groupBoxPending {
-    border: 1px solid #ffc107;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    background-color: #fff8e1;
-}
-
-.groupBoxDenied {
-    border: 1px solid #dc3545;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f8e6e6;
-}
-
-.teamRequestContainer {
-    background-color: #f3f3f3;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #d9d9d9;
-    border-radius: 5px;
-    width: 100%; 
-}
-
-.requestInfo {
-    flex-grow: 1; 
-    margin-left: 1rem;
-    justify-content: flex-start; 
-}
-
-.requestCard {
-    display: flex;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-}
-
-
 /* Adjust the button grid layout based on screen size */
 .buttonGrid {
     display: grid;
