@@ -33,13 +33,15 @@ export default async function RootLayout({ children }) {
   const session = await auth();
 
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground h-full flex flex-col`}
       >
         <AuthProvider session={session}>
           <Navbar />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow flex flex-col items-center justify-center">
+            {children}
+          </main>
           <Footer />
           <Toaster />
         </AuthProvider>
