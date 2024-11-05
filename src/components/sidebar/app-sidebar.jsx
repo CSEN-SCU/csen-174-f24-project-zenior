@@ -7,8 +7,12 @@ import {
     SidebarGroup 
 } from "@/components/ui/sidebar";
 
+
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React, { useState } from "react";
+import { Filter } from 'lucide-react';
+
 
 //grouped filters 
 const categories = [
@@ -72,12 +76,28 @@ export function AppSidebar() {
         setRadioSelections((prev) => ({ ...prev, [category]: id }));
     };
 
+    const resetFilters = () =>{
+        setSelectedItems([]);
+        setRadioSelections({
+            "Interdisciplinary?": null,
+            "Openings for additional members?": null,
+            "Has an advisor already?": null,
+        });
+    }
+
     return (
         <Sidebar variant="floating" collapsible="none">
             <SidebarHeader />
             <SidebarContent>
                 <div className="p-4">
-                    <h2 className="font-semibold text-lg mb-4">Filter</h2>
+                    <div className="flex flex-row items-center">
+                        <h2 className="font-semibold text-lg pr-4">Filter</h2>
+                        <Filter size="15"/>
+                    </div>
+            
+                    <button onClick={resetFilters} className="pb-4">
+                        <span className="text-xs underline text-[#b30738]">Reset Filters</span>
+                    </button>
                     {categories.map((category) => (
                         <SidebarGroup key={category.category} className="mb-6 p-1">
                             <h3 className="font-medium text-sm mb-2">{category.category}</h3>
