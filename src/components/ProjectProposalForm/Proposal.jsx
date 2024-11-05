@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "@/styles/ProposalForm.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
@@ -61,8 +61,8 @@ const ProposalForm = () => {
     formData.skills.length > 0;
 
   const [skillInput, setSkillInput] = useState(""); // track input for skills
-  const [prereqInput, setPrereqsInput] = useState("");
-  const[recsInput, setRecsInput] = useState("");
+  // const [prereqInput, setPrereqsInput] = useState("");
+  // const[recsInput, setRecsInput] = useState("");
 
   // handle input for skills
   const handleSkillInputChange = (e) => {
@@ -138,7 +138,7 @@ const ProposalForm = () => {
   //handle form submission
   const handleSubmit = (data) => {
     //send to server
-    console.log("Form submitted", {...formData, ...data});
+    console.log("Form submitted", { ...formData, ...data });
     //route to new page
   };
 
@@ -175,7 +175,7 @@ const ProposalForm = () => {
               placeholder="Enter a brief description of your project. If applicable, please include any courses that are recommended to and/or required for students who join this project."
               value={formData.description}
               onChange={handleInputChange}
-              rows = "4"
+              rows="4"
               required
               className="block w-1/2 px-3 py-2 ps-1 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
             ></textarea>
@@ -187,7 +187,8 @@ const ProposalForm = () => {
                 Project Team Members
               </label>
               <aside className="w-48 text-xs">
-                Add the names of people who you would like to request as members of this project. You may leave this section blank for now.
+                Add the names of people who you would like to request as members
+                of this project. You may leave this section blank for now.
               </aside>
             </div>
             <div className="w-full max-w-sm min-w-[200px]">
@@ -215,7 +216,9 @@ const ProposalForm = () => {
                 Project Advisor(s)
               </label>
               <aside className="w-48 text-xs">
-                Add the names of a faculty member who you would like to request as an advisor for this project. You may leave this section blank for now.
+                Add the names of a faculty member who you would like to request
+                as an advisor for this project. You may leave this section blank
+                for now.
               </aside>
             </div>
             <input
@@ -312,7 +315,7 @@ const ProposalForm = () => {
               </div>
             ))}
           </div>
-          
+
           {/* Prerequisit Courses */}
           {/*
           <div className="flex items-center mb-4 space-x-4">
@@ -391,7 +394,6 @@ const ProposalForm = () => {
 
           </div>
           */}
-
         </div>
       </form>
       <button

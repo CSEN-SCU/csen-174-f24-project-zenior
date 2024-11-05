@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";

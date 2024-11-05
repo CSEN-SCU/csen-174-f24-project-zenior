@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "@/styles/profile.module.css";
 import StudentAccountForm from "@/components/StudentAccountForm";
 import StudentOverview from "@/components/StudentOverview";

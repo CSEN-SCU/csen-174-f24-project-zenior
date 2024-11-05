@@ -1,4 +1,3 @@
-import React from "react";
 import { auth } from "@/lib/auth";
 import PropTypes from "prop-types";
 import LoginCard from "@/components/LoginCard";
@@ -29,6 +28,12 @@ export default async function AuthGuard({ requiredRole = "any", children }) {
 }
 
 AuthGuard.propTypes = {
-  requiredRole: PropTypes.oneOf(["student", "faculty", "admin", "super_admin", "any"]),
+  requiredRole: PropTypes.oneOf([
+    "student",
+    "faculty",
+    "admin",
+    "super_admin",
+    "any",
+  ]),
   children: PropTypes.node.isRequired,
 };

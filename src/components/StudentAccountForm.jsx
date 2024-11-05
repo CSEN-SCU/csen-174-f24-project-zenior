@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,7 +10,9 @@ import { usePathname } from "next/navigation";
 
 const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
   const [formData, setFormData] = useState({
-    name: user.student ? `${user.student.firstName} ${user.student.lastName}` : "",
+    name: user.student
+      ? `${user.student.firstName} ${user.student.lastName}`
+      : "",
     major: user.student?.major || "",
     minor: user.student?.minor || "",
     skills: user.student?.skills?.map((skill) => skill.skill.name) || [],
@@ -126,7 +128,9 @@ const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
               <option value="bioe">Bioengineering</option>
               <option value="mech">Mechanical Engineering</option>
               <option value="web">Web Design and Engineering</option>
-              <option value="civil">Civil, Environmental, and Sustainable Engineering</option>
+              <option value="civil">
+                Civil, Environmental, and Sustainable Engineering
+              </option>
               <option value="ecen">Electrical and Computer Engineering</option>
               <option value="gen">General Engineering</option>
             </select>
@@ -181,11 +185,11 @@ const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
       </div>
       {/* Conditionally rendering the instruction text */}
       {!hideInstruction && (
-      <div className={styles.instructionContainer}>
-        <p className={styles.instructionText}>
-          Enter your information on the left to create an account.
-        </p>
-      </div>
+        <div className={styles.instructionContainer}>
+          <p className={styles.instructionText}>
+            Enter your information on the left to create an account.
+          </p>
+        </div>
       )}
     </div>
   );
@@ -194,6 +198,7 @@ const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
 StudentAccountForm.propTypes = {
   user: PropTypes.object.isRequired,
   userUpdate: PropTypes.func.isRequired,
+  hideInstruction: PropTypes.bool,
 };
 
 export default StudentAccountForm;

@@ -1,4 +1,3 @@
-import React from "react";
 import { auth } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -72,7 +71,13 @@ const Navbar = async () => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/myprofile">My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href="/my-team">My Team</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/settings">Settings</Link>
                   </DropdownMenuItem>
                   <Logout />
                 </DropdownMenuContent>

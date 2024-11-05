@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import Image from "next/image";
 import {
   Card,
@@ -20,7 +20,7 @@ const LoginCard = ({ user }) => {
           <Image
             src="/images/SCUseal.png"
             alt="Santa Clara University Seal"
-            width={100} 
+            width={100}
             height={100}
             className="object-contain"
           />
@@ -29,7 +29,8 @@ const LoginCard = ({ user }) => {
       <CardContent className="p-0">
         {user ? (
           <p className="text-center text-base font-medium">
-            You&apos;re a <strong>{user.role}</strong> signed in as <strong>{user.email}</strong>
+            You&apos;re a <strong>{user.role}</strong> signed in as{" "}
+            <strong>{user.email}</strong>
           </p>
         ) : (
           <p className="text-center text-base font-medium">
@@ -38,11 +39,17 @@ const LoginCard = ({ user }) => {
         )}
       </CardContent>
       <CardFooter className="flex justify-center mt-3">
-        <AuthButton className="w-3/4 py-2 hover:bg-[#93052c] transition-colors" aria-label="Sign in or sign out" />
+        <AuthButton
+          className="w-3/4 py-2 hover:bg-[#93052c] transition-colors"
+          aria-label="Sign in or sign out"
+        />
       </CardFooter>
     </Card>
   );
 };
 
-export default LoginCard;
+LoginCard.propTypes = {
+  user: PropTypes.object,
+};
 
+export default LoginCard;

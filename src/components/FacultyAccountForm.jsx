@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,10 +8,11 @@ import { Camera } from "lucide-react"; // importing camera icon from Lucide icon
 import styles from "@/styles/FacultyAccountForm.module.css";
 import { usePathname } from "next/navigation";
 
-
 const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
   const [formData, setFormData] = useState({
-    name: user.faculty ? `${user.faculty.firstName} ${user.faculty.lastName}` : "",
+    name: user.faculty
+      ? `${user.faculty.firstName} ${user.faculty.lastName}`
+      : "",
     department: user.faculty?.department || "",
     email: user.faculty?.email || "",
     biography: user.faculty?.biography || "",
@@ -24,31 +25,28 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
 
   const pathname = usePathname();
 
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
 
   // file changes
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-        const imageUrl = URL.createObjectURL(file);
-        setProfilePicture(imageUrl);
+      const imageUrl = URL.createObjectURL(file);
+      setProfilePicture(imageUrl);
     }
   };
-
 
   return (
     <div className={styles.container}>
       {/* Conditionally rendering the instruction text */}
       {!hideInstruction && (
-      <div className={styles.instructionContainer}>
-        <p className={styles.instructionText}>
-          Enter your information below to create an account.
-        </p>
-      </div>
+        <div className={styles.instructionContainer}>
+          <p className={styles.instructionText}>
+            Enter your information below to create an account.
+          </p>
+        </div>
       )}
       <div className={styles.formCard}>
         <div className={styles.avatarContainer}>
@@ -70,7 +68,6 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             className={styles.fileInput}
           />
         </div>
-
 
         <form
           action={() =>
@@ -98,7 +95,6 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             required
           />
 
-
           <input
             className={styles.input}
             type="text"
@@ -121,11 +117,12 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             <option value="bioe">Bioengineering</option>
             <option value="mech">Mechanical Engineering</option>
             <option value="web">Web Design and Engineering</option>
-            <option value="civil">Civil, Environmental, and Sustainable Engineering</option>
+            <option value="civil">
+              Civil, Environmental, and Sustainable Engineering
+            </option>
             <option value="ecen">Electrical and Computer Engineering</option>
             <option value="gen">General Engineering</option>
           </select>
-
 
           {/* biography portion */}
           <label className={styles.label}> Biography: </label>
@@ -137,8 +134,7 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             onChange={handleInputChange}
           />
 
-
-        {/* research interests portion */}
+          {/* research interests portion */}
           <label className={styles.label}> Research Interests: </label>
           <textarea
             className={styles.textarea}
@@ -148,8 +144,7 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             onChange={handleInputChange}
           />
 
-
-        {/* areas of expertise portion */}
+          {/* areas of expertise portion */}
           <label className={styles.label}> Areas of Expertise: </label>
           <textarea
             className={styles.textarea}
@@ -158,7 +153,6 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             value={formData.areasOfExpertise}
             onChange={handleInputChange}
           />
-
 
           <Button variant="custom">
             {pathname === "/my-team" ? "Update Profile" : "Create Profile"}
@@ -169,11 +163,10 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
   );
 };
 
-
-//FacultyAccountForm.propTypes = {
-  //user: PropTypes.object.isRequired,
-  //userUpdate: PropTypes.func.isRequired,
-//};
-
+FacultyAccountForm.propTypes = {
+  user: PropTypes.object.isRequired,
+  userUpdate: PropTypes.func.isRequired,
+  hideInstruction: PropTypes.bool,
+};
 
 export default FacultyAccountForm;

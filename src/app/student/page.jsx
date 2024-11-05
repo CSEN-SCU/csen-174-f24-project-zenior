@@ -1,5 +1,3 @@
-import React from "react";
-
 const StudentHome = () => (
   <div className="p-6 bg-gray-100 rounded-lg shadow-md">
     <h1 className="text-3xl font-bold mb-4">Student Portal</h1>

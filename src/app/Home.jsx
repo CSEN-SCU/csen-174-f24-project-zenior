@@ -1,7 +1,6 @@
-import React from "react";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import LoginCard from "@/components/LoginCard"; 
+import LoginCard from "@/components/LoginCard";
 
 export default async function Home() {
   const session = await auth();
@@ -29,7 +28,7 @@ export default async function Home() {
       redirect("/super-admin");
       break;
     default:
-      redirect("/"); 
+      redirect("/");
       break;
   }
 }
