@@ -7,8 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
 import { usePathname } from "next/navigation";
+import {useSession } from "next-auth/react"; // added to import session data 
 
 const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
+  const {data: session } = useSession(); // access session data
   const [formData, setFormData] = useState({
     name: user.student
       ? `${user.student.firstName} ${user.student.lastName}`
@@ -71,7 +73,7 @@ const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
             {" "}
             {/* make avatar larger */}
             <AvatarImage
-              src={profilePicture || "/default-profile.png"}
+              src={session?.user.image || "/images/default-avatar.png"}
               alt="Profile"
             />
             <AvatarFallback>Profile Picture</AvatarFallback>

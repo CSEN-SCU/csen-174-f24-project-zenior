@@ -1,7 +1,8 @@
-import styles from "@/styles/profile.module.css";
-import StudentAccountForm from "@/components/StudentAccountForm";
+import React from "react"; 
 import StudentOverview from "@/components/StudentOverview";
+import StudentAccountForm from "@/components/StudentAccountForm";
 import { Checklist } from "@/components/Checklist";
+import styles from "@/styles/profile.module.css"; 
 import { user } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 

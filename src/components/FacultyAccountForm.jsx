@@ -7,8 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/FacultyAccountForm.module.css";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
+  const {data: session } = useSession(); // added to access session data
   const [formData, setFormData] = useState({
     name: user.faculty
       ? `${user.faculty.firstName} ${user.faculty.lastName}`
@@ -52,7 +54,7 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
         <div className={styles.avatarContainer}>
           <Avatar className="w-32 h-32">
             <AvatarImage
-              src={profilePicture || "/default-profile.png"}
+              src={session?.user.image || "/images/default-avatar.png"} // added to grab session photo
               alt="Profile"
             />
             <AvatarFallback>Profile Picture</AvatarFallback>
