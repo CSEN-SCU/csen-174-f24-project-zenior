@@ -10,15 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Login, Logout } from "@/components/AuthButtons";
+import { Login, Logout } from "@/components/Navbar/AuthButtons";
 
 const Navbar = async () => {
   const session = await auth();
 
   return (
     <nav className="bg-[#b30738] text-white">
-      <div className="flex justify-between items-center py-4 px-6 mx-auto max-w-screen-xl">
-        {/* Logo */}
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-6 py-4">
         <div className="flex items-center">
           <a href="/" className="flex items-center -my-2 space-x-3">
             <Image
@@ -35,7 +34,6 @@ const Navbar = async () => {
           </a>
         </div>
 
-        {/* Right Section: Navigation Links and Profile/Sign-In */}
         <div className="flex items-center space-x-8">
           {/* Navigation Links */}
           <div className="hidden space-x-8 md:flex">

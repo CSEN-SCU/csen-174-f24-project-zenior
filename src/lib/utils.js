@@ -6,8 +6,13 @@ export function cn(...inputs) {
 }
 
 export const getRole = (email) => {
+  const superAdminEmails = []; 
   const adminEmails = ["vceban@scu.edu", "jcisneros@scu.edu"];
   const facultyEmails = [];
+
+  if (superAdminEmails.includes(email)) {
+    return "super_admin";
+  }
 
   if (adminEmails.includes(email)) {
     return "admin";

@@ -14,7 +14,14 @@ export const Login = () => {
 
 export const Logout = () => {
   return (
-    <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+    <DropdownMenuItem
+      onClick={() =>
+        signOut({
+          redirectTo: "/goodbye",
+        })
+      }
+      className="cursor-pointer"
+    >
       Sign out
     </DropdownMenuItem>
   );

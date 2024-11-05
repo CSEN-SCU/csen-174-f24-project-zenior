@@ -8,30 +8,26 @@ import Link from "next/link";
 const CustomFooter = () => {
   return (
     <footer className="bg-[#b30738] text-white py-4">
-      <div className="flex flex-col items-center px-6 mx-auto space-y-2 max-w-screen-xl md:flex-row md:justify-between md:space-y-0">
-        {/* Logo and Copyright */}
-        <div className="flex items-center space-x-2">
-          <a href="/" className="flex items-center">
+      <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 space-y-4 md:space-y-0">
+        <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-2">
             <Image
               src="/images/square-whitetree-nobg.png"
               alt="Zenior Logo"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
             />
-          </a>
-          <p className="text-sm font-semibold">
-            &copy; {new Date().getFullYear()} Zenior
-          </p>
+            <span className="text-xl font-semibold">Zenior</span>
+          </Link>
         </div>
 
-        {/* Links */}
-        <div className="flex space-x-4">
-          <Link href="/about" className="transition-colors hover:text-gray-300">
+        <div className="flex space-x-8 text-sm">
+          <Link href="/about" className="hover:text-gray-300 transition-colors">
             About
           </Link>
           <Link
             href="/privacy-policy"
-            className="transition-colors hover:text-gray-300"
+            className="hover:text-gray-300 transition-colors"
           >
             Privacy Policy
           </Link>
@@ -39,7 +35,7 @@ const CustomFooter = () => {
             href="https://github.com/CSEN-SCU/csen-174-f24-project-zenior"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-gray-300"
+            className="hover:text-gray-300 transition-colors flex items-center"
           >
             <FaGithub className="text-xl" />
           </a>

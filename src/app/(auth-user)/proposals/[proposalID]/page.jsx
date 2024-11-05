@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import{Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button";
+import { UserPlus } from 'lucide-react';
 
-export default function ProposalDetails({ params }) {
+export default async function ProposalDetails({ params }) {
+  const currParams = await params;
   return (
     <div className="m-6 p-2">
       <div className="m-6 p-6 bg-slate-100">
-        <h1 className="text-2xl pb-2 font-bold">Title Placeholder {params.proposalID}</h1>
+        <h1 className="text-2xl pb-2 font-bold">Title Placeholder {currParams.proposalID}</h1>
         <p className="py-2">
           <span className="font-semibold">Proposed by: </span> 
             <TooltipProvider>
@@ -35,10 +38,13 @@ export default function ProposalDetails({ params }) {
         </p>
         <br></br>
         <h3 className="font-semibold">Desired Skillsets</h3>
-        <ul className="list-disc pl-8">
+        <ul className="list-disc pl-8 pb-4">
           <li>Cryptography</li>
           <li>Middleware</li>
-        </ul>
+        </ul> 
+        <Button variant="custom" className="object-right">
+          <span className="pr-2">Request to Join</span> <UserPlus size="20"/>
+        </Button>
       </div>
     </div>
   );

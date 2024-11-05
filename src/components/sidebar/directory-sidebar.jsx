@@ -7,12 +7,11 @@ import {
     SidebarGroup 
 } from "@/components/ui/sidebar";
 
-
-
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React, { useState } from "react";
 import { Filter } from 'lucide-react';
-
+import { ArrowDownAZ } from 'lucide-react';
+import { ArrowDownZA } from 'lucide-react';
 
 //grouped filters 
 const categories = [
@@ -29,7 +28,7 @@ const categories = [
         ],
     },
     {
-        category: "Interdisciplinary?",
+        category: "Has Project Proposal?",
         type: "radio",
         options: [
             {id: 7, label: "Yes"},
@@ -37,32 +36,22 @@ const categories = [
         ],
     },
     {
-        category: "Openings for additional members?",
+        category: "Sort by Last Name",
         type: "radio",
         options: [
-            {id: 9, label: "Yes"},
-            {id: 10, label: "No"},
-        ],
-    },
-    {
-        category: "Has an advisor already?",
-        type: "radio",
-        options: [
-            {id: 11, label: "Yes"},
-            {id: 12, label: "No"},
+            {id: 9, label: <ArrowDownAZ />},
+            {id: 10, label: <ArrowDownZA />},
         ],
     },
 ];
 
-export function AppSidebar() {
+export function DirectorySidebar() {
     /*state initialization: 
     initialize selectedItems as an empty array which will store the IDs of selection options
     setSelectedItems updates selectedItems array */
     const [selectedItems, setSelectedItems] = useState([]);
     const [radioSelections, setRadioSelections] = useState({
-        "Interdisciplinary?": null,
-        "Openings for additional members?": null,
-        "Has an advisor already?": null,
+        "Has Project Proposal?": null,
     });
 
     const handleCheckboxChange = (id) => {
@@ -79,22 +68,22 @@ export function AppSidebar() {
     const resetFilters = () =>{
         setSelectedItems([]);
         setRadioSelections({
-            "Interdisciplinary?": null,
-            "Openings for additional members?": null,
-            "Has an advisor already?": null,
+            "Has Project Proposal?": null,
+            "Sort by Last Name": null,
         });
     }
+
 
     return (
         <Sidebar variant="floating" collapsible="none">
             <SidebarHeader />
             <SidebarContent>
                 <div className="p-4">
-                    <div className="flex flex-row items-center">
+                <div className="flex flex-row items-center">
                         <h2 className="font-semibold text-lg pr-4">Filter</h2>
                         <Filter size="15"/>
                     </div>
-            
+
                     <button onClick={resetFilters} className="pb-4">
                         <span className="text-xs underline text-[#b30738]">Reset Filters</span>
                     </button>
