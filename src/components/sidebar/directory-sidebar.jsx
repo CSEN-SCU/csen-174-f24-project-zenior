@@ -9,6 +9,9 @@ import {
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import React, { useState } from "react";
+import { Filter } from 'lucide-react';
+import { ArrowDownAZ } from 'lucide-react';
+import { ArrowDownZA } from 'lucide-react';
 
 //grouped filters 
 const categories = [
@@ -30,6 +33,14 @@ const categories = [
         options: [
             {id: 7, label: "Yes"},
             {id: 8, label: "No"},
+        ],
+    },
+    {
+        category: "Sort by Last Name",
+        type: "radio",
+        options: [
+            {id: 9, label: <ArrowDownAZ />},
+            {id: 10, label: <ArrowDownZA />},
         ],
     },
 ];
@@ -54,12 +65,28 @@ export function DirectorySidebar() {
         setRadioSelections((prev) => ({ ...prev, [category]: id }));
     };
 
+    const resetFilters = () =>{
+        setSelectedItems([]);
+        setRadioSelections({
+            "Has Project Proposal?": null,
+            "Sort by Last Name": null,
+        });
+    }
+
+
     return (
         <Sidebar variant="floating" collapsible="none">
             <SidebarHeader />
             <SidebarContent>
                 <div className="p-4">
-                    <h2 className="font-semibold text-lg mb-4">Filter</h2>
+                <div className="flex flex-row items-center">
+                        <h2 className="font-semibold text-lg pr-4">Filter</h2>
+                        <Filter size="15"/>
+                    </div>
+
+                    <button onClick={resetFilters} className="pb-4">
+                        <span className="text-xs underline text-[#b30738]">Reset Filters</span>
+                    </button>
                     {categories.map((category) => (
                         <SidebarGroup key={category.category} className="mb-6 p-1">
                             <h3 className="font-medium text-sm mb-2">{category.category}</h3>
