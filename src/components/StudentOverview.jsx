@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"; 
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; 
+import PropTypes from "prop-types";
 
 /* UI component for group request: need to at attach to database */
 const GroupRequest = ({ grouprequests }) => {
@@ -113,82 +114,82 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
     );
 };
 
-// project dashboard fields 
+// project dashboard fields
 const StudentOverview = ({ user }) => {
-    const [project, setProject] = useState({
-        title: "", 
-        description: "", 
-        members: [], 
-        advisor: null, 
-    }); 
+  const [project, setProject] = useState({
+    title: "",
+    description: "",
+    members: [],
+    advisor: null,
+  });
+  
+const [teamRequests] = useState([
+      {id: 1, name: "name1", major:["COEN"]}, // connect to database; placeholder for now
+  ]); 
 
-    const [teamRequests] = useState([
-        {id: 1, name: "name1", major:["COEN"]}, // connect to database; placeholder for now
-    ]); 
+  const [groupRequests] = useState([
+      // insert data for group requests here aka database connection
+      {name: "project 1", status: "approved"} // placeholder!
+  ]); 
 
-    const [groupRequests] = useState([
-        // insert data for group requests here aka database connection
-        {name: "project 1", status: "approved"} // placeholder!
-    ]); 
+  // handle accept/reject
+  const handleAccept = (id) => {
+      console.log("Accepted request ID:", id); 
+      // routing here? aka logic
+  }; 
 
-    // handle accept/reject
-    const handleAccept = (id) => {
-        console.log("Accepted request ID:", id); 
-        // routing here? aka logic
-    }; 
+  const handleReject = (id) => {
+      console.log("Rejection request ID:", id); 
+      // routing here? aka logic 
+  }
 
-    const handleReject = (id) => {
-        console.log("Rejection request ID:", id); 
-        // routing here? aka logic 
-    }
+  const handleInputChange = (e) => {
+      setProject({ ...project, [e.target.name]: e.target.value}); 
+  }; 
 
-    const handleInputChange = (e) => {
-        setProject({ ...project, [e.target.name]: e.target.value}); 
-    }; 
+  const [skillInput, setSkillInput] = useState(""); 
+  const [skills, setSkills] = useState([]); 
 
-    const [skillInput, setSkillInput] = useState(""); 
-    const [skills, setSkills] = useState([]); 
+  const handleSkillInputChange = (e) => {
+      setSkillInput(e.target.value); // fix to update skillInput state
+  }; 
 
-    const handleSkillInputChange = (e) => {
-        setSkillInput(e.target.value); // fix to update skillInput state
-    }; 
+  // add the skill to the list when "Enter" is pressed
+  const handleSkillKeyDown = (e) => {
+      if (e.key === "Enter" && skillInput.trim() !== "") {
+          e.preventDefault(); // prevent form submission
+          setSkills([...skills, skillInput.trim()]);
+          setSkillInput(""); // clear the input after adding
+      }
+  };
 
-    // add the skill to the list when "Enter" is pressed
-    const handleSkillKeyDown = (e) => {
-        if (e.key === "Enter" && skillInput.trim() !== "") {
-            e.preventDefault(); // prevent form submission
-            setSkills([...skills, skillInput.trim()]);
-            setSkillInput(""); // clear the input after adding
-        }
-    };
+  // remove a skill with the 'x'
+  const handleRemoveSkill = (skillToRemove) => {
+      setSkills(skills.filter((skill) => skill !== skillToRemove));
+  };
 
-    // remove a skill with the 'x'
-    const handleRemoveSkill = (skillToRemove) => {
-        setSkills(skills.filter((skill) => skill !== skillToRemove));
-    };
+  return (
+      <div className={styles.container}>
+          <GroupRequest grouprequests={groupRequests} /> {/*database!*/}
+          <TeamRequest teamrequests={teamRequests} handleAccept={handleAccept} handleReject={handleReject}/>
+          <div className={styles.formCard}>
+              <div className="p-6 text-center">
+                  {!user.isProjectMember ? (
+                      <div>
+                          <h2 className="text-2xl font-bold mb-4">You are not a project member yet.</h2>
+                          <div className="flex justify-around mb-8">
+                              <div className="flex flex-col items-center">
+                                  <p className="mb-2">Already have a group formed?</p>
+                                  <Button variant="custom">Fill out Project Form</Button>
+                              </div>
 
-    return (
-        <div className={styles.container}>
-            <GroupRequest grouprequests={groupRequests} /> {/*database!*/}
-            <TeamRequest teamrequests={teamRequests} handleAccept={handleAccept} handleReject={handleReject}/>
-            <div className={styles.formCard}>
-                <div className="p-6 text-center">
-                    {!user.isProjectMember ? (
-                        <div>
-                            <h2 className="text-2xl font-bold mb-4">You are not a project member yet.</h2>
-                            <div className="flex justify-around mb-8">
+                              </div>
                                 <div className="flex flex-col items-center">
-                                    <p className="mb-2">Already have a group formed?</p>
-                                    <Button variant="custom">Fill out Project Form</Button>
+                                  <p className="mb-2">Have a project idea?</p>
+                                  <Button variant="custom">Post a Project Proposal</Button>
                                 </div>
-
-                                <div className="flex flex-col items-center">
-                                    <p className="mb-2">Have a project idea?</p>
-                                    <Button variant="custom">Post a Project Proposal</Button>
-                                </div>
-                            </div>
-
-                            <div>
+                              </div>
+                              <div>
                                 <p className="mb-4">No project ideas yet? No problem!</p>
                                 <div className={styles.buttonGrid}>
                                     <Button variant="custom">Explore Student Project Proposals</Button>
@@ -280,15 +281,21 @@ const StudentOverview = ({ user }) => {
 
                             <h2 className="text-3xl font-bold mb-4">Advisor(s):</h2>
                             <div className="flex items-center mb-4">
-                                <span className="text-lg">{project.advisor || "No Advisor Yet"}</span>
-                                <Button className="ml-4 bg-red-500 text-white">Find an Advisor</Button>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                                <span className="text-lg">{project.advisor || "No Advisor Yet"}</span>     
+                                    <Button variant = "custom">
+                                         Find an Advisor
+                                    </Button>
+              </div>
             </div>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
+};
+
+StudentOverview.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default StudentOverview;

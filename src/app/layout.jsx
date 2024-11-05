@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { AuthProvider } from "@/lib/providers";
 import { Analytics } from "@vercel/analytics/react";
