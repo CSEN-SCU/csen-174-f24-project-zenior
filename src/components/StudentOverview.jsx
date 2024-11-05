@@ -64,7 +64,7 @@ const GroupRequest = ({ grouprequests }) => {
     );
 };
 
-// UI component for team member requests; need to connect to database 
+// UI component for team member requests
 const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
     return (
         <div className={styles.teamRequestContainer}>
@@ -72,7 +72,7 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
             {teamrequests.length > 0 ? (
                 teamrequests.map((request, index) => (
                     <div key={index} className={styles.requestCard}>
-                        <div className={styles.requestInfoContainer}>
+                        <div className="flex items-center justify-between">
                             <Avatar className="w-10 h-10">
                                 <AvatarImage
                                     src={"/images/default-avatar.png"}
@@ -81,29 +81,25 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
                                 <AvatarFallback>Profile Picture</AvatarFallback>
                             </Avatar>
                             <div className={styles.requestInfo}>
-                                <h3 className="text-lg font-semibold text-red-700">{request.name}</h3> 
+                                <h3 className="text-lg font-semibold text-red-700">{request.name}</h3>
                                 <p className="text-black-600">
-                                    {request.major.map((major, i) => (
-                                        <span key={i} className={i === 0 ? "font-bold" : ""}>
-                                            {major}{i < request.major.length - 1 ? ", " : ""}
-                                        </span>
-                                    ))}
+                                    {request.major.join(", ")}
                                 </p>
                             </div>
-                        </div>
-                        <div className={styles.buttonContainer}>
-                            <button
-                                onClick={() => handleAccept(request.id)}
-                                className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded"
-                            >
-                                ✓
-                            </button>
-                            <button
-                                onClick={() => handleReject(request.id)}
-                                className="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded"
-                            >
-                                ✗
-                            </button>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => handleAccept(request.id)}
+                                    className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded"
+                                >
+                                    ✓
+                                </button>
+                                <button
+                                    onClick={() => handleReject(request.id)}
+                                    className="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded"
+                                >
+                                    ✗
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))
