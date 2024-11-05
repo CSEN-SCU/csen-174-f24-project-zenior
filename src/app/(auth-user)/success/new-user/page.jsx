@@ -1,4 +1,3 @@
-import React from "react";
 import StudentAccountForm from "@/components/StudentAccountForm";
 import { user } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
