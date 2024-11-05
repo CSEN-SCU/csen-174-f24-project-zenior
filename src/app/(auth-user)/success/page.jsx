@@ -15,17 +15,15 @@ const Success = async () => {
     user = await prisma.user.create({
       data: {
         email: userEmail,
-        role: "student", // Default to student for new users
+        role: "student", 
         new: true,       
       },
     });
   }
 
-  // Redirect new users to the profile setup page
   if (user.new) {
     redirect("/success/new-user");
   } else {
-    // Redirect based on the user's role if not a new user
     switch (user.role) {
       case "student":
         redirect("/student");
@@ -43,6 +41,7 @@ const Success = async () => {
         redirect("/"); 
         break;
     }
+    redirect("/");
   }
 };
 

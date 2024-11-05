@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthProvider } from "@/lib/providers";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { auth } from "@/lib/auth";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/Navbar/Navbar";
+//import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+//import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Footer from "@/components/Footer/Footer";
 
 // Default fonts - need to be changed to use SCU fonts
@@ -41,6 +45,8 @@ export default async function RootLayout({ children }) {
           <Footer />
           <Toaster />
         </AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
