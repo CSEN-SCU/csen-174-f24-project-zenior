@@ -65,7 +65,7 @@ export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [radioSelections, setRadioSelections] = useState({
     "Interdisciplinary?": null,
-    "Openings for additional members?": null,
+    "Openings for additional members?": 9,
     "Has an advisor already?": null,
   });
   const [filteredRows, setFilteredRows] = useState([]);
