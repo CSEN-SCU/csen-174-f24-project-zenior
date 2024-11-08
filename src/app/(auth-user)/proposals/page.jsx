@@ -10,7 +10,8 @@ import Link from "next/link";
 // } from "@/components/ui/tooltip";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { prisma } from "@prisma/client";
+// import { prisma } from "@prisma/client";
+import { proposals } from "@/lib/server/proposals";
 
 import * as React from "react";
 import Table from "@mui/material/Table";
@@ -79,14 +80,7 @@ export default function Proposals() {
         hasAdvisor: radioSelections["Has an advisor already?"] === 11,
       };
 
-      const results = await prisma.proposals.findMany({
-        where: {
-          departmentID: filters.departmentIds ? { in: filters.departmentIds } : undefined,
-          isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
-          hasOpenings: filters.hasOpenings !== null? filters.hasOpenings : undefined,
-          hasAdvisor: filters.hasAdvisor !== null ? filters.hasAdvisor : undefined,
-        },
-      });
+      const results = await proposals(0, 5, filters);
       setFilteredRows(results);
     };
     fetchFilteredProposals();
