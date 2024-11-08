@@ -31,34 +31,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-/*
-export default async function Proposals() {
-  const allProjects = await projects.get();
-
-  if (!projects || !projects.length) {
-    return <h1>No projects found</h1>;
-  } else {
-    //return <Projects projects={allProjects} />;
-    const start = (Number(page) - 1) * Number(per_page);
-    const end = start + Number(per_page);
-    const proposals = data.slice(start, end);
-
-    return(
-      <div className = 'flex flex-col gap-2 items-center'>
-        {proposals.map((proposal) => (
-          <p key={proposal}>{proposal}</p>
-        ))}
-
-        <PaginationControls 
-          hasNextPage = {end < data.length}
-          hasPrevPage = {start > 0}
-        />
-      </div>
-    )
-  }
-}
-*/
-
 
 export default function Proposals() {
   //const rows = await proposals(0, 2);
@@ -142,35 +114,6 @@ export default function Proposals() {
                           )}
                         </div>
                         <br></br>
-                        {/* <ul className="flex flex-wrap"> 
-                          <li className="font-semibold">Members: </li>
-                          {{row.members.map((member, index) => (
-                            // this key should also be member.id or something like that
-                            <li key={index}>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger className="text-[#b30738]">
-                                    {" "}
-                                    {member.name},{" "}
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <div>
-                                      <ul>
-                                        <li className="font-bold">
-                                          {member.name}
-                                        </li>
-                                        <li>flast@scu.edu</li>
-                                        <li>
-                                          Computer Science and Engineering
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </li>
-                          ))}}
-                        </ul> */}
                         <div>
                           <span className="font-semibold">Advisor</span>:
                           <span> {row.advisor}</span>
