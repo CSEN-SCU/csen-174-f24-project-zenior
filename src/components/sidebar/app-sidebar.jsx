@@ -52,15 +52,6 @@ const categories = [
 ];
 
 export function AppSidebar(props) {
-  /*state initialization: 
-    initialize selectedItems as an empty array which will store the IDs of selection options
-    setSelectedItems updates selectedItems array */
-  // const [selectedItems, setSelectedItems] = useState([]);
-  // const [radioSelections, setRadioSelections] = useState({
-  //   "Interdisciplinary?": null,
-  //   "Openings for additional members?": null,
-  //   "Has an advisor already?": null,
-  // });
 
   const handleCheckboxChange = (id) => {
     //if id is unchecked, add it to the array
