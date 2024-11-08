@@ -51,31 +51,31 @@ const categories = [
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar(props) {
   /*state initialization: 
     initialize selectedItems as an empty array which will store the IDs of selection options
     setSelectedItems updates selectedItems array */
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [radioSelections, setRadioSelections] = useState({
-    "Interdisciplinary?": null,
-    "Openings for additional members?": null,
-    "Has an advisor already?": null,
-  });
+  // const [selectedItems, setSelectedItems] = useState([]);
+  // const [radioSelections, setRadioSelections] = useState({
+  //   "Interdisciplinary?": null,
+  //   "Openings for additional members?": null,
+  //   "Has an advisor already?": null,
+  // });
 
   const handleCheckboxChange = (id) => {
     //if id is unchecked, add it to the array
-    setSelectedItems((prev) =>
+    props.setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const handleRadioChange = (category, id) => {
-    setRadioSelections((prev) => ({ ...prev, [category]: id }));
+    props.setRadioSelections((prev) => ({ ...prev, [category]: id }));
   };
 
   const resetFilters = () => {
-    setSelectedItems([]);
-    setRadioSelections({
+    props.setSelectedItems([]);
+    props.setRadioSelections({
       "Interdisciplinary?": null,
       "Openings for additional members?": null,
       "Has an advisor already?": null,
@@ -107,7 +107,7 @@ export function AppSidebar() {
                       <input
                         type="checkbox"
                         id={`checkbox-${option.id}`}
-                        checked={selectedItems.includes(option.id)}
+                        checked={props.selectedItems.includes(option.id)}
                         onChange={() => handleCheckboxChange(option.id)}
                         className="mr-2"
                         style={{ accentColor: "#b30738" }}
@@ -123,7 +123,7 @@ export function AppSidebar() {
                 </ul>
               ) : (
                 <RadioGroup
-                  value={radioSelections[category.category]}
+                  value={props.radioSelections[category.category]}
                   onValueChange={(id) =>
                     handleRadioChange(category.category, id)
                   }
@@ -135,7 +135,7 @@ export function AppSidebar() {
                         id={`radio-${option.id}`}
                         value={option.id}
                         checked={
-                          radioSelections[category.category] === option.id
+                          props.radioSelections[category.category] === option.id
                         }
                         className="mr-2 ring-2 ring-slate-950"
                         style={{ transform: "scale(0.5)" }}
