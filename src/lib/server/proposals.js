@@ -7,11 +7,12 @@ import {prisma} from "@/lib/prisma"
 // Parameters:
 // - n: Index to start result from query to return
 // - m: Number of results to return.
+// - filters: Filters to apply to query
 // Example:
 // const results = proposals(2, 2);
 // Returns: The 2nd and 3rd projects proposed.
-export async function proposals(n, m){
-    
+export async function proposals(n, m, filters){
+    console.log("Feting Proposals");
     return await prisma.project.findMany({
         skip: n,
         take: m,
@@ -19,6 +20,10 @@ export async function proposals(n, m){
             status: {
                 equals: 'proposed',
             },
+            // departmentID: filters.departmentIds ? { in: filters.departmentIds } : undefined,
+            // isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
+            groupOpen: filters.hasOpenings !== null? filters.hasOpenings : undefined,
+            // hasAdvisor: filters.hasAdvisor !== null ? filters.hasAdvisor : undefined,
         },
     })
 
