@@ -1,4 +1,4 @@
-
+const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 
 function writeResults(results){
 
@@ -9,7 +9,6 @@ function writeResults(results){
 }
 
 function getApi(endpoint) {
-const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 const endpointUrl = baseUrl + endpoint;
 fetch(endpointUrl, {
     method: 'GET', // or 'POST', 'PUT', etc.
@@ -20,5 +19,22 @@ fetch(endpointUrl, {
     .then(response => response.json())
     .then(data => writeResults(data))
     .catch(error => console.error('Error:', error));
+
+}
+
+
+function getTheses() {
+  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all&limit=10";
+
+  fetch(queryUrl, {
+    method: 'GET', // or 'POST', 'PUT', etc.
+    headers: {
+        "Authorization" : process.env.DIGITAL_COMMONS_API_TOKEN, // Add any necessary authorization headers
+    }
+  })
+    .then(response => response.json())
+    .then(data => writeResults(data))
+    .catch(error => console.error('Error:', error));
+
 
 }
