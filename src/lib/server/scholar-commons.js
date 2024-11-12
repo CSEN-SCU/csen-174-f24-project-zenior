@@ -38,8 +38,12 @@ function getTheses() {
 }
 // postman?
 
-function getFacultyPreviousProjects(faculty, n){
-  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all" + (n? "&limit=" + n : "") + "&configured_field_t_advisor=" + faculty;
+function getFacultyPreviousProjects(facultyName, n){
+  if(facultyName === undefined){
+    throw new Error("Faculty Required to be defined");
+  }
+
+  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all" + (n? "&limit=" + n : "") + "&configured_field_t_advisor=" + facultyName;
   console.log(queryUrl);
   fetch(queryUrl, init)
     .then(response => response.json())
