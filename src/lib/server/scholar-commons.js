@@ -2,10 +2,10 @@ const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 
 function writeResults(results){
 
-  console.log(results)
+  // console.log(results)
   // Uncomment below to locally write json file of results for debug purposes
-  // const fs = require('fs')
-  // fs.writeFile("ScholarCommonsResults.json", JSON.stringify(results), (err) => { if(err) throw err;})
+  const fs = require('fs')
+  fs.writeFile("ScholarCommonsResults.json", JSON.stringify(results), (err) => { if(err) throw err;})
 }
 
 function getApi(endpoint) {
@@ -24,7 +24,7 @@ fetch(endpointUrl, {
 
 
 function getTheses() {
-  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all&limit=10";
+  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all&limit=1000";
 
   fetch(queryUrl, {
     method: 'GET', // or 'POST', 'PUT', etc.
@@ -33,7 +33,7 @@ function getTheses() {
     }
   })
     .then(response => response.json())
-    .then(data => writeResults(data))
+    .then(data => writeResults(data.results))
     .catch(error => console.error('Error:', error));
 
 
