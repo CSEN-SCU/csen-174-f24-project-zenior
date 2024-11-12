@@ -12,7 +12,7 @@ import {prisma} from "@/lib/prisma"
 // const results = proposals(2, 2);
 // Returns: The 2nd and 3rd projects proposed.
 export async function proposals(n, m, filters){
-    console.log("Feting Proposals");
+    console.log("Fetching Proposals");
     return await prisma.project.findMany({
         skip: n,
         take: m,

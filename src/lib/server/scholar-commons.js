@@ -1,3 +1,5 @@
+'use server'
+
 const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 const init = {
   method: 'GET', // or 'POST', 'PUT', etc.
@@ -38,16 +40,15 @@ function getTheses() {
 }
 // postman?
 
-function getFacultyPreviousProjects(facultyName, n){
+async function getFacultyPreviousProjects(facultyName, n){
   if(facultyName === undefined){
     throw new Error("Faculty Required to be defined");
   }
 
   const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all" + (n? "&limit=" + n : "") + "&configured_field_t_advisor=" + facultyName;
   console.log(queryUrl);
-  fetch(queryUrl, init)
-    .then(response => response.json())
-    .then(data => writeResults(data.results))
-    .catch(error => console.error('Error:', error));
+  
+  
+  return await fetch(queryUrl, init).then(response => response.json())
 
 }
