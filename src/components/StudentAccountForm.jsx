@@ -7,11 +7,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react"; // import session data
 
-const StudentAccountForm = ({ user, userUpdate, hideInstruction }) => {
+const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
+ // const {data: session } = useSession(); // access session data
   const [formData, setFormData] = useState({
-    name: user.student
-      ? `${user.student.firstName} ${user.student.lastName}`
+    name: user.student 
+      ? `${user.student.firstName || ""}
+      ${user.student.lastName || ""}`
       : "",
     major: user.student?.major || "",
     minor: user.student?.minor || "",
