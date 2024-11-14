@@ -5,25 +5,22 @@ import { getRole } from "@/lib/utils";
 
 const getOrCreateUser = async (profile) => {
   const { email, given_name, family_name } = profile;
+
   if (!email.endsWith("@scu.edu")) {
     console.error("Login from unauthorized email: ", email);
     return null;
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { email },
     });
 
-    if (!user.profilePictureUrl) {
-      await prisma.user.update({
+    if (user && !user.profilePictureUrl) {
+      user = await prisma.user.update({
         where: { email },
-        data: {
-          profilePictureUrl: profile.picture,
-        },
+        data: { profilePictureUrl: profile.picture },
       });
-
-      user.profilePictureUrl = profile.picture;
     }
 
     if (!user) {
@@ -44,17 +41,11 @@ const getOrCreateUser = async (profile) => {
 
       if (role === "faculty") {
         await prisma.faculty.create({
-          data: {
-            ...commonData,
-            department: "",
-          },
+          data: { ...commonData, department: "" },
         });
       } else {
         await prisma.student.create({
-          data: {
-            ...commonData,
-            major: "",
-          },
+          data: { ...commonData, major: "" },
         });
       }
 
