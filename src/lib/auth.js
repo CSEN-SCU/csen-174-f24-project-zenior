@@ -59,6 +59,46 @@ const getOrCreateUser = async (profile) => {
   }
 };
 
+const authOptions = {
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      async profile(profile) {
+        const user = await getOrCreateUser(profile);
+        if (user) {
+          profile.role = user.role;
+          profile.picture = user.profilePictureUrl;
+        }
+        return profile;
+      },
+    }),
+  ],
+  callbacks: {
+    async signIn({ profile }) {
+      return profile.email.endsWith("@scu.edu");
+    },
+    jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.picture = user.picture;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.role = token.role;
+      session.user.image = token.picture;
+      return session;
+    },
+  },
+  // pages: {
+  //   error: "/auth/error",
+  // },
+};
+
+export { authOptions };
+export default NextAuth(authOptions);
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
