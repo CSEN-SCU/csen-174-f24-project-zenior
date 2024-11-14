@@ -5,7 +5,7 @@ import styles from "@/styles/ProposalForm.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 
 const ProposalForm = () => {
-  const router = useRouter(); 
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -89,29 +89,29 @@ const ProposalForm = () => {
     });
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async () => {
     try {
       const payload = {
         ...formData,
         majors: form.getValues("items"),
       };
 
-      const response = await fetch('/api/project-proposals', {
-        method: 'POST',
+      const response = await fetch("/api/project-proposals", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
 
-      console.log("Response Status:", response.status); 
+      console.log("Response Status:", response.status);
 
       if (response.ok) {
         const result = await response.json();
         console.log("Form submitted successfully:", result);
-        router.push('/confirmation-page');
+        router.push("/confirmation-page");
       } else {
-        const errorData = await response.text(); 
+        const errorData = await response.text();
         console.error("Form submission failed:", errorData);
       }
     } catch (error) {
@@ -239,15 +239,12 @@ const ProposalForm = () => {
                                 checked={field.value?.includes(item.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        item.id,
-                                      ])
+                                    ? field.onChange([...field.value, item.id])
                                     : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== item.id
-                                        )
-                                      );
+                                      field.value?.filter(
+                                        (value) => value !== item.id,
+                                      ),
+                                    );
                                 }}
                               />
                             </FormControl>
