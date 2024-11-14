@@ -175,7 +175,7 @@ const StudentOverview = ({ user }) => {
             <TeamRequest teamrequests={teamRequests} handleAccept={handleAccept} handleReject={handleReject}/>
             <div className={styles.formCard}>
                 <div className="p-6 text-center">
-                    {!user.isProjectMember ? (
+                    {!user?.isProjectMember ? (
                         <div>
                             <h2 className="text-2xl font-bold mb-4">You are not a project member yet.</h2>
                             <div className="flex justify-around mb-8">
