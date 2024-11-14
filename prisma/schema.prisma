@@ -146,8 +146,9 @@ model GroupRequest {
 }
 
 model ProjectMember {
-  student Student @relation(fields: [studentId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+  joinedAt  DateTime @default(now()) 
 
   studentId String
   projectId String
