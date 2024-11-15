@@ -9,38 +9,28 @@ const init = {
 };
 
 
-function writeResults(results){
+async function validateResponse(response){
+  if(!response.ok){
+    throw new Error('Response status: ${response.status}')
+  }
 
-  console.log(results)
-  // Uncomment below to locally write json file of results for debug purposes
-  // const fs = require('fs')
-  // fs.writeFile("ScholarCommonsResults.json", JSON.stringify(results), (err) => { if(err) throw err;})
+  const resultJson = await response.json();
+
+  return resultJson.results
 }
 
 
-function getApi(endpoint) {
-const endpointUrl = baseUrl + endpoint;
-fetch(endpointUrl, init)
-    .then(response => response.json())
-    .then(data => writeResults(data))
-    .catch(error => console.error('Error:', error));
-
-}
-
-
-function getTheses() {
-  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all&limit=1000";
-
-  fetch(queryUrl, init)
-    .then(response => response.json())
-    .then(data => writeResults(data.results))
-    .catch(error => console.error('Error:', error));
-
-
-}
-// postman?
-
-export const FacultyPreviousProjects = async (facultyName, n) => {
+// Function returns n  of the oldest previous theses that a faculty advisor has advised
+// Parameters:
+// - facultyName: Name of faculty to search for
+// - callback: Function to be invoked when data has returned from scholar commons.
+// - n: Number of results to return. If not set, will return at most 100 results.
+// Invariance: Will throw an error if facultyName is undefined.
+// Example:
+// const previousAdvisedProjects = await getFacultyPreviousProjects("Jane Doe", 10);
+// Returns:
+// Array of the 10 oldest theses that Jane Doe has advised. 
+async function getFacultyPreviousProjects(facultyName, callback, n){
   if(facultyName === undefined){
     throw new Error("Faculty Required to be defined");
   }
@@ -48,6 +38,25 @@ export const FacultyPreviousProjects = async (facultyName, n) => {
   const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all" + (n? "&limit=" + n : "") + "&configured_field_t_advisor=" + facultyName;
   
   
-  return await fetch(queryUrl, init).then(response => response.json()).results;
+  const response = await fetch(queryUrl, init)
+  return  await validateResponse(response)
+
+}
+
+
+async function getThesesWithKeywordFilters(filters, callback, n){
+
+  const limitField = (n? "&limit=" + n : "");
+  let abstractField = "";
+  let titleField = "";
+  for(let i = 0;  i < filters.length; i++){
+    abstractField = abstractField + "&abstract=" + filters[i];
+    titleField = titleField + "&title=" + filters[i];
+  }
+
+  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all"+ abstractField + titleField + limitField;
+  console.log(queryUrl)
+  const response = await fetch(queryUrl, init)
+  return  await validateResponse(response)
 
 }
