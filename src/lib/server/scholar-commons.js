@@ -40,15 +40,14 @@ function getTheses() {
 }
 // postman?
 
-async function getFacultyPreviousProjects(facultyName, n){
+export const FacultyPreviousProjects = async (facultyName, n) => {
   if(facultyName === undefined){
     throw new Error("Faculty Required to be defined");
   }
 
   const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all" + (n? "&limit=" + n : "") + "&configured_field_t_advisor=" + facultyName;
-  console.log(queryUrl);
   
   
-  return await fetch(queryUrl, init).then(response => response.json())
+  return await fetch(queryUrl, init).then(response => response.json()).results;
 
 }
