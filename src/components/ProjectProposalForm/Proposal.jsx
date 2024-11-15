@@ -5,6 +5,7 @@ import styles from "@/styles/ProposalForm.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/form";
 
 const ProposalForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -87,20 +89,46 @@ const ProposalForm = () => {
     });
   };
 
-  //handle form submission
-  const handleSubmit = (data) => {
-    //send to server
-    console.log("Form submitted", { ...formData, ...data });
-    //route to new page
+  const handleSubmit = async () => {
+    try {
+      const payload = {
+        ...formData,
+        majors: form.getValues("items"),
+      };
+
+      const response = await fetch("/api/project-proposals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("Response Status:", response.status);
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Form submitted successfully:", result);
+        router.push("/confirmation-page");
+      } else {
+        const errorData = await response.text();
+        console.error("Form submission failed:", errorData);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
     <FormProvider {...form}>
-      <form className="my-2 mx-8 space-y-6" onSubmit={handleSubmit}>
+      <form
+        className="my-2 mx-8 space-y-6"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <h1 className="text-4xl font-extrabold">Proposal Form</h1>
         <p>
-          This form creates a SD project proposal, which will be shown on your
-          profile. You may edit any of the fields, at any time
+          This form creates an SD project proposal, which will be shown on your
+          profile. You may edit any of the fields at any time.
         </p>
         <div className="w-full">
           <div className="flex items-center mb-4 space-x-4">
@@ -201,35 +229,30 @@ const ProposalForm = () => {
                         key={item.id}
                         control={form.control}
                         name="items"
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={item.id}
-                              className="flex items-start space-x-3"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(item.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([
-                                        ...field.value,
-                                        item.id,
-                                      ])
-                                      : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== item.id,
-                                        ),
-                                      );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {item.label}
-                              </FormLabel>
-                            </FormItem>
-                          );
-                        }}
+                        render={({ field }) => (
+                          <FormItem
+                            key={item.id}
+                            className="flex items-start space-x-3"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.id,
+                                      ),
+                                    );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {item.label}
+                            </FormLabel>
+                          </FormItem>
+                        )}
                       />
                     ))}
                   </div>
@@ -237,10 +260,10 @@ const ProposalForm = () => {
               )}
             />
           </div>
+
           <label className="font-bold">
             Desired Skillsets<span className="text-red-500"> *</span>
           </label>
-          {/* Skills input box */}
           <div className="mb-4">
             <input
               className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
@@ -252,7 +275,6 @@ const ProposalForm = () => {
             />
           </div>
 
-          {/* Skills list below the input */}
           <div className="flex flex-wrap gap-2">
             {formData.skills.map((skill, index) => (
               <div key={index} className={styles.skillTag}>
@@ -261,21 +283,22 @@ const ProposalForm = () => {
                   onClick={() => handleRemoveSkill(skill)}
                   className={styles.removeSkill}
                 >
-                  {" "}
-                  x{" "}
+                  x
                 </span>
               </div>
             ))}
           </div>
+
+          {/* Submit button for creating project */}
+          <button
+            type="submit"
+            className="bg-[#b30738] text-white cursor-pointer py-2 px-4 m-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={!isFormValid}
+          >
+            Create Project
+          </button>
         </div>
       </form>
-      <button
-        type="submit"
-        className="bg-[#b30738] text-white cursor-pointer py-2 px-4 m-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={!isFormValid}
-      >
-        Create Project
-      </button>
     </FormProvider>
   );
 };
