@@ -23,14 +23,13 @@ async function validateResponse(response){
 // Function returns n  of the oldest previous theses that a faculty advisor has advised
 // Parameters:
 // - facultyName: Name of faculty to search for
-// - callback: Function to be invoked when data has returned from scholar commons.
 // - n: Number of results to return. If not set, will return at most 100 results.
 // Invariance: Will throw an error if facultyName is undefined.
 // Example:
 // const previousAdvisedProjects = await getFacultyPreviousProjects("Jane Doe", 10);
 // Returns:
 // Array of the 10 oldest theses that Jane Doe has advised. 
-async function getFacultyPreviousProjects(facultyName, callback, n){
+export async function getFacultyPreviousProjects(facultyName, n){
   if(facultyName === undefined){
     throw new Error("Faculty Required to be defined");
   }
@@ -44,19 +43,27 @@ async function getFacultyPreviousProjects(facultyName, callback, n){
 }
 
 
-async function getThesesWithKeywordFilters(filters, callback, n){
 
-  const limitField = (n? "&limit=" + n : "");
-  let abstractField = "";
-  let titleField = "";
-  for(let i = 0;  i < filters.length; i++){
-    abstractField = abstractField + "&abstract=" + filters[i];
-    titleField = titleField + "&title=" + filters[i];
+// Function returns n of the oldest previous theses with the filter keywords associated in the abstract
+// Parameters:
+// - filters: Array of keywords to filter results
+// - n: Number of results to return. If not set, will return at most 100 results
+// Example:
+// const results = wait getThesesWithKeywordFilters(["AI", "Cloud", "HPC"])
+// Returns:
+// Array of 100 oldest theses that have "AI", "Cloud", or "HPC" in the abstract.
+//!@todo: Do we need to remove dups? I.e say an abstract has AI and cloud, on the AI query it will return and the cloud query it will return.
+export async function getThesesWithKeywordFilters(filters, n){
+
+  const limitField = (n? '&limit='+ n : '');
+
+  const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
+  let results = []
+  for(let i = 0; i < filters.length; i++){
+    const requestUrl = queryUrl + "&abstract=" + filters[i]
+    const response = await fetch(requestUrl, init)
+    results[i] = await validateResponse(response)
   }
-
-  const queryUrl = baseUrl + "query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all"+ abstractField + titleField + limitField;
-  console.log(queryUrl)
-  const response = await fetch(queryUrl, init)
-  return  await validateResponse(response)
+  return results
 
 }
