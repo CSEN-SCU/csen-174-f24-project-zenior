@@ -111,7 +111,7 @@ export default async function Directory() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.lastName}
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>
