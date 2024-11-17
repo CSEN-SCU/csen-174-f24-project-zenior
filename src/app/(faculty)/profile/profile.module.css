@@ -1,6 +1,0 @@
-.container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start; /* Aligns the containers at the top */
-    gap: 0; /* Ensure there is no gap between the containers */
-}

@@ -4,6 +4,6 @@ diagrams
 README.md
 Dockerfile
 .dockerignore
-docker-compose.yml
 .next
 *.log
+scripts

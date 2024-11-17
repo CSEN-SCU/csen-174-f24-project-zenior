@@ -6,19 +6,19 @@ export function cn(...inputs) {
 }
 
 export const getRole = (email) => {
-  const superAdminEmails = []; 
-  const adminEmails = ["vceban@scu.edu", "jcisneros@scu.edu"];
-  const facultyEmails = [];
+  const superAdminEmails = new Set([]);
+  const adminEmails = new Set(["jcisneros@scu.edu", "notvceban@scu.edu"]);
+  const facultyEmails = new Set([]);
 
-  if (superAdminEmails.includes(email)) {
+  if (superAdminEmails.has(email)) {
     return "super_admin";
   }
 
-  if (adminEmails.includes(email)) {
+  if (adminEmails.has(email)) {
     return "admin";
   }
 
-  if (facultyEmails.includes(email)) {
+  if (facultyEmails.has(email)) {
     return "faculty";
   }
 

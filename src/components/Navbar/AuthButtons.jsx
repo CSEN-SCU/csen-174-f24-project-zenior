@@ -5,7 +5,10 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 export const Login = () => {
   return (
-    <button onClick={() => signIn("google")} className="hover:text-gray-300">
+    <button
+      onClick={() => signIn("google", { redirectTo: "/success" })}
+      className="hover:text-gray-300"
+    >
       Login
     </button>
   );

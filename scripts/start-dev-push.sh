@@ -6,4 +6,5 @@ docker run -it --rm \
   -v $(pwd)/prisma:/app/prisma \
   -p 3000:3000 \
   -p 5555:5555 \
-  zenior
+  zenior \
+  sh -c "npx prisma db push && (npm run dev & npx prisma studio)"
