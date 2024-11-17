@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Run docker container for development
+sudo docker run -it --rm -v $(pwd)/src:/app/src -v $(pwd)/prisma:/app/prisma -p 3000:3000 -p 5555:5555 zenior
