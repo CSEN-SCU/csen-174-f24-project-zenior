@@ -130,7 +130,9 @@ const StudentOverview = ({ user }) => {
 
     const [groupRequests] = useState([
         // insert data for group requests here aka database connection
-        {name: "project 1", status: "approved"} // placeholder!
+        {name: "project 1", status: "approved"}, // placeholder!
+        {name: "project 2", status: "pending"}, // placeholder
+        {name: "project 3", status: "denied"}
     ]); 
 
     // handle accept/reject
