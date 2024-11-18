@@ -145,8 +145,6 @@ export const user = {
           user.faculty = await prisma.faculty.findUnique({
             where: { userId: user.id },
             include: {
-              researchInterests: true,
-              expertiseAreas: true,
               advisedProjects: true,
               coAdvisedProjects: true,
               skills: {
@@ -160,14 +158,14 @@ export const user = {
           user.student = await prisma.student.findUnique({
             where: { userId: user.id },
             include: {
+              projects: true,
+              AdvisorRequest: true,
+              GroupRequest: true,
               skills: {
                 include: {
                   skill: true,
                 },
               },
-              projects: true,
-              AdvisorRequest: true,
-              GroupRequest: true,
             },
           });
         }
@@ -182,58 +180,7 @@ export const user = {
         where: { userId: id },
       });
       if (data.Student.skills) {
-        for (const skill of data.Student.skills) {
-          const existingSkill = await prisma.skill.findUnique({
-            where: { name: skill },
-          });
-          if (existingSkill) {
-            const existingStudentSkill = await prisma.studentSkill.findFirst({
-              where: {
-                studentId: student.id,
-                skillId: existingSkill.id,
-              },
-            });
-            if (!existingStudentSkill) {
-              await prisma.studentSkill.create({
-                data: {
-                  studentId: student.id,
-                  skillId: existingSkill.id,
-                },
-              });
-            }
-          } else {
-            const newSkill = await prisma.skill.create({
-              data: {
-                name: skill,
-              },
-            });
-            await prisma.studentSkill.create({
-              data: {
-                studentId: student.id,
-                skillId: newSkill.id,
-              },
-            });
-          }
-        }
-        const studentSkills = await prisma.studentSkill.findMany({
-          where: { studentId: student.id },
-          include: {
-            skill: true,
-          },
-        });
-        for (const studentSkill of studentSkills) {
-          if (!data.Student.skills.includes(studentSkill.skill.name)) {
-            console.log("deleting", studentSkill.skill.name);
-            await prisma.studentSkill.delete({
-              where: {
-                studentId_skillId: {
-                  studentId: student.id,
-                  skillId: studentSkill.skillId,
-                },
-              },
-            });
-          }
-        }
+        await updateSkills({ skills: data.Student.skills, student });
         delete data.Student.skills;
       }
       await prisma.student.update({
@@ -242,18 +189,32 @@ export const user = {
       });
       delete data.Student;
     }
+
+    if (data.Faculty) {
+      const faculty = await prisma.faculty.findUnique({
+        where: { userId: id },
+      });
+
+      if (data.Faculty.skills) {
+        await updateSkills({ skills: data.Faculty.skills, faculty });
+        delete data.Faculty.skills;
+      }
+
+      await prisma.faculty.update({
+        where: { userId: id },
+        data: data.Faculty,
+      });
+
+      delete data.Faculty;
+    }
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: {
-        new: data.new,
-      },
+      data,
     });
     if (updatedUser.role === "faculty") {
       updatedUser.faculty = await prisma.faculty.findUnique({
         where: { userId: id },
         include: {
-          researchInterests: true,
-          expertiseAreas: true,
           advisedProjects: true,
           coAdvisedProjects: true,
           skills: {
@@ -289,4 +250,54 @@ export const user = {
     revalidatePath("/");
     return deletedUser;
   },
+};
+
+const updateSkills = async ({ skills, student, faculty }) => {
+  const userType = student ? "student" : "faculty";
+  const userId = student ? student.id : faculty.id;
+
+  for (const skill of skills) {
+    const existingSkill = await prisma.skill.findUnique({
+      where: { name: skill },
+    });
+
+    const skillId = existingSkill
+      ? existingSkill.id
+      : (await prisma.skill.create({ data: { name: skill } })).id;
+
+    const existingUserSkill = await prisma[`${userType}Skill`].findFirst({
+      where: {
+        [`${userType}Id`]: userId,
+        skillId,
+      },
+    });
+
+    if (!existingUserSkill) {
+      await prisma[`${userType}Skill`].create({
+        data: {
+          [`${userType}Id`]: userId,
+          skillId,
+        },
+      });
+    }
+  }
+
+  const userSkills = await prisma[`${userType}Skill`].findMany({
+    where: { [`${userType}Id`]: userId },
+    include: { skill: true },
+  });
+
+  for (const userSkill of userSkills) {
+    if (!skills.includes(userSkill.skill.name)) {
+      console.log("deleting", userSkill.skill.name);
+      await prisma[`${userType}Skill`].delete({
+        where: {
+          [`${userType}Id_skillId`]: {
+            [`${userType}Id`]: userId,
+            skillId: userSkill.skillId,
+          },
+        },
+      });
+    }
+  }
 };

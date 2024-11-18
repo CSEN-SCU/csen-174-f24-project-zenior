@@ -6,20 +6,9 @@ const Success = async () => {
   const session = await auth();
   const userEmail = session?.user?.email;
 
-  let user = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email: userEmail },
   });
-
-
-  if (!user) {
-    user = await prisma.user.create({
-      data: {
-        email: userEmail,
-        role: "student", 
-        new: true,       
-      },
-    });
-  }
 
   if (user.new) {
     redirect("/success/new-user");
@@ -38,7 +27,7 @@ const Success = async () => {
         redirect("/super_admin");
         break;
       default:
-        redirect("/"); 
+        redirect("/");
         break;
     }
     redirect("/");

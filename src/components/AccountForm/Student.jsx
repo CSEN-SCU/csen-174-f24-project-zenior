@@ -1,71 +1,25 @@
 "use client";
 
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
-import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react"; // import session data
+import { redirect } from "next/navigation";
 
-const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
- // const {data: session } = useSession(); // access session data
-  const [formData, setFormData] = useState({
-    name: user.student 
-      ? `${user.student.firstName || ""}
-      ${user.student.lastName || ""}`
-      : "",
-    major: user.student?.major || "",
-    minor: user.student?.minor || "",
-    skills: user.student?.skills?.map((skill) => skill.skill.name) || [],
-  });
-
-  // track input for skills
-  const [skillInput, setSkillInput] = useState("");
-
-  // State for profile picture
-  const [profilePicture, setProfilePicture] = useState(null);
-
-  const pathname = usePathname();
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // handle input for skills
-  const handleSkillInputChange = (e) => {
-    setSkillInput(e.target.value);
-  };
-
-  // add the skill to the list when "Enter" is pressed
-  const handleSkillKeyDown = (e) => {
-    if (e.key === "Enter" && skillInput.trim() !== "") {
-      e.preventDefault(); // prevent form submission
-      setFormData({
-        ...formData,
-        skills: [...formData.skills, skillInput.trim()],
-      });
-      setSkillInput(""); // clear the input after adding
-    }
-  };
-
-  // remove a skill with the 'x'
-  const handleRemoveSkill = (skillToRemove) => {
-    setFormData({
-      ...formData,
-      skills: formData.skills.filter((skill) => skill !== skillToRemove),
-    });
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfilePicture(imageUrl);
-    }
-  };
-
+const StudentForm = ({
+  profilePicture,
+  handleFileChange,
+  user,
+  formData,
+  userUpdate,
+  handleInputChange,
+  skillInput,
+  handleSkillInputChange,
+  handleSkillKeyDown,
+  handleRemoveSkill,
+  hideInstruction,
+}) => {
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
@@ -92,7 +46,7 @@ const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
         </div>
 
         <form
-          action={() =>
+          action={() => {
             userUpdate(user.id, {
               new: false,
               Student: {
@@ -102,8 +56,9 @@ const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
                 minor: formData.minor,
                 skills: formData.skills,
               },
-            })
-          }
+            });
+            redirect("/my-profile");
+          }}
         >
           <input
             className={styles.input}
@@ -182,7 +137,7 @@ const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
           </div>
 
           <Button variant="custom">
-            {pathname === "/my-team" ? "Update Profile" : "Create Profile"}
+            {user.new ? "Create Account" : "Update Account"}
           </Button>
         </form>
       </div>
@@ -198,10 +153,19 @@ const StudentAccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
   );
 };
 
-StudentAccountForm.propTypes = {
+StudentForm.propTypes = {
+  styles: PropTypes.object.isRequired,
+  profilePicture: PropTypes.string,
+  handleFileChange: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  formData: PropTypes.object.isRequired,
   userUpdate: PropTypes.func.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  skillInput: PropTypes.string.isRequired,
+  handleSkillInputChange: PropTypes.func.isRequired,
+  handleSkillKeyDown: PropTypes.func.isRequired,
+  handleRemoveSkill: PropTypes.func.isRequired,
   hideInstruction: PropTypes.bool,
 };
 
-export default StudentAccountForm;
+export default StudentForm;

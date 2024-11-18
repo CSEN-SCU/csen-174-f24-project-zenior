@@ -1,43 +1,25 @@
 "use client";
 
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/FacultyAccountForm.module.css";
-import { usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 
-const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
-  const [formData, setFormData] = useState({
-    name: user.faculty
-      ? `${user.faculty.firstName} ${user.faculty.lastName}`
-      : "",
-    department: user.faculty?.department || "",
-    email: user.faculty?.email || "",
-    biography: user.faculty?.biography || "",
-    researchInterests: user.faculty?.researchInterests || [],
-    areasOfExpertise: user.faculty?.areasOfExpertise || [],
-  });
-
-  // State for profile picture
-  const [profilePicture, setProfilePicture] = useState(null);
-
-  const pathname = usePathname();
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // file changes
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfilePicture(imageUrl);
-    }
-  };
-
+const FacultyForm = ({
+  user,
+  userUpdate,
+  hideInstruction,
+  handleFileChange,
+  profilePicture,
+  handleInputChange,
+  formData,
+  skillInput,
+  handleSkillInputChange,
+  handleSkillKeyDown,
+  handleRemoveSkill,
+}) => {
   return (
     <div className={styles.container}>
       {/* Conditionally rendering the instruction text */}
@@ -70,20 +52,21 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
         </div>
 
         <form
-          action={() =>
+          action={() => {
             userUpdate(user.id, {
               new: false,
-              Student: {
+              Faculty: {
                 firstName: formData.name.split(" ")[0],
                 lastName: formData.name.split(" ")[1],
                 department: formData.department,
-                email: formData.email,
-                biography: formData.biography,
+                bio: formData.bio,
                 researchInterests: formData.researchInterests,
-                areasofExpertise: formData.areasOfExpertise,
+                expertiseAreas: formData.expertiseAreas,
+                skills: formData.skills,
               },
-            })
-          }
+            });
+            redirect("/my-profile");
+          }}
         >
           <input
             className={styles.input}
@@ -112,7 +95,7 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             onChange={handleInputChange}
             required
           >
-            <option value=""> Engineering Department </option>
+            <option value="">Please select department</option>
             <option value="csen">Computer Science and Engineering</option>
             <option value="bioe">Bioengineering</option>
             <option value="mech">Mechanical Engineering</option>
@@ -130,7 +113,7 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
             className={styles.textarea}
             name="biography"
             placeholder="Write a brief bio to introduce yourself to students."
-            value={formData.biography}
+            value={formData.bio}
             onChange={handleInputChange}
           />
 
@@ -148,14 +131,43 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
           <label className={styles.label}> Areas of Expertise: </label>
           <textarea
             className={styles.textarea}
-            name="areasOfExpertise"
+            name="expertiseAreas"
             placeholder="Enter areas of expertise"
-            value={formData.areasOfExpertise}
+            value={formData.expertiseAreas}
             onChange={handleInputChange}
           />
 
+          {/* Skills input box */}
+          <label className={styles.label}> Skills: </label>
+          <div className={styles.skillsInputContainer}>
+            <input
+              className={styles.input}
+              type="text"
+              name="skills"
+              placeholder="Type your skills and press Enter"
+              value={skillInput}
+              onChange={handleSkillInputChange}
+              onKeyDown={handleSkillKeyDown}
+            />
+          </div>
+
+          {/* Skills list below the input */}
+          <div className={styles.skillsContainer}>
+            {formData.skills.map((skill, index) => (
+              <div key={index} className={styles.skillTag}>
+                {skill}{" "}
+                <span
+                  onClick={() => handleRemoveSkill(skill)}
+                  className={styles.removeSkill}
+                >
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+
           <Button variant="custom">
-            {pathname === "/my-team" ? "Update Profile" : "Create Profile"}
+            {user.new ? "Create Profile" : "Update Profile"}
           </Button>
         </form>
       </div>
@@ -163,10 +175,19 @@ const FacultyAccountForm = ({ user, userUpdate, hideInstruction }) => {
   );
 };
 
-FacultyAccountForm.propTypes = {
+FacultyForm.propTypes = {
   user: PropTypes.object.isRequired,
   userUpdate: PropTypes.func.isRequired,
   hideInstruction: PropTypes.bool,
+  handleFileChange: PropTypes.func.isRequired,
+  profilePicture: PropTypes.string,
+  handleInputChange: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  styles: PropTypes.object.isRequired,
+  skillInput: PropTypes.string.isRequired,
+  handleSkillInputChange: PropTypes.func.isRequired,
+  handleSkillKeyDown: PropTypes.func.isRequired,
+  handleRemoveSkill: PropTypes.func.isRequired,
 };
 
-export default FacultyAccountForm;
+export default FacultyForm;
