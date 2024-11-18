@@ -22,7 +22,6 @@ const AccountForm = ({
       data.skills = skills?.map((skill) => skill.skill.name) || [];
     }
     if (user.faculty) {
-      console.log(user.faculty);
       const {
         firstName,
         lastName,

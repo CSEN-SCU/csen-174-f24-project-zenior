@@ -58,7 +58,6 @@ export default function Proposals() {
     fetchCountProposals();
   }, []);
 
-  console.log("filteredRows", filteredRows);
   return (
     <div className="px-8 m-9">
       <div className="flex flex-row">
