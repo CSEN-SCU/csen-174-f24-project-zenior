@@ -91,6 +91,7 @@ model Skill {
   name     String         @unique
   students StudentSkill[]
   faculty  FacultySkill[]
+  projects ProjectSkill[]
 }
 
 model Project {
@@ -102,6 +103,7 @@ model Project {
   isInterdisciplinary Boolean         @default(false)
   status              ProjectStatus   @default(proposed)
   groupOpen           Boolean         @default(true)
+  skills              ProjectSkill[]
   advisorId           String?
   coAdvisorId         String?
   advisor             Faculty?        @relation("advisorId", fields: [advisorId], references: [id], onDelete: SetNull)
@@ -174,4 +176,14 @@ model FacultySkill {
   skillId   String
 
   @@id([facultyId, skillId])
+}
+
+model ProjectSkill {
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  projectId String
+  skillId   String
+
+  @@id([projectId, skillId])
 }

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
+import { projects } from "@/lib/server/actions";
 
 export async function POST(request) {
   try {
@@ -17,37 +19,34 @@ export async function POST(request) {
       where: { email },
       include: {
         Student: true,
+        Faculty: true,
       },
     });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const academicYear = new Date().getFullYear().toString();
+    const data = {
+      title,
+      description,
+      department: majors.join(", "),
+      isInterdisciplinary: majors.length > 1,
+      academicYear: new Date().getFullYear().toString(),
+      skills: skills.map((skill) => ({ name: skill })),
+      groupOpen: true,
+    };
 
-    const newProject = await prisma.project.create({
-      data: {
-        title,
-        description,
-        department: majors.join(", "),
-        isInterdisciplinary: majors.length > 1,
-        academicYear,
-      },
-      include: {
-        members: true,
-        AdvisorRequest: true,
-        GroupRequest: true,
-      },
-    });
+    if (user.Student) {
+      data.members = [user];
+    }
 
-    const newMember = await prisma.projectMember.create({
-      data: {
-        projectId: newProject.id,
-        studentId: user.Student.id,
-      },
-    });
-    newProject.members.push(newMember);
+    if (user.Faculty) {
+      data.advisorId = user.Faculty.id;
+    }
 
+    const newProject = await projects.create(data);
+
+    revalidatePath("/proposals");
     return NextResponse.json({ newProject });
   } catch (error) {
     console.error("Error creating project proposal:", error.message);

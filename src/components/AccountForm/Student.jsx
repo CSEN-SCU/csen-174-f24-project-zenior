@@ -58,7 +58,9 @@ const StudentForm = ({
                 skills: formData.skills,
               },
             });
-            redirect("/my-profile");
+            if (window.location.pathname === "/success/new-user") {
+              redirect("/my-profile");
+            }
           }}
         >
           <input

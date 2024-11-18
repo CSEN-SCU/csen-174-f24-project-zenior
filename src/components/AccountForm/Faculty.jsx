@@ -114,7 +114,7 @@ const FacultyForm = ({
             className={styles.textarea}
             name="biography"
             placeholder="Write a brief bio to introduce yourself to students."
-            value={formData.bio}
+            defaultValue={formData.bio}
             onChange={handleInputChange}
           />
 

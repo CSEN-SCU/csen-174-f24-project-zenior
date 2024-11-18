@@ -2,7 +2,7 @@ import styles from "@/styles/profile.module.css";
 import AccountForm from "@/components/AccountForm/Form";
 import StudentOverview from "@/components/StudentOverview";
 import { Checklist } from "@/components/Checklist";
-import { user, skill } from "@/lib/server/actions";
+import { user, skill, projects } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -39,7 +39,12 @@ export default async function MyTeam() {
 
       {isAccountComplete && (
         <div className={styles.rightContainer}>
-          <StudentOverview user={users[0]} />
+          <StudentOverview
+            user={users[0]}
+            deleteProject={projects.delete}
+            saveProject={projects.update}
+            skills={allSkills}
+          />
         </div>
       )}
     </main>

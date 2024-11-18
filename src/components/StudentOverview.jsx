@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
+import Link from "next/link";
 
 /* UI component for group request: need to at attach to database */
 const GroupRequest = ({ grouprequests }) => {
@@ -128,30 +129,19 @@ TeamRequest.propTypes = {
 };
 
 // project dashboard fields
-const StudentOverview = ({ user }) => {
+const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   const [projects, setProjects] = useState(() => {
-    const projects = [];
     if (user.student) {
-      user.student.projects.map((project) => {
-        projects.push(project.project);
-      });
+      return user.student.projects.map((project) => project.project);
     }
 
     if (user.faculty) {
-      const advisedProjects = user.faculty.advisedProjects || [];
-      const coAdvisedProjects = user.faculty.coAdvisedProjects || [];
-      advisedProjects.map((project) => {
-        projects.push(project.project);
-      });
-      coAdvisedProjects.map((project) => {
-        projects.push(project.project);
-      });
+      return [
+        ...user.faculty.advisedProjects,
+        ...user.faculty.coAdvisedProjects,
+      ];
     }
-
-    return projects;
   });
-
-  console.log(projects);
 
   const [teamRequests] = useState([
     { id: 1, name: "name1", major: ["COEN"] }, // connect to database; placeholder for now
@@ -181,25 +171,12 @@ const StudentOverview = ({ user }) => {
     setProjects(updatedProjects);
   };
 
-  const [skillInput, setSkillInput] = useState("");
-  const [skills, setSkills] = useState([]);
-
-  const handleSkillInputChange = (e) => {
-    setSkillInput(e.target.value); // fix to update skillInput state
-  };
-
-  // add the skill to the list when "Enter" is pressed
-  const handleSkillKeyDown = (e) => {
-    if (e.key === "Enter" && skillInput.trim() !== "") {
-      e.preventDefault(); // prevent form submission
-      setSkills([...skills, skillInput.trim()]);
-      setSkillInput(""); // clear the input after adding
-    }
-  };
-
-  // remove a skill with the 'x'
-  const handleRemoveSkill = (skillToRemove) => {
-    setSkills(skills.filter((skill) => skill !== skillToRemove));
+  const handleCheckboxChange = (e, project) => {
+    const { name, checked } = e.target;
+    const updatedProjects = projects.map((proj) =>
+      proj.id === project.id ? { ...proj, [name]: checked } : proj,
+    );
+    setProjects(updatedProjects);
   };
 
   return (
@@ -220,19 +197,27 @@ const StudentOverview = ({ user }) => {
               <div className="flex justify-around mb-8">
                 <div className="flex flex-col items-center">
                   <p className="mb-2">Have a project idea?</p>
-                  <Button variant="custom">Post a Project Proposal</Button>
+                  <Button variant="custom" asChild>
+                    <Link href="/proposal-form">Post a Project Proposal</Link>
+                  </Button>
                 </div>
               </div>
 
               <div>
                 <p className="mb-4">No project ideas yet? No problem!</p>
                 <div className={styles.buttonGrid}>
-                  <Button variant="custom">
-                    Explore Student Project Proposals
+                  <Button variant="custom" asChild>
+                    <Link href="/proposals">
+                      Explore Student Project Proposals
+                    </Link>
                   </Button>
-                  <Button variant="custom">Explore Past Projects</Button>
-                  <Button variant="custom">
-                    Explore Faculty Advisor Project Proposals
+                  <Button variant="custom" asChild>
+                    <Link href="/archive">Explore Past Projects</Link>
+                  </Button>
+                  <Button variant="custom" asChild>
+                    <Link href="/advisor-directory">
+                      Explore Faculty Advisor Project Proposals
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -245,7 +230,7 @@ const StudentOverview = ({ user }) => {
                   name="title"
                   placeholder="Title Here"
                   value={project.title}
-                  onChange={handleInputChange}
+                  onChange={(e) => handleInputChange(e, project)}
                   className="mb-4 p-2 border border-gray-300 rounded"
                 />
 
@@ -256,7 +241,7 @@ const StudentOverview = ({ user }) => {
                   name="description"
                   placeholder="Enter project description here..."
                   value={project.description}
-                  onChange={handleInputChange}
+                  onChange={(e) => handleInputChange(e, project)}
                   className="w-full h-32 p-2 border border-gray-300 rounded mb-4"
                 />
 
@@ -276,58 +261,22 @@ const StudentOverview = ({ user }) => {
                 <div className="flex items-center mb-4">
                   <label className="text-lg mr-4">
                     Do you want additional team member(s)?
-                  </label>
-                  <label className="mr-2">
                     <input
-                      type="radio"
-                      name="additionalMembers"
-                      value="yes"
-                      onChange={handleInputChange}
+                      className="ml-2"
+                      type="checkbox"
+                      name="groupOpen"
+                      defaultChecked={project.groupOpen === true}
+                      onChange={(e) => handleCheckboxChange(e, project)}
                     />
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalMembers"
-                      value="no"
-                      onChange={handleInputChange}
-                    />
-                    No
                   </label>
                 </div>
-
-                <div className="mb-4">
-                  <label className="block text-lg">
-                    What skill sets should the additional team member(s) have?
-                  </label>
-                  <Input
-                    name="skills"
-                    placeholder="Enter skill sets"
-                    value={skillInput}
-                    onChange={handleSkillInputChange}
-                    onKeyDown={handleSkillKeyDown}
-                    className="w-full p-2 border border-gray-300 rounded mb-2"
-                  />
-
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="bg-red-500 text-white p-1 rounded flex items-center"
-                      >
-                        {skill}
-                        <span
-                          onClick={() => handleRemoveSkill(skill)}
-                          className="ml-2 cursor-pointer"
-                        >
-                          x
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
+                <Skills
+                  data={project.skills}
+                  key={project.id}
+                  setProjects={setProjects}
+                  project={project}
+                  skillList={skills}
+                />
                 <h2 className="text-3xl font-bold mb-4">Advisor(s):</h2>
                 <div className="flex items-center mb-4">
                   <span className="text-lg">
@@ -335,8 +284,43 @@ const StudentOverview = ({ user }) => {
                       ? `${project.advisor.firstName} ${project.advisor.lastName}`
                       : "No Advisor Yet"}
                   </span>
-                  <Button className="ml-4 bg-red-500 text-white">
-                    Find an Advisor
+                  {!project.advisor && (
+                    <Button variant="custom" className="ml-4" asChild>
+                      <Link href="/advisor-directory">Find and Advisor</Link>
+                    </Button>
+                  )}
+                </div>
+                <div className="flex justify-evenly border-b-gray-800 pt-8 pb-4 mb-6 border-b-2">
+                  <Button
+                    variant="custom"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (
+                        window.confirm(
+                          `Are you sure you want to delete ${project.title}?`,
+                        )
+                      ) {
+                        deleteProject(project.id, window.location.pathname);
+                        setProjects(
+                          projects.filter((proj) => proj.id !== project.id),
+                        );
+                      }
+                    }}
+                  >
+                    Delete Project
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      saveProject(
+                        project.id,
+                        project,
+                        window.location.pathname,
+                      );
+                    }}
+                    variant="custom"
+                  >
+                    Save Changes
                   </Button>
                 </div>
               </div>
@@ -350,6 +334,95 @@ const StudentOverview = ({ user }) => {
 
 StudentOverview.propTypes = {
   user: PropTypes.object.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  saveProject: PropTypes.func.isRequired,
+  skills: PropTypes.array.isRequired,
 };
 
 export default StudentOverview;
+
+const Skills = ({ data = [], project, setProjects, skillList = [] }) => {
+  const [skillInput, setSkillInput] = useState("");
+  const [skills, setSkills] = useState(data.map((skill) => skill.skill));
+
+  const handleSkillInputChange = (e) => {
+    setSkillInput(e.target.value); // fix to update skillInput state
+  };
+
+  // add the skill to the list when "Enter" is pressed
+  const handleSkillKeyDown = (e) => {
+    if (e.key === "Enter" && skillInput.trim() !== "") {
+      e.preventDefault(); // prevent form submission
+      const newSkill = { id: skills.length, name: skillInput };
+      setSkills([...skills, newSkill]);
+      setSkillInput(""); // clear the input after adding
+      const updatedProject = {
+        ...project,
+        skills: [...skills, newSkill],
+      };
+      setProjects((projects) =>
+        projects.map((proj) =>
+          proj.id === project.id ? updatedProject : proj,
+        ),
+      );
+    }
+  };
+
+  // remove a skill with the 'x'
+  const handleRemoveSkill = (skillToRemove) => {
+    setSkills(skills.filter((skill) => skill !== skillToRemove));
+    const updatedProject = {
+      ...project,
+      skills: skills.filter((skill) => skill !== skillToRemove),
+    };
+    setProjects((projects) =>
+      projects.map((proj) => (proj.id === project.id ? updatedProject : proj)),
+    );
+  };
+
+  return (
+    <div className="mb-4">
+      <label className="block text-lg">
+        What skill sets should the additional team member(s) have?
+      </label>
+      <Input
+        name="skills"
+        placeholder="Type desired skills for the project and press Enter"
+        value={skillInput}
+        onChange={handleSkillInputChange}
+        onKeyDown={handleSkillKeyDown}
+        className="w-full p-2 border border-gray-300 rounded mb-2"
+        list="skills"
+      />
+      <datalist id="skills">
+        {skillList.map((skill) => (
+          <option key={skill.id} value={skill.name} />
+        ))}
+      </datalist>
+
+      <div className="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <div
+            key={skill.id}
+            className="bg-red-500 text-white p-1 rounded flex items-center"
+          >
+            {skill.name}
+            <span
+              onClick={() => handleRemoveSkill(skill)}
+              className="ml-2 cursor-pointer"
+            >
+              x
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+Skills.propTypes = {
+  data: PropTypes.array.isRequired,
+  project: PropTypes.object.isRequired,
+  setProjects: PropTypes.func.isRequired,
+  skillList: PropTypes.array.isRequired,
+};
