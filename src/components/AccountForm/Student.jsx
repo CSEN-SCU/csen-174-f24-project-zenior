@@ -19,6 +19,7 @@ const StudentForm = ({
   handleSkillKeyDown,
   handleRemoveSkill,
   hideInstruction,
+  skills,
 }) => {
   return (
     <div className={styles.container}>
@@ -118,7 +119,13 @@ const StudentForm = ({
               value={skillInput}
               onChange={handleSkillInputChange}
               onKeyDown={handleSkillKeyDown}
+              list="skills"
             />
+            <datalist id="skills">
+              {skills.map((skill) => (
+                <option key={skill.id} value={skill.name} />
+              ))}
+            </datalist>
           </div>
 
           {/* Skills list below the input */}
@@ -166,6 +173,7 @@ StudentForm.propTypes = {
   handleSkillKeyDown: PropTypes.func.isRequired,
   handleRemoveSkill: PropTypes.func.isRequired,
   hideInstruction: PropTypes.bool,
+  skills: PropTypes.array.isRequired,
 };
 
 export default StudentForm;

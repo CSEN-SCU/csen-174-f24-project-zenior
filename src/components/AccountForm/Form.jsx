@@ -6,7 +6,12 @@ import { redirect } from "next/navigation";
 import StudentForm from "@/components/AccountForm/Student";
 import FacultyForm from "@/components/AccountForm/Faculty";
 
-const AccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
+const AccountForm = ({
+  user = {},
+  skills = [],
+  userUpdate,
+  hideInstruction,
+}) => {
   const [formData, setFormData] = useState(() => {
     const data = {};
     if (user.student) {
@@ -94,6 +99,7 @@ const AccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
         handleSkillKeyDown={handleSkillKeyDown}
         handleRemoveSkill={handleRemoveSkill}
         hideInstruction={hideInstruction}
+        skills={skills}
       />
     );
   }
@@ -112,6 +118,7 @@ const AccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
         handleSkillInputChange={handleSkillInputChange}
         handleSkillKeyDown={handleSkillKeyDown}
         handleRemoveSkill={handleRemoveSkill}
+        skills={skills}
       />
     );
   }
@@ -121,6 +128,7 @@ const AccountForm = ({ user = {}, userUpdate, hideInstruction }) => {
 
 AccountForm.propTypes = {
   user: PropTypes.object.isRequired,
+  skills: PropTypes.array,
   userUpdate: PropTypes.func.isRequired,
   hideInstruction: PropTypes.bool,
 };

@@ -19,6 +19,7 @@ const FacultyForm = ({
   handleSkillInputChange,
   handleSkillKeyDown,
   handleRemoveSkill,
+  skills,
 }) => {
   return (
     <div className={styles.container}>
@@ -148,7 +149,13 @@ const FacultyForm = ({
               value={skillInput}
               onChange={handleSkillInputChange}
               onKeyDown={handleSkillKeyDown}
+              list="skills"
             />
+            <datalist id="skills">
+              {skills.map((skill) => (
+                <option key={skill.id} value={skill.name} />
+              ))}
+            </datalist>
           </div>
 
           {/* Skills list below the input */}
@@ -188,6 +195,7 @@ FacultyForm.propTypes = {
   handleSkillInputChange: PropTypes.func.isRequired,
   handleSkillKeyDown: PropTypes.func.isRequired,
   handleRemoveSkill: PropTypes.func.isRequired,
+  skills: PropTypes.array.isRequired,
 };
 
 export default FacultyForm;

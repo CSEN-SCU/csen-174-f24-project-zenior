@@ -145,8 +145,40 @@ export const user = {
           user.faculty = await prisma.faculty.findUnique({
             where: { userId: user.id },
             include: {
-              advisedProjects: true,
-              coAdvisedProjects: true,
+              advisedProjects: {
+                include: {
+                  project: {
+                    include: {
+                      advisor: true,
+                      coAdvisor: true,
+                      members: {
+                        include: {
+                          student: true,
+                        },
+                      },
+                      AdvisorRequest: true,
+                      GroupRequest: true,
+                    },
+                  },
+                },
+              },
+              coAdvisedProjects: {
+                include: {
+                  project: {
+                    include: {
+                      advisor: true,
+                      coAdvisor: true,
+                      members: {
+                        include: {
+                          student: true,
+                        },
+                      },
+                      AdvisorRequest: true,
+                      GroupRequest: true,
+                    },
+                  },
+                },
+              },
               skills: {
                 include: {
                   skill: true,
@@ -158,7 +190,23 @@ export const user = {
           user.student = await prisma.student.findUnique({
             where: { userId: user.id },
             include: {
-              projects: true,
+              projects: {
+                include: {
+                  project: {
+                    include: {
+                      advisor: true,
+                      coAdvisor: true,
+                      members: {
+                        include: {
+                          student: true,
+                        },
+                      },
+                      AdvisorRequest: true,
+                      GroupRequest: true,
+                    },
+                  },
+                },
+              },
               AdvisorRequest: true,
               GroupRequest: true,
               skills: {
@@ -300,4 +348,13 @@ const updateSkills = async ({ skills, student, faculty }) => {
       });
     }
   }
+};
+
+export const skill = {
+  get: async (where = {}) => {
+    "use server";
+    return await prisma.skill.findMany({
+      where,
+    });
+  },
 };
