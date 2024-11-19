@@ -123,7 +123,7 @@ export default async function ProposalDetails({ params }) {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          )}
+          )}{" "}
           {coAdvisor && (
             <TooltipProvider>
               <Tooltip>
