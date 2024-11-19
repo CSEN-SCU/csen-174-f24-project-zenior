@@ -122,38 +122,11 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
   );
 };
 
-
 TeamRequest.propTypes = {
   teamrequests: PropTypes.array.isRequired,
   handleAccept: PropTypes.func.isRequired,
   handleReject: PropTypes.func.isRequired,
-}
-
-// project dashboard fields 
-const StudentOverview = ({ user }) => {
-    const [project, setProject] = useState({
-        title: "", 
-        description: "", 
-        members: [], 
-        advisor: null, 
-    }); 
-
-    const [teamRequests] = useState([
-        {id: 1, name: "name1", major:["COEN"]}, // connect to database; placeholder for now
-    ]); 
-
-    const [groupRequests] = useState([
-        // insert data for group requests here aka database connection
-        {name: "project 1", status: "approved"}, // placeholder!
-        {name: "project 2", status: "pending"}, // placeholder
-        {name: "project 3", status: "denied"}
-    ]); 
-
-    // handle accept/reject
-    const handleAccept = (id) => {
-        console.log("Accepted request ID:", id); 
-        // routing here? aka logic
-    }; 
+};
 
 // project dashboard fields
 const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
@@ -177,6 +150,8 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   const [groupRequests] = useState([
     // insert data for group requests here aka database connection
     { name: "project 1", status: "approved" }, // placeholder!
+    { name: "project 2", status: "pending" }, // placeholder
+    { name: "project 3", status: "denied" },
   ]);
 
   // handle accept/reject
