@@ -1,5 +1,5 @@
 import AccountForm from "@/components/AccountForm/Form";
-import { user } from "@/lib/server/actions";
+import { user, skill } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -9,10 +9,13 @@ const NewUserForm = async () => {
     redirect("/");
   }
   const users = await user.get({ email: session.user.email });
+  const allSkills = await skill.get();
   if (!users[0].new) {
     redirect("/my-team");
   }
-  return <AccountForm user={users[0]} userUpdate={user.update} />;
+  return (
+    <AccountForm user={users[0]} userUpdate={user.update} skills={allSkills} />
+  );
 };
 
 export default NewUserForm;

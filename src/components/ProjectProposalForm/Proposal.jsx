@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import PropTypes from "prop-types";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,7 +17,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 
-const ProposalForm = () => {
+const ProposalForm = ({ user, skillSet }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
@@ -35,6 +36,7 @@ const ProposalForm = () => {
     { id: "elen", label: "Electrical and Computer Engineering" },
     { id: "geng", label: "General Engineering" },
     { id: "mech", label: "Mechanical Engineering" },
+    { id: "web", label: "Web Design and Engineering" },
   ];
 
   const FormSchema = z.object({
@@ -45,7 +47,13 @@ const ProposalForm = () => {
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: { items: ["coen"] },
+    defaultValues: {
+      items: user.student
+        ? [user.student.major]
+        : user.faculty
+          ? [user.faculty.department]
+          : [],
+    },
   });
 
   const handleInputChange = (e) => {
@@ -109,7 +117,7 @@ const ProposalForm = () => {
       if (response.ok) {
         const result = await response.json();
         console.log("Form submitted successfully:", result);
-        router.push("/confirmation-page");
+        router.push("/my-team");
       } else {
         const errorData = await response.text();
         console.error("Form submission failed:", errorData);
@@ -269,10 +277,17 @@ const ProposalForm = () => {
               className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
               type="text"
               name="skills"
+              placeholder="Type desired skills for the project and press Enter"
               value={skillInput}
               onChange={handleSkillInputChange}
               onKeyDown={handleSkillKeyDown}
+              list="skillSet"
             />
+            <datalist id="skillSet">
+              {skillSet.map((skill) => (
+                <option key={skill.id} value={skill.name} />
+              ))}
+            </datalist>
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -302,4 +317,10 @@ const ProposalForm = () => {
     </FormProvider>
   );
 };
+
 export default ProposalForm;
+
+ProposalForm.propTypes = {
+  user: PropTypes.object,
+  skillSet: PropTypes.array,
+};
