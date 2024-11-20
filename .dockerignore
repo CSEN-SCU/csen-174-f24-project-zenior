@@ -1,9 +1,9 @@
 .git
-node_modules
 diagrams
+public
+src
+node_modules
 README.md
 Dockerfile
 .dockerignore
 .next
-*.log
-scripts
