@@ -7,6 +7,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
+import { useToast } from "@/hooks/use-toast"; 
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,6 +20,7 @@ import {
 
 const ProposalForm = ({ user, skillSet }) => {
   const router = useRouter();
+  const { toast } = useToast(); 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -117,13 +119,35 @@ const ProposalForm = ({ user, skillSet }) => {
       if (response.ok) {
         const result = await response.json();
         console.log("Form submitted successfully:", result);
+
+        // confirmation pop up using toast
+        toast ({
+          title: "Proposal Posted!", 
+          description: "Your proposal was succesfully submitted.", 
+          variant: "default", 
+        }); 
+
         router.push("/my-team");
       } else {
         const errorData = await response.text();
         console.error("Form submission failed:", errorData);
+
+        // error toast
+        toast ({
+          title: "Submission failed", 
+          description: "There was an issue submitting your proposal.", 
+          variant: "destructive", 
+        }); 
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+
+      // error toast
+      toast({
+        title: "Error",
+        description: "An unexpected error occured.", 
+        variant: "destructive", 
+      }); 
     }
   };
 

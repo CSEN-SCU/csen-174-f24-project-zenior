@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast"; 
 
 /* UI component for group request: need to at attach to database */
-const GroupRequest = ({ grouprequests }) => {
+const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
   return (
     <div className={styles.groupRequestContainer}>
       <h2 className="text-xl font-semibold mb-4">Group Request</h2>
@@ -47,10 +48,18 @@ const GroupRequest = ({ grouprequests }) => {
               <div className="flex justify-end gap-4 mt-2">
                 {request.status === "approved" && (
                   <>
-                    <Button variant="custom" className="text-white">
+                    <Button variant="custom" className="text-white" onClick={handleAcceptToast}>
                       Accept Request
                     </Button>
-                    <Button variant="custom" className="text-white">
+                    <Button variant="custom" 
+                      className="text-white" 
+                      onClick={(e) => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to reject?", 
+                          )
+                        ); 
+                      }}>
                       Reject Request
                     </Button>
                   </>
@@ -77,6 +86,7 @@ GroupRequest.propTypes = {
 
 // UI component for team member requests
 const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
+  const { toast } = useToast(); 
   return (
     <div className={styles.teamRequestContainer}>
       <h2 className="text-xl font-semibold mb-4">Team Member Requests</h2>
@@ -157,12 +167,26 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   // handle accept/reject
   const handleAccept = (id) => {
     console.log("Accepted request ID:", id);
+    toast({
+      title: "Member Accepted", 
+      description: "You have succesfully added them to your team!", 
+      variant: "default", 
+    })
     // routing here? aka logic
   };
 
   const handleReject = (id) => {
     console.log("Rejection request ID:", id);
     // routing here? aka logic
+  };
+
+  const handleAcceptToast = (id) => {
+    console.log("Accepted request ID:", id); 
+    toast({
+      title: "Accepted Request", 
+      description: "You have successfully been added to this project!", 
+      variant: "default", 
+    })
   };
 
   const handleInputChange = (e, project) => {
@@ -281,14 +305,14 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
                 />
                 <h2 className="text-3xl font-bold mb-4">Advisor(s):</h2>
                 <div className="flex items-center mb-4">
-                  <span className="text-lg">
+                  <span className="flex items-center text-lg">
                     {project.advisor
                       ? `${project.advisor.firstName} ${project.advisor.lastName}`
                       : "No Advisor Yet"}
                   </span>
                   {!project.advisor && (
                     <Button variant="custom" className="ml-4" asChild>
-                      <Link href="/advisor-directory">Find and Advisor</Link>
+                      <Link href="/advisor-directory">Find an Advisor</Link>
                     </Button>
                   )}
                 </div>
