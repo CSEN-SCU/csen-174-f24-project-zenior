@@ -7,9 +7,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-    env_file:
-      - .env
-    command: "npm run dev"
+    command: npm run dev
     network_mode: bridge
     pull_policy: never
 
@@ -19,8 +17,6 @@ services:
       - "5555:5555"
     volumes:
       - ./prisma:/app/prisma
-    env_file:
-      - .env
     command: sh -c "npx prisma generate && npx prisma studio -b none"
     network_mode: bridge
     pull_policy: never
