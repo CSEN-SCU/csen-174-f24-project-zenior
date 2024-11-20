@@ -11,6 +11,7 @@ services:
       - .env
     command: "npm run dev"
     network_mode: bridge
+    pull_policy: never
 
   prisma:
     image: zenior
@@ -22,3 +23,4 @@ services:
       - .env
     command: sh -c "npx prisma generate && npx prisma studio -b none"
     network_mode: bridge
+    pull_policy: never
