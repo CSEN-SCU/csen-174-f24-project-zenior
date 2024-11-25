@@ -24,7 +24,7 @@ const Navbar = async() => {
 
   const facultyLinks = [
     {label: "Project Proposals", href:"/proposals"},
-    {label: "My Advisees", href: "/advisees"},
+    {label: "Advisor Requests", href: "/requests"},
   ]
 
   const navLinks = role === "student" ? studentLinks : facultyLinks;
