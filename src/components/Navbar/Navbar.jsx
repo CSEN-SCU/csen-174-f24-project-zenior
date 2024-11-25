@@ -12,8 +12,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Login, Logout } from "@/components/Navbar/AuthButtons";
 
-const Navbar = async () => {
+const Navbar = async() => {
   const session = await auth();
+
+  const role = session?.user?.role;
+
+  const studentLinks = [
+    {label: "Project Proposals", href:"/proposals"},
+    {label: "Faculty Advisor Directory", href:"/advisor-directory"},
+    {label: "Senior Design Archive", href: "/archive"},
+  ];
+
+  const facultyLinks = [
+    {label: "Project Proposals", href:"/proposals"},
+    {label: "My Advisees", href: "/advisees"},
+  ]
+
+  const navLinks = role === "student" ? studentLinks : facultyLinks;
 
   return (
     <nav className="bg-[#b30738] text-white">
