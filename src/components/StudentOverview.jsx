@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast, toast } from "@/hooks/use-toast"; 
 
 /* UI component for group request: need to at attach to database */
 const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
@@ -53,7 +53,7 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
                     </Button>
                     <Button variant="custom" 
                       className="text-white" 
-                      onClick={(e) => {
+                      onClick={() => {
                         if (
                           window.confirm(
                             "Are you sure you want to reject?", 
@@ -65,7 +65,15 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
                   </>
                 )}
                 {request.status === "pending" && (
-                  <Button variant="custom" className="text-white">
+                  <Button variant="custom" 
+                    className="text-white"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Are you sure you want to withdraw?",
+                        )
+                      ); 
+                    }}>
                     Withdraw Request
                   </Button>
                 )}
@@ -82,6 +90,7 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
 
 GroupRequest.propTypes = {
   grouprequests: PropTypes.array.isRequired,
+  handleAcceptToast: PropTypes.func.isRequired
 };
 
 // UI component for team member requests
@@ -177,6 +186,12 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
 
   const handleReject = (id) => {
     console.log("Rejection request ID:", id);
+    toast({
+      title: "Member Rejected", 
+      description: "You have succesfully rejected them from your team.", 
+      variant: "default", 
+    })
+    // if they reject, it should disappear from the view
     // routing here? aka logic
   };
 
@@ -207,7 +222,10 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
 
   return (
     <div className={styles.container}>
-      <GroupRequest grouprequests={groupRequests} /> {/*database!*/}
+      <GroupRequest 
+        grouprequests={groupRequests}
+        handleAcceptToast={handleAcceptToast}
+       /> {/*database!*/}
       <TeamRequest
         teamrequests={teamRequests}
         handleAccept={handleAccept}
