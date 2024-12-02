@@ -7,13 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { useToast, toast } from "@/hooks/use-toast"; 
+import { toast } from "@/hooks/use-toast";
 
 /* UI component for group request: need to at attach to database */
 const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
   return (
     <div className={styles.groupRequestContainer}>
-      <h2 className="text-xl font-semibold mb-4">Group Request</h2>
+      <h2 className="mb-4 text-xl font-semibold">Group Request</h2>
       {grouprequests.length > 0 ? (
         <>
           <p className="mb-4">You have asked to join the following group(s):</p>
@@ -45,35 +45,35 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
                       : "denied ❌ "}
                 </span>
               </div>
-              <div className="flex justify-end gap-4 mt-2">
+              <div className="flex gap-4 justify-end mt-2">
                 {request.status === "approved" && (
                   <>
-                    <Button variant="custom" className="text-white" onClick={handleAcceptToast}>
+                    <Button
+                      variant="custom"
+                      className="text-white"
+                      onClick={handleAcceptToast}
+                    >
                       Accept Request
                     </Button>
-                    <Button variant="custom" 
-                      className="text-white" 
+                    <Button
+                      variant="custom"
+                      className="text-white"
                       onClick={() => {
-                        if (
-                          window.confirm(
-                            "Are you sure you want to reject?", 
-                          )
-                        ); 
-                      }}>
+                        if (window.confirm("Are you sure you want to reject?"));
+                      }}
+                    >
                       Reject Request
                     </Button>
                   </>
                 )}
                 {request.status === "pending" && (
-                  <Button variant="custom" 
+                  <Button
+                    variant="custom"
                     className="text-white"
                     onClick={() => {
-                      if (
-                        window.confirm(
-                          "Are you sure you want to withdraw?",
-                        )
-                      ); 
-                    }}>
+                      if (window.confirm("Are you sure you want to withdraw?"));
+                    }}
+                  >
                     Withdraw Request
                   </Button>
                 )}
@@ -90,15 +90,14 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
 
 GroupRequest.propTypes = {
   grouprequests: PropTypes.array.isRequired,
-  handleAcceptToast: PropTypes.func.isRequired
+  handleAcceptToast: PropTypes.func.isRequired,
 };
 
 // UI component for team member requests
 const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
-  const { toast } = useToast(); 
   return (
     <div className={styles.teamRequestContainer}>
-      <h2 className="text-xl font-semibold mb-4">Team Member Requests</h2>
+      <h2 className="mb-4 text-xl font-semibold">Team Member Requests</h2>
       {teamrequests.length > 0 ? (
         teamrequests.map((request, index) => (
           <div key={index} className={styles.requestCard}>
@@ -117,16 +116,16 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
                 <p className="text-white">....... </p>{" "}
                 {/* some other way to get spacing must happen */}
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => handleAccept(request.id)}
-                  className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded"
+                  className="flex justify-center items-center w-8 h-8 text-white bg-green-500 rounded"
                 >
                   ✓
                 </button>
                 <button
                   onClick={() => handleReject(request.id)}
-                  className="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded"
+                  className="flex justify-center items-center w-8 h-8 text-white bg-red-500 rounded"
                 >
                   ✗
                 </button>
@@ -177,31 +176,31 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   const handleAccept = (id) => {
     console.log("Accepted request ID:", id);
     toast({
-      title: "Member Accepted", 
-      description: "You have succesfully added them to your team!", 
-      variant: "default", 
-    })
+      title: "Member Accepted",
+      description: "You have succesfully added them to your team!",
+      variant: "default",
+    });
     // routing here? aka logic
   };
 
   const handleReject = (id) => {
     console.log("Rejection request ID:", id);
     toast({
-      title: "Member Rejected", 
-      description: "You have succesfully rejected them from your team.", 
-      variant: "default", 
-    })
+      title: "Member Rejected",
+      description: "You have succesfully rejected them from your team.",
+      variant: "default",
+    });
     // if they reject, it should disappear from the view
     // routing here? aka logic
   };
 
   const handleAcceptToast = (id) => {
-    console.log("Accepted request ID:", id); 
+    console.log("Accepted request ID:", id);
     toast({
-      title: "Accepted Request", 
-      description: "You have successfully been added to this project!", 
-      variant: "default", 
-    })
+      title: "Accepted Request",
+      description: "You have successfully been added to this project!",
+      variant: "default",
+    });
   };
 
   const handleInputChange = (e, project) => {
@@ -222,10 +221,11 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
 
   return (
     <div className={styles.container}>
-      <GroupRequest 
+      <GroupRequest
         grouprequests={groupRequests}
         handleAcceptToast={handleAcceptToast}
-       /> {/*database!*/}
+      />{" "}
+      {/*database!*/}
       <TeamRequest
         teamrequests={teamRequests}
         handleAccept={handleAccept}
@@ -235,7 +235,7 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
         <div className="p-6 text-center">
           {projects.length < 1 ? (
             <div>
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="mb-4 text-2xl font-bold">
                 You are not a project member yet.
               </h2>
               <div className="flex justify-around mb-8">
@@ -269,16 +269,16 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
           ) : (
             projects.map((project) => (
               <div key={project.id}>
-                <h2 className="text-3xl font-bold mb-4">Project Title:</h2>
+                <h2 className="mb-4 text-3xl font-bold">Project Title:</h2>
                 <Input
                   name="title"
                   placeholder="Title Here"
                   value={project.title}
                   onChange={(e) => handleInputChange(e, project)}
-                  className="mb-4 p-2 border border-gray-300 rounded"
+                  className="p-2 mb-4 rounded border border-gray-300"
                 />
 
-                <h2 className="text-3xl font-bold mb-4">
+                <h2 className="mb-4 text-3xl font-bold">
                   Project Description:
                 </h2>
                 <textarea
@@ -286,14 +286,14 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
                   placeholder="Enter project description here..."
                   value={project.description}
                   onChange={(e) => handleInputChange(e, project)}
-                  className="w-full h-32 p-2 border border-gray-300 rounded mb-4"
+                  className="p-2 mb-4 w-full h-32 rounded border border-gray-300"
                 />
 
-                <h2 className="text-3xl font-bold mb-4">Team Members:</h2>
+                <h2 className="mb-4 text-3xl font-bold">Team Members:</h2>
                 <div className="mb-4">
                   {project.members.length ? (
                     project.members.map((member) => (
-                      <span key={member.student.id} className="text-lg mr-2">
+                      <span key={member.student.id} className="mr-2 text-lg">
                         {member.student.firstName} {member.student.lastName}
                       </span>
                     ))
@@ -303,7 +303,7 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
                 </div>
 
                 <div className="flex items-center mb-4">
-                  <label className="text-lg mr-4">
+                  <label className="mr-4 text-lg">
                     Do you want additional team member(s)?
                     <input
                       className="ml-2"
@@ -321,7 +321,7 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
                   project={project}
                   skillList={skills}
                 />
-                <h2 className="text-3xl font-bold mb-4">Advisor(s):</h2>
+                <h2 className="mb-4 text-3xl font-bold">Advisor(s):</h2>
                 <div className="flex items-center mb-4">
                   <span className="flex items-center text-lg">
                     {project.advisor
@@ -334,7 +334,7 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
                     </Button>
                   )}
                 </div>
-                <div className="flex justify-evenly border-b-gray-800 pt-8 pb-4 mb-6 border-b-2">
+                <div className="flex justify-evenly pt-8 pb-4 mb-6 border-b-2 border-b-gray-800">
                   <Button
                     variant="custom"
                     onClick={(e) => {
@@ -435,7 +435,7 @@ const Skills = ({ data = [], project, setProjects, skillList = [] }) => {
         value={skillInput}
         onChange={handleSkillInputChange}
         onKeyDown={handleSkillKeyDown}
-        className="w-full p-2 border border-gray-300 rounded mb-2"
+        className="p-2 mb-2 w-full rounded border border-gray-300"
         list="skills"
       />
       <datalist id="skills">
@@ -448,7 +448,7 @@ const Skills = ({ data = [], project, setProjects, skillList = [] }) => {
         {skills.map((skill) => (
           <div
             key={skill.id}
-            className="bg-red-500 text-white p-1 rounded flex items-center"
+            className="flex items-center p-1 text-white bg-red-500 rounded"
           >
             {skill.name}
             <span
