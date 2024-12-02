@@ -20,7 +20,7 @@ export async function proposals(n, m, filters) {
         equals: "proposed",
       },
       // departmentID: filters.departmentIds ? { in: filters.departmentIds } : undefined,
-      // isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
+      isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
       groupOpen: filters.hasOpenings !== null ? filters.hasOpenings : undefined,
       // hasAdvisor: filters.hasAdvisor !== null ? filters.hasAdvisor : undefined,
     },

@@ -17,7 +17,7 @@ const categories = [
     category: "Department",
     type: "checkbox",
     options: [
-      { id: 1, label: "Bioengineering" },
+      { id: "Bioengineering", label: "Bioengineering" },
       { id: 2, label: "Civil, Environmental and Sustainable Engineering" },
       { id: 3, label: "Computer Science and Engineering" },
       { id: 4, label: "Electrical and Computer Engineering" },
