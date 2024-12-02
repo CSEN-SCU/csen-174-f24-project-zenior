@@ -17,24 +17,45 @@ const Navbar = async() => {
 
   const role = session?.user?.role;
 
+  // Define navigation links for different roles
   const studentLinks = [
-    {label: "Project Proposals", href:"/proposals"},
-    {label: "Faculty Advisor Directory", href:"/advisor-directory"},
-    {label: "Senior Design Archive", href: "/archive"},
+    { label: "Projects", href: "/proposals" },
+    { label: "Directory", href: "/advisor-directory" },
+    { label: "Archive", href: "/archive" },
   ];
 
   const facultyLinks = [
-    {label: "Project Proposals", href:"/proposals"},
-    {label: "Advisor Requests", href: "/requests"},
-  ]
+    { label: "Projects", href: "/proposals" },
+    { label: "Requests", href: "/requests" },
+  ];
 
-  const navLinks = role === "student" ? studentLinks : facultyLinks;
+  const adminLinks = [
+    { label: "Admin Dashboard", href: "/admin/dashboard" },
+    { label: "Manage Users", href: "/admin/users" },
+  ];
+
+  const superAdminLinks = [
+    { label: "Super Admin Dashboard", href: "/superadmin/dashboard" },
+    { label: "System Logs", href: "/superadmin/logs" },
+    { label: "Global Settings", href: "/superadmin/settings" },
+  ];
+
+  let navLinks = [];
+  if (role === "student") {
+    navLinks = studentLinks;
+  } else if (role === "faculty") {
+    navLinks = facultyLinks;
+  } else if (role === "admin") {
+    navLinks = adminLinks;
+  } else if (role === "super_admin") {
+    navLinks = superAdminLinks;
+  }
 
   return (
     <nav className="bg-[#b30738] text-white">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-center md:justify-between mx-auto px-6 py-4">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-4">
         {/* Logo Section */}
-        <div className="flex items-center justify-center space-x-2">
+        <div className="flex items-center space-x-2">
           <a href="/" className="flex items-center space-x-2">
             <Image
               src="/images/square-whitetree-nobg.png"
@@ -47,33 +68,23 @@ const Navbar = async() => {
         </div>
 
         {/* Navigation Links */}
-        <div className="flex flex-wrap items-center justify-center space-x-4 mt-4 md:mt-0">
-          <Link href="/proposals">
-            <Button
-              variant="ghost"
-              className="hover:text-[#9e1b32] transition-colors text-base font-medium"
-            >
-              Projects
-            </Button>
-          </Link>
-          <Link href="/advisor-directory">
-            <Button
-              variant="ghost"
-              className="hover:text-[#9e1b32] transition-colors text-base font-medium"
-            >
-              Directory
-            </Button>
-          </Link>
-          <Link href="/archive">
-            <Button
-              variant="ghost"
-              className="hover:text-[#9e1b32] transition-colors text-base font-medium"
-            >
-              Archive
-            </Button>
-          </Link>
+        <div className="flex items-center space-x-4">
+          {session
+            ? navLinks.map((link) => (
+                <Button
+                  key={link.href}
+                  variant="ghost"
+                  asChild
+                  className="hover:text-[#9e1b32] transition-colors text-base font-medium"
+                >
+                  <Link href={link.href}>{link.label}</Link>
+                </Button>
+              ))
+            : (
+                <Login />
+              )}
           {/* Profile or Sign-In Button */}
-          {session ? (
+          {session && (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Image
@@ -81,7 +92,7 @@ const Navbar = async() => {
                   width={40}
                   height={40}
                   alt={session.user.name + " photo" || "default avatar"}
-                  className="rounded-full transition duration-100 grayscale hover:grayscale-0"
+                  className="rounded-full transition duration-100 hover:opacity-80"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48">
@@ -103,8 +114,6 @@ const Navbar = async() => {
                 <Logout />
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            <Login />
           )}
         </div>
       </div>
