@@ -11,7 +11,7 @@ const NewUserForm = async () => {
   const users = await user.get({ email: session.user.email });
   const allSkills = await skill.get();
   if (!users[0].new) {
-    redirect("/my-team");
+    redirect("/student/page.jsx");
   }
   return (
     <AccountForm user={users[0]} userUpdate={user.update} skills={allSkills} />

@@ -1,12 +1,29 @@
+import LoginCard from "@/components/LoginCard";
+import { LogOut } from "lucide-react";
+
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
+
 export default function Goodbye() {
-    return (
-      <div className="flex flex-col items-center justify-center flex-grow bg-white-100 text-gray-800 p-6">
-        <h1 className="text-4xl font-bold mb-4">Goodbye!</h1>
-        <p className="text-lg">You have successfully logged out. We hope to see you again soon!</p>
-        <a href="/" className="mt-6 px-4 py-2 bg-[#b30738] text-white rounded hover:bg-[#9e1b32] transition-colors">
-          Go to Home
-        </a>
+  return (
+    <div className="flex flex-col items-center justify-center bg-white-100 text-gray-800 p-6">
+      <div className="w-full max-w-lg">
+        <Alert>
+          <LogOut className="h-6 w-6" style={{ color: "#9e1b32" }} />
+          <div>
+            <AlertTitle className="text-xl font-bold">Goodbye!</AlertTitle>
+            <AlertDescription className="text-lg mt-1">
+              You are not logged in.
+            </AlertDescription>
+          </div>
+        </Alert>
       </div>
-    );
-  }
-  
+      <div className="mt-8 w-full max-w-md">
+        <LoginCard />
+      </div>
+    </div>
+  );
+}

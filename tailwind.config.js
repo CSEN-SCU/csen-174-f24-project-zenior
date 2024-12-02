@@ -8,6 +8,9 @@ module.exports = {
 	],
 	theme: {
     	extend: {
+    		fontFamily: {
+				inter: ['Inter', 'sans-serif'],
+			},
     		colors: {
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',
@@ -90,5 +93,4 @@ module.exports = {
     	}
     },
 	plugins: [require("tailwindcss-animate")],
-  };
-  
+};
