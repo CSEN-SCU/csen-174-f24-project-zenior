@@ -3,40 +3,55 @@
 import { FaGithub } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const CustomFooter = () => {
   return (
     <footer className="bg-[#b30738] text-white py-4">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 space-y-4 md:space-y-0">
-        <div className="flex items-center space-x-3">
+        {/* Logo Section */}
+        <div className="flex items-center justify-center space-x-2">
           <Link href="/" className="flex items-center space-x-2">
             <Image
               src="/images/square-whitetree-nobg.png"
               alt="Zenior Logo"
-              width={32}
-              height={32}
+              width={30} 
+              height={30}
             />
-            <span className="text-xl font-semibold">Zenior</span>
+            <span className="text-2xl font-semibold">Zenior</span>
           </Link>
         </div>
 
-        <div className="flex space-x-8 text-sm">
-          <Link href="/about" className="hover:text-gray-300 transition-colors">
-            About
+        {/* Footer Links */}
+        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+          <Link href="/about">
+            <Button
+              variant="ghost"
+              className="hover:text-[#9e1b32] transition-colors text-base font-medium"
+            >
+              About
+            </Button>
           </Link>
-          <Link
-            href="/privacy-policy"
-            className="hover:text-gray-300 transition-colors"
-          >
-            Privacy Policy
+          <Link href="/privacy-policy">
+            <Button
+              variant="ghost"
+              className="hover:text-[#9e1b32] transition-colors text-base font-medium"
+            >
+              Privacy Policy
+            </Button>
           </Link>
           <a
             href="https://github.com/CSEN-SCU/csen-174-f24-project-zenior"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-300 transition-colors flex items-center"
           >
-            <FaGithub className="text-xl" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:text-[#9e1b32] hover:border-[#9e1b32] transition-colors"
+            >
+              <FaGithub className="text-xl" />
+            </Button>
           </a>
         </div>
       </div>
