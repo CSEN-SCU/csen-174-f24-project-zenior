@@ -1,6 +1,6 @@
 "use client";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { ArchiveSidebar } from "@/components/sidebar/archive-sidebar";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -24,11 +24,6 @@ import {
 
 export default function Archives() {
   const [selectedItems, setSelectedItems] = useState([]);
-  const [radioSelections, setRadioSelections] = useState({
-    "Interdisciplinary?": null,
-    "Openings for additional members?": 9,
-    "Has an advisor already?": null,
-  });
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
@@ -38,14 +33,13 @@ export default function Archives() {
     const fetchFilteredArchives = async () => {
       const filters = {
         departmentIds: selectedItems.length ? selectedItems : undefined,
-        isInterdisciplinary: radioSelections["Interdisciplinary?"] === 7,
       };
 
       const results = await Archives(page, 5, filters);
       setFilteredRows(results);
     };
     fetchFilteredArchives();
-  }, [selectedItems, radioSelections, page]);
+  }, [selectedItems, page]);
 
 
   return (
@@ -53,11 +47,9 @@ export default function Archives() {
       <div className="flex flex-row">
         <div>
           <SidebarProvider className="pr-8">
-            <AppSidebar
+            <ArchiveSidebar
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
-              radioSelections={radioSelections}
-              setRadioSelections={setRadioSelections}
             />
           </SidebarProvider>
         </div>
