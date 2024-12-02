@@ -11,8 +11,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Login, Logout } from "@/components/Navbar/AuthButtons";
 
-const Navbar = async () => {
+const Navbar = async() => {
   const session = await auth();
+
+  const role = session?.user?.role;
+
+  const studentLinks = [
+    {label: "Project Proposals", href:"/proposals"},
+    {label: "Faculty Advisor Directory", href:"/advisor-directory"},
+    {label: "Senior Design Archive", href: "/archive"},
+  ];
+
+  const facultyLinks = [
+    {label: "Project Proposals", href:"/proposals"},
+    {label: "Advisor Requests", href: "/requests"},
+  ]
+
+  const navLinks = role === "student" ? studentLinks : facultyLinks;
 
   return (
     <nav className="bg-[#b30738] text-white">
@@ -34,19 +49,15 @@ const Navbar = async () => {
         </div>
 
         <div className="flex items-center space-x-8">
-          {/* Navigation Links */}
           <div className="hidden space-x-8 md:flex">
-            <Link href="/proposals" className="hover:text-gray-300">
-              Project Proposals
-            </Link>
-            <Link href="/advisor-directory" className="hover:text-gray-300">
-              Faculty Advisor Directory
-            </Link>
-            <Link href="/archive" className="hover:text-gray-300">
-              Senior Design Archive
-            </Link>
+            {navLinks.map((link) => (
+              <li key={link.href} className="list-none">
+                <Link href={link.href} className="hover:text-gray-300">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </div>
-
           {/* Profile or Sign-In Button */}
           {session ? (
             <>
