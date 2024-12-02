@@ -12,6 +12,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/merriweather": "^5.1.0",
+    "@fontsource/overpass": "^5.1.1",
     "@hookform/resolvers": "^3.9.0",
     "@mui/material": "^6.1.6",
     "@prisma/client": "^5.22.0",
