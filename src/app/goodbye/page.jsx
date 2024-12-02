@@ -16,7 +16,7 @@ export default function Goodbye() {
           <div>
             <AlertTitle className="text-xl font-bold">Goodbye!</AlertTitle>
             <AlertDescription className="text-lg mt-1">
-              You have successfully logged out.
+              You are not logged in.
             </AlertDescription>
           </div>
         </Alert>
