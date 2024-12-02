@@ -19,8 +19,10 @@ export default async function Home() {
       redirect("/admin");
       break;
     case "faculty":
+      redirect("/faculty");
+      break;
     case "student":
-      redirect("/my-team");
+      redirect("/student");
       break;
     case "super_admin":
       redirect("/super-admin");
