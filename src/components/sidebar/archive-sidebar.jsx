@@ -7,8 +7,7 @@ import {
   SidebarGroup,
 } from "@/components/ui/sidebar";
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
+import {PropTypes} from 'prop-types'
 import { Filter } from "lucide-react";
 
 //grouped filters
@@ -27,17 +26,23 @@ const categories = [
   }
 ];
 
-export function ArchiveSidebar(props) {
+ArchiveSidebar.propTypes = {
+  selectedItems: PropTypes.array.isRequired,
+  setSelectedItems: PropTypes.func.isRequired,
+};
+
+export default function ArchiveSidebar({selectedItems, setSelectedItems}) {
+
 
   const handleCheckboxChange = (id) => {
     //if id is unchecked, add it to the array
-    props.setSelectedItems((prev) =>
+    setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const resetFilters = () => {
-    props.setSelectedItems([]);
+    setSelectedItems([]);
   };
 
   return (
@@ -64,7 +69,7 @@ export function ArchiveSidebar(props) {
                       <input
                         type="checkbox"
                         id={`checkbox-${option.id}`}
-                        checked={props.selectedItems.includes(option.id)}
+                        checked={selectedItems.includes(option.id)}
                         onChange={() => handleCheckboxChange(option.id)}
                         className="mr-2"
                         style={{ accentColor: "#b30738" }}
