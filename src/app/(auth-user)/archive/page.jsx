@@ -22,6 +22,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import { getThesesWithKeywordFilters } from "@/lib/server/scholar-commons";
+
 export default function Archives() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -31,11 +33,9 @@ export default function Archives() {
   React.useEffect(() => {
     //fetch archived projects from db with applied filters
     const fetchFilteredArchives = async () => {
-      const filters = {
-        departmentIds: selectedItems.length ? selectedItems : undefined,
-      };
+      console.log(selectedItems);
 
-      const results = await Archives(page, 5, filters);
+      const results = await getThesesWithKeywordFilters(selectedItems, 5);
       setFilteredRows(results);
     };
     fetchFilteredArchives();
@@ -74,9 +74,14 @@ export default function Archives() {
                           {row.title}
                         </a>
                         <div>
-                          {row.description.length > 280 ? (
+                          {
+                          row ?   (
+                          <h1 className="font-black text-3xl pb-6">No Projects</h1>
+                        ) :
+                        (
+                          row.description?.length > 280 ? (
                             <>
-                              {row.description.slice(0, 280)}...
+                              {row.abstract.slice(0, 280)}...
                               <a
                                 href={`/archives/${row.id}`}
                                 className="underline text-[#b30738]"
@@ -86,7 +91,9 @@ export default function Archives() {
                             </>
                           ) : (
                             row.description
-                          )}
+                          )
+                        )
+                        }
                         </div>
                         <br></br>
                         <div>

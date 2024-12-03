@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 const init = {
@@ -10,6 +10,7 @@ const init = {
 
 
 async function validateResponse(response){
+  
   if(!response.ok){
     throw new Error('Response status: ${response.status}')
   }
@@ -54,13 +55,14 @@ export async function getFacultyPreviousProjects(facultyName, n){
 // Array of 100 oldest theses that have "AI", "Cloud", or "HPC" in the abstract.
 //!@todo: Do we need to remove dups? I.e say an abstract has AI and cloud, on the AI query it will return and the cloud query it will return.
 export async function getThesesWithKeywordFilters(filters, n){
-
   const limitField = (n? '&limit='+ n : '');
 
   const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
   let results = []
+  console.log(filters);
   for(let i = 0; i < filters.length; i++){
     const requestUrl = queryUrl + "&abstract=" + filters[i]
+    console.log(requestUrl);
     const response = await fetch(requestUrl, init)
     results[i] = await validateResponse(response)
   }

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import {PropTypes} from 'prop-types'
-import { Filter } from "lucide-react";
+import { Archive, Filter } from "lucide-react";
 
 //grouped filters
 const categories = [
@@ -16,33 +16,33 @@ const categories = [
     category: "Department",
     type: "checkbox",
     options: [
-      { id: "Bioengineering", label: "Bioengineering" },
-      { id: 2, label: "Civil, Environmental and Sustainable Engineering" },
-      { id: 3, label: "Computer Science and Engineering" },
-      { id: 4, label: "Electrical and Computer Engineering" },
-      { id: 5, label: "General Engineering" },
-      { id: 6, label: "Mechanical Engineering" },
+      { label: "Bioengineering" },
+      { label: "Civil, Environmental and Sustainable Engineering" },
+      { label: "Computer Science and Engineering" },
+      { label: "Electrical and Computer Engineering" },
+      { label: "General Engineering" },
+      { label: "Mechanical Engineering" },
     ]
   }
 ];
 
 ArchiveSidebar.propTypes = {
-  selectedItems: PropTypes.array.isRequired,
-  setSelectedItems: PropTypes.func.isRequired,
+    selectedItems: PropTypes.any.isRequired,
+    setSelectedItems: PropTypes.any.isRequired,
 };
 
-export default function ArchiveSidebar({selectedItems, setSelectedItems}) {
+export function ArchiveSidebar(props) {
 
 
-  const handleCheckboxChange = (id) => {
-    //if id is unchecked, add it to the array
-    setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+  const handleCheckboxChange = (label) => {
+    //if label is unchecked, add it to the array
+    props.setSelectedItems((prev) =>
+      prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label],
     );
   };
 
   const resetFilters = () => {
-    setSelectedItems([]);
+    props.setSelectedItems([]);
   };
 
   return (
@@ -65,17 +65,17 @@ export default function ArchiveSidebar({selectedItems, setSelectedItems}) {
               <h3 className="font-medium text-sm mb-2">{category.category}</h3>
                 <ul>
                   {category.options.map((option) => (
-                    <li key={option.id} className="flex items-center mb-2">
+                    <li key={option.label} className="flex items-center mb-2">
                       <input
                         type="checkbox"
-                        id={`checkbox-${option.id}`}
-                        checked={selectedItems.includes(option.id)}
-                        onChange={() => handleCheckboxChange(option.id)}
+                        label={`checkbox-${option.label}`}
+                        checked={props.selectedItems.includes(option.label)}
+                        onChange={() => handleCheckboxChange(option.label)}
                         className="mr-2"
                         style={{ accentColor: "#b30738" }}
                       />
                       <label
-                        htmlFor={`checkbox-${option.id}`}
+                        htmlFor={`checkbox-${option.label}`}
                         className="text-xs"
                       >
                         {option.label}

@@ -32,6 +32,7 @@ const Navbar = async() => {
   const adminLinks = [
     { label: "Admin Dashboard", href: "/admin/dashboard" },
     { label: "Manage Users", href: "/admin/users" },
+    { label: "Archive", href: "/archive"},
   ];
 
   const superAdminLinks = [
