@@ -9,6 +9,7 @@ import {
   withdrawRequestToJoinProject,
   leaveProject,
 } from "@/lib/server/project-requests";
+import { cn } from "@/lib/utils";
 
 const useLoading = () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,8 @@ const handleClick = async (
       callback();
     }
   } catch (error) {
-    console.error(error);
+    error.message === "This project already has an advisor and a co-advisor." &&
+      alert(error.message);
     toggleLoading();
   }
 };
@@ -83,31 +85,41 @@ RequestToJoinButton.propTypes = {
   projectId: PropTypes.string,
 };
 
-export const WithdrawRequestButton = ({ projectId }) => {
+export const WithdrawRequestButton = ({
+  projectId,
+  callback,
+  noIcon,
+  className,
+}) => {
   const { loading, toggleLoading } = useLoading();
   return (
     <Button
       variant="custom"
-      className="object-right bg-orange-400 hover:bg-orange-500"
+      className={cn(
+        "object-right bg-orange-400 hover:bg-orange-500",
+        className,
+      )}
       onClick={() =>
         handleClick(
           projectId,
           withdrawRequestToJoinProject,
           loading,
           toggleLoading,
+          callback,
         )
       }
     >
-      <span className="pr-2">
-        {loading ? "Loading..." : "Withdraw Request"}
-      </span>{" "}
-      <UserMinus size="20" />
+      <span>{loading ? "Loading..." : "Withdraw Request"}</span>{" "}
+      {!noIcon && <UserMinus size="20" className="ml-2" />}
     </Button>
   );
 };
 
 WithdrawRequestButton.propTypes = {
   projectId: PropTypes.string,
+  callback: PropTypes.func,
+  noIcon: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export const LeaveProjectButton = ({

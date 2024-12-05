@@ -8,7 +8,11 @@ export const requestToJoinProject = async (projectId) => {
   const session = await auth();
   if (!session) return;
 
-  const { id: userId, GroupRequest } = await prisma.user.findUnique({
+  const {
+    id: userId,
+    role,
+    GroupRequest,
+  } = await prisma.user.findUnique({
     where: {
       email: session.user.email,
     },
@@ -22,6 +26,16 @@ export const requestToJoinProject = async (projectId) => {
   });
 
   if (!userId || GroupRequest.length > 0) return;
+
+  const project = await prisma.project.findUnique({
+    where: {
+      id: projectId,
+    },
+  });
+
+  if (role === "faculty" && project.advisorId && project.coAdvisorId) {
+    throw new Error("This project already has an advisor and a co-advisor.");
+  }
 
   await prisma.GroupRequest.create({
     data: {
@@ -109,5 +123,72 @@ export const leaveProject = async (projectId) => {
   });
 
   revalidatePath(`/proposals/${projectId}`);
+  revalidatePath(`/my-team`);
+};
+
+export const actOnRequestToJoinProject = async (requestId, action) => {
+  const session = await auth();
+  if (!session) return;
+
+  const request = await prisma.GroupRequest.findUnique({
+    where: {
+      id: requestId,
+    },
+    include: {
+      user: {
+        include: {
+          Student: true,
+          Faculty: true,
+        },
+      },
+      project: true,
+    },
+  });
+
+  if (!request) return;
+
+  if (action === "accept") {
+    if (request.user.Student) {
+      await prisma.ProjectMember.create({
+        data: {
+          studentId: request.user.Student.id,
+          projectId: request.projectId,
+        },
+      });
+    } else if (request.user.Faculty) {
+      const project = await prisma.project.findUnique({
+        where: {
+          id: request.projectId,
+        },
+      });
+      if (project.advisorId) {
+        await prisma.project.update({
+          where: {
+            id: request.projectId,
+          },
+          data: {
+            coAdvisorId: request.user.Faculty.id,
+          },
+        });
+      } else {
+        await prisma.project.update({
+          where: {
+            id: request.projectId,
+          },
+          data: {
+            advisorId: request.user.Faculty.id,
+          },
+        });
+      }
+    }
+  }
+
+  await prisma.GroupRequest.delete({
+    where: {
+      id: requestId,
+    },
+  });
+
+  revalidatePath(`/proposals/${request.projectId}`);
   revalidatePath(`/my-team`);
 };
