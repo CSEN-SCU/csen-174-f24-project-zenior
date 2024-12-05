@@ -382,6 +382,13 @@ export const user = {
     "use server";
     const users = await prisma.user.findMany({
       where,
+      include: {
+        GroupRequest: {
+          include: {
+            project: true,
+          },
+        },
+      },
     });
     if (users.length > 0) {
       for (const user of users) {
