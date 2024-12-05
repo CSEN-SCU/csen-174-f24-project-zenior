@@ -37,7 +37,11 @@ export const projects = {
           },
         },
         AdvisorRequest: true,
-        GroupRequest: true,
+        GroupRequest: {
+          include: {
+            user: true,
+          },
+        },
         skills: {
           include: {
             skill: true,
@@ -326,6 +330,7 @@ export const faculty = {
     return await prisma.faculty.findMany({
       where,
       include: {
+        user: true,
         advisedProjects: {
           include: {
             advisor: true,
@@ -377,6 +382,13 @@ export const user = {
     "use server";
     const users = await prisma.user.findMany({
       where,
+      include: {
+        GroupRequest: {
+          include: {
+            project: true,
+          },
+        },
+      },
     });
     if (users.length > 0) {
       for (const user of users) {
@@ -394,7 +406,16 @@ export const user = {
                     },
                   },
                   AdvisorRequest: true,
-                  GroupRequest: true,
+                  GroupRequest: {
+                    include: {
+                      user: {
+                        include: {
+                          Student: true,
+                          Faculty: true,
+                        },
+                      },
+                    },
+                  },
                   skills: {
                     include: {
                       skill: true,
@@ -412,7 +433,16 @@ export const user = {
                     },
                   },
                   AdvisorRequest: true,
-                  GroupRequest: true,
+                  GroupRequest: {
+                    include: {
+                      user: {
+                        include: {
+                          Student: true,
+                          Faculty: true,
+                        },
+                      },
+                    },
+                  },
                   skills: {
                     include: {
                       skill: true,
@@ -443,7 +473,16 @@ export const user = {
                         },
                       },
                       AdvisorRequest: true,
-                      GroupRequest: true,
+                      GroupRequest: {
+                        include: {
+                          user: {
+                            include: {
+                              Student: true,
+                              Faculty: true,
+                            },
+                          },
+                        },
+                      },
                       skills: {
                         include: {
                           skill: true,
@@ -454,7 +493,6 @@ export const user = {
                 },
               },
               AdvisorRequest: true,
-              GroupRequest: true,
               skills: {
                 include: {
                   skill: true,

@@ -8,9 +8,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import { toast } from "@/hooks/use-toast";
+import { LeaveProjectButton, WithdrawRequestButton } from "./ProjectJoinButton";
+import Image from "next/image";
+import { actOnRequestToJoinProject } from "@/lib/server/project-requests";
 
-/* UI component for group request: need to at attach to database */
-const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
+// UI component for group request
+const GroupRequest = ({ grouprequests, setGroupRequests }) => {
   return (
     <div className={styles.groupRequestContainer}>
       <h2 className="mb-4 text-xl font-semibold">Group Request</h2>
@@ -48,11 +51,7 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
               <div className="flex gap-4 justify-end mt-2">
                 {request.status === "approved" && (
                   <>
-                    <Button
-                      variant="custom"
-                      className="text-white"
-                      onClick={handleAcceptToast}
-                    >
+                    <Button variant="custom" className="text-white">
                       Accept Request
                     </Button>
                     <Button
@@ -67,22 +66,25 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
                   </>
                 )}
                 {request.status === "pending" && (
-                  <Button
-                    variant="custom"
-                    className="text-white"
-                    onClick={() => {
-                      if (window.confirm("Are you sure you want to withdraw?"));
-                    }}
-                  >
-                    Withdraw Request
-                  </Button>
+                  <WithdrawRequestButton
+                    projectId={request.projectId}
+                    callback={() =>
+                      setGroupRequests((requests) =>
+                        requests.filter((req) => req.id !== request.id),
+                      )
+                    }
+                    noIcon={true}
+                    className="hover:bg-red-700 bg-[#9e1b32]"
+                  />
                 )}
               </div>
             </div>
           ))}
         </>
       ) : (
-        <p className="text-center bold text-black-700">No Requests</p>
+        <p className="text-center bold text-black-700">
+          You didn&apos;t ask to join any groups yet.
+        </p>
       )}
     </div>
   );
@@ -90,33 +92,44 @@ const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
 
 GroupRequest.propTypes = {
   grouprequests: PropTypes.array.isRequired,
-  handleAcceptToast: PropTypes.func.isRequired,
+  setGroupRequests: PropTypes.func.isRequired,
 };
 
 // UI component for team member requests
 const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
   return (
     <div className={styles.teamRequestContainer}>
-      <h2 className="mb-4 text-xl font-semibold">Team Member Requests</h2>
+      <h2 className="mb-4 text-xl font-semibold">New Requests</h2>
       {teamrequests.length > 0 ? (
         teamrequests.map((request, index) => (
-          <div key={index} className={styles.requestCard}>
+          <div
+            key={index}
+            className="block p-4 mb-3 bg-white border-gray-100 rounded-s"
+          >
+            <h3 className="mb-1 text-xl font-bold">{request.title}</h3>
+            <p className="mb-3">{request.type} request</p>
             <div className="flex items-center">
               <Avatar className="w-10 h-10">
-                <AvatarImage src={"/images/default-avatar.png"} alt="Profile" />
-                <AvatarFallback>Profile Picture</AvatarFallback>
+                <AvatarImage src={request.picture} alt={request.name} />
+                <AvatarFallback>
+                  <Image
+                    src={request.picture || "/images/default-avatar.png"}
+                    width={40}
+                    height={40}
+                    alt={request.name}
+                  />
+                </AvatarFallback>
               </Avatar>
               <div className={styles.requestInfo}>
-                <h3 className="text-lg font-semibold text-red-700">
+                <h4 className="text-lg font-semibold text-red-700">
                   {request.name}
-                </h3>
-                <p className="text-black-600">{request.major.join(", ")}</p>
+                </h4>
+                <p className="text-black-600">
+                  {request.type === "Advisor" ? "Department" : "Major"}:{" "}
+                  {request.major}
+                </p>
               </div>
-              <div className="gap-5">
-                <p className="text-white">....... </p>{" "}
-                {/* some other way to get spacing must happen */}
-              </div>
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end ml-8">
                 <button
                   onClick={() => handleAccept(request.id)}
                   className="flex justify-center items-center w-8 h-8 text-white bg-green-500 rounded"
@@ -134,7 +147,9 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
           </div>
         ))
       ) : (
-        <p className="text-center text-black-500">No team member requests</p>
+        <p className="text-center text-black-500">
+          No new requests to join any of your groups
+        </p>
       )}
     </div>
   );
@@ -147,7 +162,7 @@ TeamRequest.propTypes = {
 };
 
 // project dashboard fields
-const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
+const Overview = ({ user, deleteProject, saveProject, skills }) => {
   const [projects, setProjects] = useState(() => {
     if (user.student) {
       return user.student.projects.map((project) => project.project);
@@ -161,46 +176,68 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
     }
   });
 
-  const [teamRequests] = useState([
-    { id: 1, name: "name1", major: ["COEN"] }, // connect to database; placeholder for now
-  ]);
+  const [teamRequests, setTeamRequests] = useState(() => {
+    const requests = [];
+    projects.map((project) => {
+      project.GroupRequest.map((request) => {
+        if (request.type === "join") {
+          let name, major, type;
+          if (request.user.Student) {
+            name = `${request.user.Student.firstName} ${request.user.Student.lastName}`;
+            major = request.user.Student.major;
+            type = "Team member";
+          } else if (request.user.Faculty) {
+            name = `${request.user.Faculty.firstName} ${request.user.Faculty.lastName}`;
+            major = request.user.Faculty.department;
+            type = "Advisor";
+          }
+          requests.push({
+            id: request.id,
+            name,
+            major,
+            picture: request.user.profilePictureUrl,
+            type,
+            title: project.title,
+          });
+        }
+      });
+    });
+    return requests;
+  });
 
-  const [groupRequests] = useState([
-    // insert data for group requests here aka database connection
-    { name: "project 1", status: "approved" }, // placeholder!
-    { name: "project 2", status: "pending" }, // placeholder
-    { name: "project 3", status: "denied" },
-  ]);
+  const [groupRequests, setGroupRequests] = useState(() => {
+    const requests = [];
+    user.GroupRequest.map((request) => {
+      requests.push({
+        id: request.id,
+        name: request.project.title,
+        status: request.status,
+      });
+    });
+    return requests;
+  });
 
-  // handle accept/reject
-  const handleAccept = (id) => {
+  const handleAccept = async (id) => {
     console.log("Accepted request ID:", id);
     toast({
       title: "Member Accepted",
-      description: "You have succesfully added them to your team!",
+      description:
+        "You have succesfully added them to your team! They will appear after you refresh the page.",
       variant: "default",
     });
-    // routing here? aka logic
+    await actOnRequestToJoinProject(id, "accept");
+    setTeamRequests(teamRequests.filter((request) => request.id !== id));
   };
 
-  const handleReject = (id) => {
+  const handleReject = async (id) => {
     console.log("Rejection request ID:", id);
     toast({
       title: "Member Rejected",
       description: "You have succesfully rejected them from your team.",
       variant: "default",
     });
-    // if they reject, it should disappear from the view
-    // routing here? aka logic
-  };
-
-  const handleAcceptToast = (id) => {
-    console.log("Accepted request ID:", id);
-    toast({
-      title: "Accepted Request",
-      description: "You have successfully been added to this project!",
-      variant: "default",
-    });
+    await actOnRequestToJoinProject(id, "reject");
+    setTeamRequests(teamRequests.filter((request) => request.id !== id));
   };
 
   const handleInputChange = (e, project) => {
@@ -223,9 +260,8 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
     <div className={styles.container}>
       <GroupRequest
         grouprequests={groupRequests}
-        handleAcceptToast={handleAcceptToast}
-      />{" "}
-      {/*database!*/}
+        setGroupRequests={setGroupRequests}
+      />
       <TeamRequest
         teamrequests={teamRequests}
         handleAccept={handleAccept}
@@ -267,108 +303,130 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
               </div>
             </div>
           ) : (
-            projects.map((project) => (
-              <div key={project.id}>
-                <h2 className="mb-4 text-3xl font-bold">Project Title:</h2>
-                <Input
-                  name="title"
-                  placeholder="Title Here"
-                  value={project.title}
-                  onChange={(e) => handleInputChange(e, project)}
-                  className="p-2 mb-4 rounded border border-gray-300"
-                />
+            projects.map((project) => {
+              return (
+                <div key={project.id}>
+                  <h2 className="mb-4 text-3xl font-bold">Project Title:</h2>
+                  <Input
+                    name="title"
+                    placeholder="Title Here"
+                    value={project.title}
+                    onChange={(e) => handleInputChange(e, project)}
+                    className="p-2 mb-4 rounded border border-gray-300"
+                  />
 
-                <h2 className="mb-4 text-3xl font-bold">
-                  Project Description:
-                </h2>
-                <textarea
-                  name="description"
-                  placeholder="Enter project description here..."
-                  value={project.description}
-                  onChange={(e) => handleInputChange(e, project)}
-                  className="p-2 mb-4 w-full h-32 rounded border border-gray-300"
-                />
+                  <h2 className="mb-4 text-3xl font-bold">
+                    Project Description:
+                  </h2>
+                  <textarea
+                    name="description"
+                    placeholder="Enter project description here..."
+                    value={project.description}
+                    onChange={(e) => handleInputChange(e, project)}
+                    className="p-2 mb-4 w-full h-32 rounded border border-gray-300"
+                  />
 
-                <h2 className="mb-4 text-3xl font-bold">Team Members:</h2>
-                <div className="mb-4">
-                  {project.members.length ? (
-                    project.members.map((member) => (
-                      <span key={member.student.id} className="mr-2 text-lg">
-                        {member.student.firstName} {member.student.lastName}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-lg">No team members yet</span>
-                  )}
-                </div>
+                  <h2 className="mb-4 text-3xl font-bold">Team Members:</h2>
+                  <div className="mb-4">
+                    {project.members.length ? (
+                      project.members.map((member) => (
+                        <span key={member.student.id} className="mr-2 text-lg">
+                          {member.student.firstName} {member.student.lastName}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-lg">No team members yet</span>
+                    )}
+                  </div>
 
-                <div className="flex items-center mb-4">
-                  <label className="mr-4 text-lg">
-                    Do you want additional team member(s)?
-                    <input
-                      className="ml-2"
-                      type="checkbox"
-                      name="groupOpen"
-                      defaultChecked={project.groupOpen === true}
-                      onChange={(e) => handleCheckboxChange(e, project)}
-                    />
-                  </label>
-                </div>
-                <Skills
-                  data={project.skills}
-                  key={project.id}
-                  setProjects={setProjects}
-                  project={project}
-                  skillList={skills}
-                />
-                <h2 className="mb-4 text-3xl font-bold">Advisor(s):</h2>
-                <div className="flex items-center mb-4">
-                  <span className="flex items-center text-lg">
-                    {project.advisor
-                      ? `${project.advisor.firstName} ${project.advisor.lastName}`
-                      : "No Advisor Yet"}
-                  </span>
-                  {!project.advisor && (
-                    <Button variant="custom" className="ml-4" asChild>
-                      <Link href="/advisor-directory">Find an Advisor</Link>
+                  <div className="flex items-center mb-4">
+                    <label className="mr-4 text-lg">
+                      Do you want additional team member(s)?
+                      <input
+                        className="ml-2"
+                        type="checkbox"
+                        name="groupOpen"
+                        defaultChecked={project.groupOpen === true}
+                        onChange={(e) => handleCheckboxChange(e, project)}
+                      />
+                    </label>
+                  </div>
+                  <Skills
+                    data={project.skills}
+                    key={project.id}
+                    setProjects={setProjects}
+                    project={project}
+                    skillList={skills}
+                  />
+                  <h2 className="mb-4 text-3xl font-bold">Advisor(s):</h2>
+                  <div className="flex items-center mb-4">
+                    <span className="flex items-center text-lg">
+                      {project.advisor
+                        ? `${project.advisor.firstName} ${project.advisor.lastName}`
+                        : "No Advisor Yet"}
+                      {project.coAdvisor && (
+                        <span className="ml-4">
+                          {project.coAdvisor.firstName}{" "}
+                          {project.coAdvisor.lastName}
+                        </span>
+                      )}
+                    </span>
+                    {!project.advisor && (
+                      <Button variant="custom" className="ml-4" asChild>
+                        <Link href="/advisor-directory">Find an Advisor</Link>
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex justify-evenly pt-8 pb-4 mb-6 border-b-2 border-b-gray-800">
+                    <Button
+                      variant="custom"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (
+                          confirm(
+                            `Are you sure you want to delete ${project.title}?`,
+                          )
+                        ) {
+                          deleteProject(project.id, window.location.pathname);
+                          setProjects(
+                            projects.filter((proj) => proj.id !== project.id),
+                          );
+                        }
+                      }}
+                    >
+                      Delete Project
                     </Button>
-                  )}
-                </div>
-                <div className="flex justify-evenly pt-8 pb-4 mb-6 border-b-2 border-b-gray-800">
-                  <Button
-                    variant="custom"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (
-                        window.confirm(
-                          `Are you sure you want to delete ${project.title}?`,
-                        )
-                      ) {
-                        deleteProject(project.id, window.location.pathname);
+                    <LeaveProjectButton
+                      projectId={project.id}
+                      willDeleteOnLeave={
+                        project.members.length === 1 &&
+                        !project.advisor &&
+                        !project.coAdvisor
+                      }
+                      noIcon={true}
+                      callback={() => {
                         setProjects(
                           projects.filter((proj) => proj.id !== project.id),
                         );
-                      }
-                    }}
-                  >
-                    Delete Project
-                  </Button>
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      saveProject(
-                        project.id,
-                        project,
-                        window.location.pathname,
-                      );
-                    }}
-                    variant="custom"
-                  >
-                    Save Changes
-                  </Button>
+                      }}
+                    />
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        saveProject(
+                          project.id,
+                          project,
+                          window.location.pathname,
+                        );
+                      }}
+                      variant="custom"
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
@@ -376,14 +434,14 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   );
 };
 
-StudentOverview.propTypes = {
+Overview.propTypes = {
   user: PropTypes.object.isRequired,
   deleteProject: PropTypes.func.isRequired,
   saveProject: PropTypes.func.isRequired,
   skills: PropTypes.array.isRequired,
 };
 
-export default StudentOverview;
+export default Overview;
 
 const Skills = ({ data = [], project, setProjects, skillList = [] }) => {
   const [skillInput, setSkillInput] = useState("");

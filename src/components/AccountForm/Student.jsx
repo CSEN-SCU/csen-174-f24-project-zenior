@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera } from "lucide-react"; // importing camera icon from Lucide icons
 import styles from "@/styles/StudentAccountForm.module.css";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 const StudentForm = ({
   profilePicture,
@@ -26,13 +27,15 @@ const StudentForm = ({
       <div className={styles.formCard}>
         <div className={styles.avatarContainer}>
           <Avatar className="w-32 h-32">
-            {" "}
-            {/* make avatar larger */}
-            <AvatarImage
-              src={profilePicture || "/default-profile.png"}
-              alt="Profile"
-            />
-            <AvatarFallback>Profile Picture</AvatarFallback>
+            <AvatarImage src={profilePicture} alt="Your profile picture" />
+            <AvatarFallback>
+              <Image
+                src={profilePicture || "/images/default-avatar.png"}
+                width={128}
+                height={128}
+                alt="Your profile picture"
+              />
+            </AvatarFallback>
           </Avatar>
           <label htmlFor="profile-upload" className={styles.cameraIcon}>
             <Camera />
