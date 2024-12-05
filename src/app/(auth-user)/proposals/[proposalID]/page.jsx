@@ -5,16 +5,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
 import { projects } from "@/lib/server/actions";
+import { auth } from "@/lib/auth";
+import ProjectJoinButton from "@/components/ProjectJoinButton";
 
 export default async function ProposalDetails({ params }) {
   const currParams = await params;
   const proposals = await projects.get({ id: currParams.proposalID });
-  if (!proposals) {
-    return <div>Proposal not found</div>;
+  if (!proposals[0]) {
+    return <div>Proposal was deleted or couldn&apos;t be found</div>;
   }
+  const session = await auth();
+  const user = session.user;
 
   const {
     title,
@@ -24,33 +26,22 @@ export default async function ProposalDetails({ params }) {
     coAdvisor,
     department,
     skills,
+    GroupRequest,
   } = proposals[0];
+
+  const joined = members.some(
+    (member) => member.student.user.email === user.email,
+  );
+  const requested = GroupRequest.some(
+    (request) => request.user.email === user.email,
+  );
+  const willDeleteOnLeave = members.length === 1 && !advisor && !coAdvisor;
 
   return (
     <div className="m-6 p-2">
       <div className="m-6 p-6 bg-slate-100">
         <h1 className="text-2xl pb-2 font-bold">{title}</h1>
         <div className="py-2">
-          {/*
-          <span className="font-semibold">Proposed by: </span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="text-[#b30738] underline decoration-solid">
-                Member Name
-              </TooltipTrigger>
-              <TooltipContent>
-                <span className="block">
-                  <ul>
-                    <li className="font-bold">First Last</li>
-                    <li>flast@scu.edu</li>
-                    <li>Computer Science and Engineering</li>
-                  </ul>
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <br></br>
-          */}
           <span className="font-semibold">Project Members:</span>{" "}
           {members.length === 0 ? "None yet" : ""}
           {members.map((member) => (
@@ -166,9 +157,12 @@ export default async function ProposalDetails({ params }) {
             <li key={skill.skill.id}>{skill.skill.name}</li>
           ))}
         </ul>
-        <Button variant="custom" className="object-right">
-          <span className="pr-2">Request to Join</span> <UserPlus size="20" />
-        </Button>
+        <ProjectJoinButton
+          member={joined}
+          requested={requested}
+          projectId={currParams.proposalID}
+          willDeleteOnLeave={willDeleteOnLeave}
+        />
       </div>
     </div>
   );

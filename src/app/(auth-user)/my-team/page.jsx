@@ -1,7 +1,7 @@
 import styles from "@/styles/profile.module.css";
 import AccountForm from "@/components/AccountForm/Form";
-import StudentOverview from "@/components/StudentOverview";
-import { Checklist } from "@/components/Checklist";
+import Overview from "@/components/Overview";
+// import { Checklist } from "@/components/Checklist";
 import { user, skill, projects } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -30,16 +30,16 @@ export default async function MyTeam() {
           />
         </div>
 
-        {isAccountComplete && (
+        {/* isAccountComplete && (
           <div className={styles.progressContainer}>
             <Checklist />
           </div>
-        )}
+        ) */}
       </div>
 
       {isAccountComplete && (
         <div className={styles.rightContainer}>
-          <StudentOverview
+          <Overview
             user={users[0]}
             deleteProject={projects.delete}
             saveProject={projects.update}

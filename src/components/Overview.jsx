@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import { toast } from "@/hooks/use-toast";
+import { LeaveProjectButton } from "./ProjectJoinButton";
+import Image from "next/image";
 
 /* UI component for group request: need to at attach to database */
 const GroupRequest = ({ grouprequests, handleAcceptToast }) => {
@@ -103,14 +105,21 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
           <div key={index} className={styles.requestCard}>
             <div className="flex items-center">
               <Avatar className="w-10 h-10">
-                <AvatarImage src={"/images/default-avatar.png"} alt="Profile" />
-                <AvatarFallback>Profile Picture</AvatarFallback>
+                <AvatarImage src={request.picture} alt={request.name} />
+                <AvatarFallback>
+                  <Image
+                    src={request.picture || "/images/default-avatar.png"}
+                    width={40}
+                    height={40}
+                    alt={request.name}
+                  />
+                </AvatarFallback>
               </Avatar>
               <div className={styles.requestInfo}>
                 <h3 className="text-lg font-semibold text-red-700">
                   {request.name}
                 </h3>
-                <p className="text-black-600">{request.major.join(", ")}</p>
+                <p className="text-black-600">{request.major}</p>
               </div>
               <div className="gap-5">
                 <p className="text-white">....... </p>{" "}
@@ -147,7 +156,7 @@ TeamRequest.propTypes = {
 };
 
 // project dashboard fields
-const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
+const Overview = ({ user, deleteProject, saveProject, skills }) => {
   const [projects, setProjects] = useState(() => {
     if (user.student) {
       return user.student.projects.map((project) => project.project);
@@ -161,9 +170,32 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
     }
   });
 
-  const [teamRequests] = useState([
-    { id: 1, name: "name1", major: ["COEN"] }, // connect to database; placeholder for now
-  ]);
+  console.log(projects);
+
+  const [teamRequests] = useState(() => {
+    const requests = [];
+    projects.map((project) => {
+      project.GroupRequest.map((request) => {
+        if (request.type === "join") {
+          let name, major;
+          if (request.user.Student) {
+            name = `${request.user.Student.firstName} ${request.user.Student.lastName}`;
+            major = request.user.Student.major;
+          } else if (request.user.Faculty) {
+            name = `${request.user.Faculty.firstName} ${request.user.Faculty.lastName}`;
+            major = request.user.Faculty.department;
+          }
+          requests.push({
+            id: request.id,
+            name,
+            major,
+            picture: request.user.profilePictureUrl,
+          });
+        }
+      });
+    });
+    return requests;
+  });
 
   const [groupRequests] = useState([
     // insert data for group requests here aka database connection
@@ -267,108 +299,130 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
               </div>
             </div>
           ) : (
-            projects.map((project) => (
-              <div key={project.id}>
-                <h2 className="mb-4 text-3xl font-bold">Project Title:</h2>
-                <Input
-                  name="title"
-                  placeholder="Title Here"
-                  value={project.title}
-                  onChange={(e) => handleInputChange(e, project)}
-                  className="p-2 mb-4 rounded border border-gray-300"
-                />
+            projects.map((project) => {
+              return (
+                <div key={project.id}>
+                  <h2 className="mb-4 text-3xl font-bold">Project Title:</h2>
+                  <Input
+                    name="title"
+                    placeholder="Title Here"
+                    value={project.title}
+                    onChange={(e) => handleInputChange(e, project)}
+                    className="p-2 mb-4 rounded border border-gray-300"
+                  />
 
-                <h2 className="mb-4 text-3xl font-bold">
-                  Project Description:
-                </h2>
-                <textarea
-                  name="description"
-                  placeholder="Enter project description here..."
-                  value={project.description}
-                  onChange={(e) => handleInputChange(e, project)}
-                  className="p-2 mb-4 w-full h-32 rounded border border-gray-300"
-                />
+                  <h2 className="mb-4 text-3xl font-bold">
+                    Project Description:
+                  </h2>
+                  <textarea
+                    name="description"
+                    placeholder="Enter project description here..."
+                    value={project.description}
+                    onChange={(e) => handleInputChange(e, project)}
+                    className="p-2 mb-4 w-full h-32 rounded border border-gray-300"
+                  />
 
-                <h2 className="mb-4 text-3xl font-bold">Team Members:</h2>
-                <div className="mb-4">
-                  {project.members.length ? (
-                    project.members.map((member) => (
-                      <span key={member.student.id} className="mr-2 text-lg">
-                        {member.student.firstName} {member.student.lastName}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-lg">No team members yet</span>
-                  )}
-                </div>
+                  <h2 className="mb-4 text-3xl font-bold">Team Members:</h2>
+                  <div className="mb-4">
+                    {project.members.length ? (
+                      project.members.map((member) => (
+                        <span key={member.student.id} className="mr-2 text-lg">
+                          {member.student.firstName} {member.student.lastName}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-lg">No team members yet</span>
+                    )}
+                  </div>
 
-                <div className="flex items-center mb-4">
-                  <label className="mr-4 text-lg">
-                    Do you want additional team member(s)?
-                    <input
-                      className="ml-2"
-                      type="checkbox"
-                      name="groupOpen"
-                      defaultChecked={project.groupOpen === true}
-                      onChange={(e) => handleCheckboxChange(e, project)}
-                    />
-                  </label>
-                </div>
-                <Skills
-                  data={project.skills}
-                  key={project.id}
-                  setProjects={setProjects}
-                  project={project}
-                  skillList={skills}
-                />
-                <h2 className="mb-4 text-3xl font-bold">Advisor(s):</h2>
-                <div className="flex items-center mb-4">
-                  <span className="flex items-center text-lg">
-                    {project.advisor
-                      ? `${project.advisor.firstName} ${project.advisor.lastName}`
-                      : "No Advisor Yet"}
-                  </span>
-                  {!project.advisor && (
-                    <Button variant="custom" className="ml-4" asChild>
-                      <Link href="/advisor-directory">Find an Advisor</Link>
+                  <div className="flex items-center mb-4">
+                    <label className="mr-4 text-lg">
+                      Do you want additional team member(s)?
+                      <input
+                        className="ml-2"
+                        type="checkbox"
+                        name="groupOpen"
+                        defaultChecked={project.groupOpen === true}
+                        onChange={(e) => handleCheckboxChange(e, project)}
+                      />
+                    </label>
+                  </div>
+                  <Skills
+                    data={project.skills}
+                    key={project.id}
+                    setProjects={setProjects}
+                    project={project}
+                    skillList={skills}
+                  />
+                  <h2 className="mb-4 text-3xl font-bold">Advisor(s):</h2>
+                  <div className="flex items-center mb-4">
+                    <span className="flex items-center text-lg">
+                      {project.advisor
+                        ? `${project.advisor.firstName} ${project.advisor.lastName}`
+                        : "No Advisor Yet"}
+                      {project.coAdvisor && (
+                        <span className="ml-4">
+                          {project.coAdvisor.firstName}{" "}
+                          {project.coAdvisor.lastName}
+                        </span>
+                      )}
+                    </span>
+                    {!project.advisor && (
+                      <Button variant="custom" className="ml-4" asChild>
+                        <Link href="/advisor-directory">Find an Advisor</Link>
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex justify-evenly pt-8 pb-4 mb-6 border-b-2 border-b-gray-800">
+                    <Button
+                      variant="custom"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (
+                          confirm(
+                            `Are you sure you want to delete ${project.title}?`,
+                          )
+                        ) {
+                          deleteProject(project.id, window.location.pathname);
+                          setProjects(
+                            projects.filter((proj) => proj.id !== project.id),
+                          );
+                        }
+                      }}
+                    >
+                      Delete Project
                     </Button>
-                  )}
-                </div>
-                <div className="flex justify-evenly pt-8 pb-4 mb-6 border-b-2 border-b-gray-800">
-                  <Button
-                    variant="custom"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (
-                        window.confirm(
-                          `Are you sure you want to delete ${project.title}?`,
-                        )
-                      ) {
-                        deleteProject(project.id, window.location.pathname);
+                    <LeaveProjectButton
+                      projectId={project.id}
+                      willDeleteOnLeave={
+                        project.members.length === 1 &&
+                        !project.advisor &&
+                        !project.coAdvisor
+                      }
+                      noIcon={true}
+                      callback={() => {
                         setProjects(
                           projects.filter((proj) => proj.id !== project.id),
                         );
-                      }
-                    }}
-                  >
-                    Delete Project
-                  </Button>
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      saveProject(
-                        project.id,
-                        project,
-                        window.location.pathname,
-                      );
-                    }}
-                    variant="custom"
-                  >
-                    Save Changes
-                  </Button>
+                      }}
+                    />
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        saveProject(
+                          project.id,
+                          project,
+                          window.location.pathname,
+                        );
+                      }}
+                      variant="custom"
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
@@ -376,14 +430,14 @@ const StudentOverview = ({ user, deleteProject, saveProject, skills }) => {
   );
 };
 
-StudentOverview.propTypes = {
+Overview.propTypes = {
   user: PropTypes.object.isRequired,
   deleteProject: PropTypes.func.isRequired,
   saveProject: PropTypes.func.isRequired,
   skills: PropTypes.array.isRequired,
 };
 
-export default StudentOverview;
+export default Overview;
 
 const Skills = ({ data = [], project, setProjects, skillList = [] }) => {
   const [skillInput, setSkillInput] = useState("");
