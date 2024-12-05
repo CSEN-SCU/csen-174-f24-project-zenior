@@ -148,7 +148,7 @@ const TeamRequest = ({ teamrequests, handleAccept, handleReject }) => {
         ))
       ) : (
         <p className="text-center text-black-500">
-          No new requests to join any of your groups
+          No new requests to join any of your groups.
         </p>
       )}
     </div>
@@ -296,7 +296,7 @@ const Overview = ({ user, deleteProject, saveProject, skills }) => {
                   </Button>
                   <Button variant="custom" asChild>
                     <Link href="/advisor-directory">
-                      Explore Faculty Advisor Project Proposals
+                      Explore Faculty Advisors
                     </Link>
                   </Button>
                 </div>
