@@ -1,10 +1,9 @@
 import styles from "@/styles/profile.module.css";
-import AccountForm from "@/components/AccountForm/Form";
 import Overview from "@/components/Overview";
-// import { Checklist } from "@/components/Checklist";
 import { user, skill, projects } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Checklist } from "@/components/Checklist";
 
 export default async function MyTeam() {
   const session = await auth();
@@ -21,20 +20,9 @@ export default async function MyTeam() {
   return (
     <main className={styles.container}>
       <div className={styles.leftContainer}>
-        <div className={styles.formContainer}>
-          <AccountForm
-            user={users[0]}
-            userUpdate={user.update}
-            hideInstruction={isAccountComplete}
-            skills={allSkills}
-          />
+        <div className={styles.progressContainer}>
+          <Checklist />
         </div>
-
-        {/* isAccountComplete && (
-          <div className={styles.progressContainer}>
-            <Checklist />
-          </div>
-        ) */}
       </div>
 
       {isAccountComplete && (
