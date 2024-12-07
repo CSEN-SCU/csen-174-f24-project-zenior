@@ -20,7 +20,7 @@ const Navbar = async() => {
   // Define navigation links for different roles
   const studentLinks = [
     { label: "Projects", href: "/proposals" },
-    { label: "Directory", href: "/advisor-directory" },
+    { label: "Faculty Directory", href: "/advisor-directory" },
     { label: "Archive", href: "/archive" },
   ];
 

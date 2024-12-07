@@ -32,7 +32,8 @@ export default async function AdvisorDetails({ params }) {
       >
         Back to directory
       </Link>
-      <div className="flex place-items-center">
+      <div className="flex items-center justify-between">
+        <div className = "flex items-center">
         <Avatar className="w-20 h-20">
           <AvatarImage
             src={advisor.user.profilePictureUrl}
@@ -52,7 +53,8 @@ export default async function AdvisorDetails({ params }) {
         <h1 className="text-3xl font-bold ml-4">
           {advisor.firstName} {advisor.lastName}
         </h1>
-        <DropdownMenu>
+        </div>
+        <DropdownMenu className = "items-end">
           <DropdownMenuTrigger asChild>
             <Button variant="custom">
               Request as Advisor
