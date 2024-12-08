@@ -26,50 +26,17 @@
     <img src="https://img.shields.io/badge/Prisma-2.0-blue" alt="Prisma Version"/>
 </p>
 
-## 🌐 About
+## 🌐 About 
 
 Zeinor is a comprehensive platform for rising juniors in the School of Engineering, designed to facilitate their preparation for senior design projects. It offers tools for students to explore and plan their projects efficiently for the upcoming year. Additionally, the platform enables faculty members to submit research topics and project opportunities that students can collaborate on, fostering a dynamic and collaborative environment for academic development and innovation.
 
-### 🛠️ Features
+### 🛠️ Features 
 
 - ⚡ **Project Planning and Exploration**: Assists juniors in the School of Engineering to discover and organize their senior design projects efficiently.
 - ✨ **Faculty Collaboration**: Faculty members can submit research topics and project ideas, making it easy for students to connect with real-world opportunities.
 - 📈 **Track Progress**: Monitor the progress of projects with updates for both students and faculty.
 - 💼 **Resource Management**: Access and manage resources such as research papers, tools, and mentorship opportunities provided by faculty.
 - 🔍 **Search and Discover**: Easily browse through available projects and faculty-submitted opportunities, enhancing student-faculty interactions and project discovery.
-
-## 📑 Table of Contents
-
-<details>
-  <summary>🚀 <strong>Get Started</strong></summary>
-  
-  - [Environment Setup](#environment-setup)
-  - [Install Dependencies](#install-dependencies)
-  - [Generate Prisma Client](#generate-prisma-client)
-  - [Run the Development Server](#run-the-development-server)
-  - [Run Prisma Studio](#run-prisma-studio)
-  - [Learn More](#learn-more)
-  - [PlantUML for Diagrams](#plantuml-for-diagrams)
-  
-</details>
-
-<details>
-  <summary>📊 <strong>Diagrams</strong></summary>
-  
-  - [C4 Diagrams](#c4-diagrams)
-    - [System Context Diagram](#system-context-diagram)
-    - [Container Diagram](#container-diagram)
-  - [Database Diagrams](#database-diagrams)
-    - [Database Schema](#database-schema)
-  
-</details>
-
-<details>
-  <summary>📜 <strong>License</strong></summary>
-  
-  - [License](#license)
-  
-</details>
 
 ## 🚀 Get Started
 
@@ -135,7 +102,7 @@ To learn more about the technology used in this project, take a look at the foll
 </details>
 
 <details>
-    <summary><strong>🚀 Technology Choices Explained</strong></summary>
+    <summary><strong>✅ Technology Choices Explained</strong></summary>
 
 - **React** - React is a JavaScript library for building user interfaces.
   It is backed by a large company and maintained a community of individual developers, making it
@@ -199,34 +166,35 @@ To create C4 model diagrams, you can use the [C4-PlantUML library](https://githu
 
 ## 📊 Diagrams
 
-### C4 Diagrams
-
 <details>
-  <summary><strong>🗺️ System Context Diagram</strong></summary>
+  <summary><strong>🗺️  C4 System Context Diagrams</strong></summary>
 
-![System Context Diagram](diagrams/images/systemcontext/systemcontext.png)
-_The system context diagram provides a high-level view of the components and their interactions within Zeinor._
+<img src="public/images/systemcontext2.png" alt="System Context Diagram 2" width="1200px">
+
+<img src="diagrams/images/systemcontext/systemcontext.png" alt="System Context Diagram" width="1200px">
 
 </details>
 
 <details>
-  <summary><strong>🏗️ Container Diagram</strong></summary>
+  <summary><strong>🏗️ C4 Container Diagrams</strong></summary>
 
-![Container Diagram](diagrams/images/containerdiagram/containerdiagram.png)
-_This diagram shows the container-level view of the Zeinor application._
+<img src="public/images/container2.png" alt="Container Diagram 2" width="1200px">
+
+<img src="diagrams/images/containerdiagram/containerdiagram.png" alt="Container Diagram" width="1200px">
 
 </details>
 
-### Database Diagrams
-
 <details>
-  <summary><strong>🗄️ Database Schema</strong></summary>
+  <summary><strong>📗 Database Schema</strong></summary>
 
-![Database Schema](diagrams/images/schema/schema.png)
-_The database schema diagram illustrates the structure of the SQL database used by Zeinor._
+<img src="diagrams/images/schemaupdate/schemaupdate.png" alt="Database Schema" width="1200px">
 
 </details>
 
 ## 📜 License
 
-This project is licensed under the GPLv3 License. See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html). This license grants you the freedom to use, study, modify, and share the software. However, any modifications or derived works must also be distributed under the same license.
+
+For the complete terms, see the [LICENSE](./LICENSE) file.
+
+
