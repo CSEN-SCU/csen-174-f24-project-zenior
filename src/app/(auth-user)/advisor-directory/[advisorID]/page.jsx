@@ -3,6 +3,16 @@ import { faculty } from "@/lib/server/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default async function AdvisorDetails({ params }) {
   const urlParams = await params;
@@ -22,7 +32,8 @@ export default async function AdvisorDetails({ params }) {
       >
         Back to directory
       </Link>
-      <div className="flex place-items-center">
+      <div className="flex items-center justify-between">
+        <div className = "flex items-center">
         <Avatar className="w-20 h-20">
           <AvatarImage
             src={advisor.user.profilePictureUrl}
@@ -42,6 +53,28 @@ export default async function AdvisorDetails({ params }) {
         <h1 className="text-3xl font-bold ml-4">
           {advisor.firstName} {advisor.lastName}
         </h1>
+        </div>
+        <DropdownMenu className = "items-end">
+          <DropdownMenuTrigger asChild>
+            <Button variant="custom">
+              Request as Advisor
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className = "w-56">
+              <DropdownMenuLabel>
+                Which project proposal would you like to pitch to this faculty member?
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator/>
+              <DropdownMenuRadioGroup >
+                <DropdownMenuRadioItem>
+                  Project 1
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem>
+                  Project 2
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <p className="text-gray-600">{advisor.email}</p>
       </div>
       <h2 className="mt-4 text-xl font-semibold">Department</h2>
