@@ -84,6 +84,7 @@ model Faculty {
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   skills FacultySkill[]
+  requestedToAdvise AdvisorRequest[]
 }
 
 model Skill {
@@ -121,14 +122,17 @@ model AdvisorRequest {
   status    RequestStatus @default(pending)
   student   Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
   project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  faculty   Faculty       @relation(fields: [facultyId], references: [id], onDelete: Cascade)
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
   studentId String
   projectId String
+  facultyId String
 
   @@index([studentId])
   @@index([projectId])
+  @@index([facultyId])
 }
 
 model GroupRequest {
