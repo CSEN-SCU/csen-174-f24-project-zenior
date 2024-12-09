@@ -69,3 +69,23 @@ export async function getThesesWithKeywordFilters(filters, n){
   return results
 
 }
+
+
+export async function getThesesWithDeparment(department, n){
+  const limitField = (n? '&limit='+ n : '');
+
+  const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
+  const requestUrl = queryUrl + "&discipline=" + department;
+  console.log(requestUrl);
+  const response = await fetch(requestUrl, init);
+  return validateResponse(response);
+
+}
+
+export async function getThesisWithContextKey(contextKey){
+  const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all';
+  const requestUrl = queryUrl + "&context_key=" + contextKey;
+  console.log(requestUrl);
+  const response = await fetch(requestUrl, init);
+  return validateResponse(response);
+}

@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 // Function returns array of m projects that are currently proposed starting at the
 // nth record.
@@ -11,7 +12,6 @@ import { prisma } from "@/lib/prisma";
 // const results = proposals(2, 2);
 // Returns: The 2nd and 3rd projects proposed.
 export async function proposals(n, m, filters) {
-  console.log("Fetching Proposals");
   return await prisma.project.findMany({
     skip: n,
     take: m,
@@ -19,10 +19,10 @@ export async function proposals(n, m, filters) {
       status: {
         equals: "proposed",
       },
-      // departmentID: filters.departmentIds ? { in: filters.departmentIds } : undefined,
-      isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
-      groupOpen: filters.hasOpenings !== null ? filters.hasOpenings : undefined,
-      // hasAdvisor: filters.hasAdvisor !== null ? filters.hasAdvisor : undefined,
+      department: filters.department ?? Prisma.skip,
+      isInterdisciplinary: filters.isInterdisciplinary ?? Prisma.skip,
+      groupOpen: filters.hasOpenings ?? Prisma.skip,
+      hasAdvisor: filters.hasAdvisor ?? Prisma.skip,
     },
     include: {
       advisor: true,

@@ -22,13 +22,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { FaLastfmSquare } from "react-icons/fa";
 
 export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [radioSelections, setRadioSelections] = useState({
-    "Interdisciplinary?": null,
-    "Openings for additional members?": 9,
-    "Has an advisor already?": null,
+    "Interdisciplinary?": false,
+    "Openings for additional members?": true,
+    "Has an advisor already?": false,
   });
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -38,10 +39,10 @@ export default function Proposals() {
     //fetch proposals from db with applied filters
     const fetchFilteredProposals = async () => {
       const filters = {
-        departmentIds: selectedItems.length ? selectedItems : undefined,
-        isInterdisciplinary: radioSelections["Interdisciplinary?"] === 7,
-        hasOpenings: radioSelections["Openings for additional members?"] === 9,
-        hasAdvisor: radioSelections["Has an advisor already?"] === 11,
+        departmentIds: selectedItems.length ? selectedItems : "",
+        isInterdisciplinary: radioSelections["Interdisciplinary?"],
+        hasOpenings: radioSelections["Openings for additional members?"],
+        hasAdvisor: radioSelections["Has an advisor already?"],
       };
 
       const results = await proposals(page, 5, filters);

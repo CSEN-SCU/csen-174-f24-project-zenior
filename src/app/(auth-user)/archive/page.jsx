@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { getThesesWithKeywordFilters } from "@/lib/server/scholar-commons";
+import { getThesesWithDeparment } from "@/lib/server/scholar-commons";
 
 export default function Archives() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -35,12 +36,11 @@ export default function Archives() {
     const fetchFilteredArchives = async () => {
       console.log(selectedItems);
 
-      const results = await getThesesWithKeywordFilters(selectedItems, 5);
+      const results = await getThesesWithDeparment(selectedItems, 5);
       setFilteredRows(results);
     };
     fetchFilteredArchives();
   }, [selectedItems, page]);
-
 
   return (
     <div className="px-8 m-9">
@@ -68,45 +68,26 @@ export default function Archives() {
                     <TableCell align="left" colSpan={4}>
                       <div className="flex flex-col p-4 rounded-lg space-y2">
                         <a
-                          href={`/archives/${row.id}`}
+                          href={`/archive/${row.context_key}`}
                           className="underline text-[#b30738] text-xl font-bold"
                         >
                           {row.title}
                         </a>
                         <div>
-                          {
-                          row ?   (
-                          <h1 className="font-black text-3xl pb-6">No Projects</h1>
-                        ) :
-                        (
-                          row.description?.length > 280 ? (
-                            <>
-                              {row.abstract.slice(0, 280)}...
+                          {row.abstract.length > 280 ? 
+                          (<>
+                          {row.abstract.slice(0, 280)}...
                               <a
-                                href={`/archives/${row.id}`}
+                                href={`/archive/${row.id}`}
                                 className="underline text-[#b30738]"
                               >
                                 Read more
                               </a>
-                            </>
-                          ) : (
-                            row.description
-                          )
-                        )
-                        }
-                        </div>
-                        <br></br>
-                        <div>
-                          {row.advisor ? (
-                            <>
-                              <span className="font-semibold">Advisor</span>:{" "}
-                              <span>
-                                {row.advisor.firstName} {row.advisor.lastName}
-                              </span>
-                            </>
-                          ) : (
-                            <span className="font-semibold">No Advisor</span>
-                          )}
+                          </>
+                          ) :
+                          (row.abstract)
+                        } 
+
                         </div>
                       </div>
                     </TableCell>
