@@ -12,12 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Login, Logout } from "@/components/Navbar/AuthButtons";
 
-const Navbar = async() => {
+const Navbar = async () => {
   const session = await auth();
-
   const role = session?.user?.role;
 
-  // Define navigation links for different roles
   const studentLinks = [
     { label: "Projects", href: "/proposals" },
     { label: "Faculty Directory", href: "/advisor-directory" },
@@ -27,32 +25,31 @@ const Navbar = async() => {
   const facultyLinks = [
     { label: "Projects", href: "/proposals" },
     { label: "Requests", href: "/requests" },
-    { label: "Archive", href: "/archive"},
+    { label: "Archive", href: "/archive" },
   ];
 
   const adminLinks = [
-    { label: "Admin Dashboard", href: "/admin/dashboard" },
-    { label: "Manage Users", href: "/admin/users" },
-    { label: "Archive", href: "/archive"},
+    { label: "Dashboard", href: "/admin/dashboard" },
+    { label: "Projects", href: "/proposals" },
+    { label: "Archive", href: "/archive" },
   ];
 
   const superAdminLinks = [
-    { label: "Super Admin Dashboard", href: "/superadmin/dashboard" },
-    { label: "System Logs", href: "/superadmin/logs" },
-    { label: "Global Settings", href: "/superadmin/settings" },
-    { label: "Archive", href: "/archive"},
+    { label: "Dashboard", href: "/superadmin/dashboard" },
+    { label: "Projects", href: "/proposals" },
+    { label: "Archive", href: "/archive" },
   ];
 
-  let navLinks = [];
-  if (role === "student") {
-    navLinks = studentLinks;
-  } else if (role === "faculty") {
-    navLinks = facultyLinks;
-  } else if (role === "admin") {
-    navLinks = adminLinks;
-  } else if (role === "super_admin") {
-    navLinks = superAdminLinks;
-  }
+  const navLinks =
+    role === "student"
+      ? studentLinks
+      : role === "faculty"
+      ? facultyLinks
+      : role === "admin"
+      ? adminLinks
+      : role === "super_admin"
+      ? superAdminLinks
+      : [];
 
   return (
     <nav className="bg-[#b30738] text-white">
@@ -83,9 +80,9 @@ const Navbar = async() => {
                   <Link href={link.href}>{link.label}</Link>
                 </Button>
               ))
-            : (
-                <Login />
-              )}
+            : <Login />
+          }
+
           {/* Profile or Sign-In Button */}
           {session && (
             <DropdownMenu>
@@ -111,9 +108,11 @@ const Navbar = async() => {
                 <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/my-profile">My Profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/my-team">My Team</Link>
-                </DropdownMenuItem>
+                {role === "student" && (
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/my-team">My Team</Link>
+                  </DropdownMenuItem>
+                )}
                 <Logout />
               </DropdownMenuContent>
             </DropdownMenu>
