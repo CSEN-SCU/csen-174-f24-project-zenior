@@ -4,27 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
-export const requestToJoinProject = async (projectId) => {
-  const session = await auth();
-  if (!session) return;
-
-  const {
-    id: userId,
-    role,
-    GroupRequest,
-  } = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-    include: {
-      GroupRequest: {
-        where: {
-          projectId,
-        },
-      },
-    },
-  });
-
+const createRequest = async (projectId, userId, role, GroupRequest) => {
   if (!userId || GroupRequest.length > 0) return;
 
   const project = await prisma.project.findUnique({
@@ -46,6 +26,32 @@ export const requestToJoinProject = async (projectId) => {
 
   revalidatePath(`/proposals/${projectId}`);
   revalidatePath(`/my-team`);
+};
+
+export const requestToJoinProject = async (projectId, newMember) => {
+  const session = await auth();
+  if (!session) return;
+
+  const email = newMember ? newMember : session.user.email;
+
+  const {
+    id: userId,
+    role,
+    GroupRequest,
+  } = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    include: {
+      GroupRequest: {
+        where: {
+          projectId,
+        },
+      },
+    },
+  });
+
+  createRequest(projectId, userId, role, GroupRequest);
 };
 
 export const withdrawRequestToJoinProject = async (projectId) => {

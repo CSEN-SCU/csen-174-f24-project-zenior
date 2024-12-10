@@ -7,7 +7,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
-import { useToast } from "@/hooks/use-toast"; 
+import { useToast } from "@/hooks/use-toast";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,7 +20,7 @@ import {
 
 const ProposalForm = ({ user, skillSet }) => {
   const router = useRouter();
-  const { toast } = useToast(); 
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -121,11 +121,11 @@ const ProposalForm = ({ user, skillSet }) => {
         console.log("Form submitted successfully:", result);
 
         // confirmation pop up using toast
-        toast ({
-          title: "Proposal Posted!", 
-          description: "Your proposal was succesfully submitted.", 
-          variant: "default", 
-        }); 
+        toast({
+          title: "Proposal Posted!",
+          description: "Your proposal was succesfully submitted.",
+          variant: "default",
+        });
 
         router.push("/my-team");
       } else {
@@ -133,11 +133,11 @@ const ProposalForm = ({ user, skillSet }) => {
         console.error("Form submission failed:", errorData);
 
         // error toast
-        toast ({
-          title: "Submission failed", 
-          description: "There was an issue submitting your proposal.", 
-          variant: "destructive", 
-        }); 
+        toast({
+          title: "Submission failed",
+          description: "There was an issue submitting your proposal.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -145,9 +145,9 @@ const ProposalForm = ({ user, skillSet }) => {
       // error toast
       toast({
         title: "Error",
-        description: "An unexpected error occured.", 
-        variant: "destructive", 
-      }); 
+        description: "An unexpected error occured.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -195,7 +195,7 @@ const ProposalForm = ({ user, skillSet }) => {
 
           <div className="flex items-center mb-4 space-x-4">
             <div>
-              <label htmlFor="members" className="font-bold">
+              <label htmlFor="projectMem" className="font-bold">
                 Project Team Members
               </label>
               <aside className="w-48 text-xs">
@@ -206,6 +206,8 @@ const ProposalForm = ({ user, skillSet }) => {
             <div className="w-full max-w-sm min-w-[200px]">
               <div className="relative">
                 <input
+                  onChange={handleInputChange}
+                  name="projectMem"
                   type="text"
                   className="w-full pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow"
                   placeholder="Type here..."
@@ -224,7 +226,7 @@ const ProposalForm = ({ user, skillSet }) => {
 
           <div className="flex items-center mb-4 space-x-4">
             <div>
-              <label htmlFor="advisor" className="font-bold">
+              <label htmlFor="projectAd" className="font-bold">
                 Project Advisor(s)
               </label>
               <aside className="w-48 text-xs">
@@ -234,6 +236,8 @@ const ProposalForm = ({ user, skillSet }) => {
               </aside>
             </div>
             <input
+              onChange={handleInputChange}
+              name="projectAd"
               type="text"
               className="w-96 pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow"
               placeholder="Type here..."
