@@ -17,8 +17,11 @@ const categories = [
     type: "checkbox",
     options: [
       { label: "Bioengineering" },
+      { label: "Biomedical Engineering and Bioengineering"},
       { label: "Civil, Environmental and Sustainable Engineering" },
-      { label: "Computer Science and Engineering" },
+      { label: "Civil and Environmental Engineering"},
+      { label: "Computer Engineering" },
+      { label: "Computer Science and Engineering"},
       { label: "Electrical and Computer Engineering" },
       { label: "General Engineering" },
       { label: "Mechanical Engineering" },

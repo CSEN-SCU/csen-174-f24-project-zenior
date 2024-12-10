@@ -64,7 +64,10 @@ export async function getThesesWithKeywordFilters(filters, n){
     const requestUrl = queryUrl + "&abstract=" + filters[i]
     console.log(requestUrl);
     const response = await fetch(requestUrl, init)
-    results[i] = await validateResponse(response)
+    const result = await validateResponse(response)
+    for(let j = 0; j < result.length; j = j + 1){
+      (results.findIndex((item)=> {return (item["context_key"] === result[j]["context_key"]);}) === -1 ? results.push(result[j]) : undefined)
+    }
   }
   return results
 
@@ -82,7 +85,7 @@ export async function getThesesWithDepartments(departments, n){
     const response = await fetch(requestUrl, init);
     const result = await validateResponse(response);
     for(let j = 0; j < result.length; j = j + 1){
-      (results.findIndex((item)=> {item.context_key === result[j].context_key}) === -1 ? results.push(result[j]) : console.log("Conext key "+result[j].context_key +"exits"))
+      (results.findIndex((item)=> {return (item["context_key"] === result[j]["context_key"]);}) === -1 ? results.push(result[j]) : undefined)
     }
   }
   //console.log(results);
