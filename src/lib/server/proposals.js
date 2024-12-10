@@ -19,10 +19,10 @@ export async function proposals(n, m, filters) {
       status: {
         equals: "proposed",
       },
-      department: filters.department ?? Prisma.skip,
-      isInterdisciplinary: filters.isInterdisciplinary ?? Prisma.skip,
-      groupOpen: filters.hasOpenings ?? Prisma.skip,
-      hasAdvisor: filters.hasAdvisor ?? Prisma.skip,
+      // departmentID: filters.departmentIds ? { in: filters.departmentIds } : undefined,
+      // isInterdisciplinary: filters.isInterdisciplinary !== null ? filters.isInterdisciplinary : undefined,
+      groupOpen: filters.hasOpenings !== null ? filters.hasOpenings : undefined,
+      // hasAdvisor: filters.hasAdvisor !== null ? filters.hasAdvisor : undefined,
     },
     include: {
       advisor: true,

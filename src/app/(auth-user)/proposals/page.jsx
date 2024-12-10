@@ -39,10 +39,10 @@ export default function Proposals() {
     //fetch proposals from db with applied filters
     const fetchFilteredProposals = async () => {
       const filters = {
-        departmentIds: selectedItems.length ? selectedItems : "",
-        isInterdisciplinary: radioSelections["Interdisciplinary?"],
-        hasOpenings: radioSelections["Openings for additional members?"],
-        hasAdvisor: radioSelections["Has an advisor already?"],
+        departmentIds: selectedItems.length ? selectedItems : undefined,
+        isInterdisciplinary: radioSelections["Interdisciplinary?"] === 7,
+        hasOpenings: radioSelections["Openings for additional members?"] === 9,
+        hasAdvisor: radioSelections["Has an advisor already?"] === 11,
       };
 
       const results = await proposals(page, 5, filters);
