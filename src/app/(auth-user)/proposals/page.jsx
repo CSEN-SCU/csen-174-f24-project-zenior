@@ -22,6 +22,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { FaLastfmSquare } from "react-icons/fa";
 
 export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Login, Logout } from "@/components/Navbar/AuthButtons";
 
-const Navbar = async () => {
+const Navbar = async() => {
   const session = await auth();
 
   const role = session?.user?.role;
@@ -27,17 +27,20 @@ const Navbar = async () => {
   const facultyLinks = [
     { label: "Projects", href: "/proposals" },
     { label: "Requests", href: "/requests" },
+    { label: "Archive", href: "/archive"},
   ];
 
   const adminLinks = [
     { label: "Admin Dashboard", href: "/admin/dashboard" },
     { label: "Manage Users", href: "/admin/users" },
+    { label: "Archive", href: "/archive"},
   ];
 
   const superAdminLinks = [
     { label: "Super Admin Dashboard", href: "/superadmin/dashboard" },
     { label: "System Logs", href: "/superadmin/logs" },
     { label: "Global Settings", href: "/superadmin/settings" },
+    { label: "Archive", href: "/archive"},
   ];
 
   let navLinks = [];
