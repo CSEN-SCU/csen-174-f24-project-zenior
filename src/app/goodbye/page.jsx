@@ -14,7 +14,7 @@ export default function Goodbye() {
         <Alert>
           <LogOut className="h-6 w-6" style={{ color: "#9e1b32" }} />
           <div>
-            <AlertTitle className="text-xl font-bold">Goodbye!</AlertTitle>
+            <AlertTitle className="text-xl font-bold">Alert!</AlertTitle>
             <AlertDescription className="text-lg mt-1">
               You are not logged in.
             </AlertDescription>
