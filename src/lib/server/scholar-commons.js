@@ -1,4 +1,4 @@
-"use server";
+"use server"
 
 const baseUrl = 'https://content-out.bepress.com/v2/scholarcommons.scu.edu/';
 const init = {
@@ -16,7 +16,6 @@ async function validateResponse(response){
   }
 
   const resultJson = await response.json();
-
   return resultJson.results
 }
 
@@ -31,6 +30,7 @@ async function validateResponse(response){
 // Returns:
 // Array of the 10 oldest theses that Jane Doe has advised. 
 export async function getFacultyPreviousProjects(facultyName, n){
+  "use server"
   if(facultyName === undefined){
     throw new Error("Faculty Required to be defined");
   }
@@ -71,15 +71,30 @@ export async function getThesesWithKeywordFilters(filters, n){
 }
 
 
-export async function getThesesWithDeparment(department, n){
+export async function getThesesWithDepartments(departments, n){
   const limitField = (n? '&limit='+ n : '');
-
+  console.log(departments)
   const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
-  const requestUrl = queryUrl + "&discipline=" + department;
-  console.log(requestUrl);
-  const response = await fetch(requestUrl, init);
-  return validateResponse(response);
+  var results = [];
+  for (let i = 0; i < departments.length; i = i + 1){
+    const requestUrl = queryUrl + '&subject_area=' + departments[i];
+    console.log(requestUrl);
+    const response = await fetch(requestUrl, init);
+    const result = await validateResponse(response);
+    for(let j = 0; j < result.length; j = j + 1){
+      (results.findIndex((item)=> {item.context_key === result[j].context_key}) === -1 ? results.push(result[j]) : console.log("Conext key "+result[j].context_key +"exits"))
+    }
+  }
+  //console.log(results);
+  return results;
 
+}
+
+export async function getTheses(n){
+  const limitField = (n? '&limit=' + n : '');
+  const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
+  const response = await fetch(queryUrl, init);
+  return validateResponse(response);
 }
 
 export async function getThesisWithContextKey(contextKey){

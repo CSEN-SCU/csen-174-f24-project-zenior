@@ -22,25 +22,34 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import { getTheses } from "@/lib/server/scholar-commons";
 import { getThesesWithKeywordFilters } from "@/lib/server/scholar-commons";
-import { getThesesWithDeparment } from "@/lib/server/scholar-commons";
+import { getThesesWithDepartments} from "@/lib/server/scholar-commons";
 
 export default function Archives() {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [departments, setSelectedItems] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
 
   React.useEffect(() => {
-    //fetch archived projects from db with applied filters
-    const fetchFilteredArchives = async () => {
-      console.log(selectedItems);
 
-      const results = await getThesesWithDeparment(selectedItems, 5);
-      setFilteredRows(results);
-    };
-    fetchFilteredArchives();
-  }, [selectedItems, page]);
+      //fetch archived projects from db with applied filters
+      const fetchFilteredArchives = async () => {
+        console.log(departments);
+        var results;
+        if (departments.length === 0){
+          results = await getTheses(5);
+        }else{
+          results = await getThesesWithDepartments(departments, 5);
+        }
+        setFilteredRows(results);
+
+      };
+      fetchFilteredArchives();
+
+  }, [departments, page]);
+
 
   return (
     <div className="px-8 m-9">
@@ -48,7 +57,7 @@ export default function Archives() {
         <div>
           <SidebarProvider className="pr-8">
             <ArchiveSidebar
-              selectedItems={selectedItems}
+              departments={departments}
               setSelectedItems={setSelectedItems}
             />
           </SidebarProvider>
@@ -62,7 +71,7 @@ export default function Archives() {
               <TableBody>
                 {filteredRows.map((row) => (
                   <TableRow
-                    key={row.title}
+                    key={row.context_key}
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>

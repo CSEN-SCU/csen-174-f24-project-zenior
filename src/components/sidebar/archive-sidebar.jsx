@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import {PropTypes} from 'prop-types'
-import { Archive, Filter } from "lucide-react";
+import {  Filter } from "lucide-react";
 
 //grouped filters
 const categories = [
@@ -27,7 +27,7 @@ const categories = [
 ];
 
 ArchiveSidebar.propTypes = {
-    selectedItems: PropTypes.any.isRequired,
+    departments: PropTypes.any.isRequired,
     setSelectedItems: PropTypes.any.isRequired,
 };
 
@@ -69,7 +69,7 @@ export function ArchiveSidebar(props) {
                       <input
                         type="checkbox"
                         label={`checkbox-${option.label}`}
-                        checked={props.selectedItems.includes(option.label)}
+                        checked={props.departments.includes(option.label)}
                         onChange={() => handleCheckboxChange(option.label)}
                         className="mr-2"
                         style={{ accentColor: "#b30738" }}
