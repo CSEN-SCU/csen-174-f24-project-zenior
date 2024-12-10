@@ -1,48 +1,32 @@
 "use client";
-import { useState } from "react";
 
-const AdvisorRequests = () => {
-  const projects = [
-    {
-      id: 1,
-      title:
-        "Privacy-Preserving Fingerprinting of IoT Devices in WiFi Networks",
-      overview:
-        "Identifying and fingerprinting devices within networks is a crucial step for network security. We propose and implement a novel machine learning-based solution that passively fingerprints devices while maintaining user privacy.",
-      members: "Ethan Shenassa, Michael Castillo",
-    },
-    {
-      id: 2,
-      title:
-        "IoTsolate: Network Microsegmentation for Managing and Securing IoT Devices",
-      overview:
-        "IoTsolate uses virtual local area network (VLAN) micro-segmentation to identify,isolate, and neutralize security risks in IoT devices. These devices have limited processing capabilities, diverse designs, and long lifespans, so they lack adequate shielding from attacks. IoTsolate prevents compromised devices from communicating with others, protecting unaffected devices on the network.",
-      members: "Anagha Nair, Chloe Morali",
-    },
-    {
-      id: 3,
-      title: "Ultra Low-power, High-Performance Presence Detection System",
-      overview:
-        "A presence detection system using an accelerometer and T-MOS technology to operate as both a low-power wake-up system for older, resource-intensive security systems and a stand-alone motion-detecting security system.",
-      members: "Dante Bajarias, Christian Medal, Jashan Kaeley",
-    },
-    {
-      id: 4,
-      title: "Edge-Connected Microcontroller Security",
-      overview:
-        "With a wide range of applications and the rise of cyberattacks, securing MCUs has become imperative; however, ensuring MCU performance is also crucial given how interconnected today’s systems are. This project examines the security and performance of next-generation microcontroller units (MCUs) leveraging new security solutions for IoT edge applications. By benchmarking these MCUs against key performance metrics, their viability will be assessed to facilitate the widespread adoption of this new firmware.",
-      members: "Gavin Ryder, Neena Ekanathan, Divya Syal",
-    },
-    {
-      id: 5,
-      title: "E-Scooter Black Box",
-      overview:
-        "Our project is a black box system that is able to record and analyze e-scooter riding data for the purpose of detecting misuse and rough handling of e-scooters in order to improve the cost-effectiveness and appeal of ride-sharing services.",
-      members:
-        "Raghav Batra, Joshua Jerome, Mubashir Hussain, Soham Phadke, Suvass Ravala",
-    },
-  ];
-  const [activeTabs, setActiveTabs] = useState(projects.map(() => "overview"));
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  requestToAdvise,
+  acceptRequest,
+  rejectRequest,
+} from "@/lib/server/advisor-requests";
+
+const AdvisorRequests = ({ requests }) => {
+  const [projects, setProjects] = useState(() =>
+    requests.map((request) => request.project),
+  );
+  const [loading, setLoading] = useState(false);
+
+  const [activeTabs, setActiveTabs] = useState(
+    projects.map(() => "description"),
+  );
 
   const handleTabClick = (index, tab) => {
     const updatedTabs = [...activeTabs];
@@ -50,17 +34,53 @@ const AdvisorRequests = () => {
     setActiveTabs(updatedTabs);
   };
 
+  const handleRequest = async (projectId, action) => {
+    setLoading(true);
+    const requestId = requests.find(
+      (request) => request.projectId === projectId,
+    ).id;
+
+    try {
+      if (action === "accept") {
+        await acceptRequest(requestId);
+      } else {
+        await rejectRequest(requestId);
+      }
+      setProjects((prevProjects) =>
+        prevProjects.filter((project) => project.id !== projectId),
+      );
+    } catch (error) {
+      if (
+        [
+          "Request not found",
+          "Project not found",
+          "Project already has an advisor and co-advisor",
+        ].includes(error.message)
+      ) {
+        alert(error.message);
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <section className="px-8 m-9">
-      <h1 className="pb-2 text-2xl font-bold">
-        The following Senior Design teams have requested you as a faculty
-        advisor.
-      </h1>
-      <h2 className="pb-2 text-xl font-bold">
-        Read the project overview, then click the Manage tab to accept or deny
-        the request.
-      </h2>
-      <br></br>
+      {projects.length > 0 ? (
+        <>
+          <h1 className="pb-2 text-2xl font-bold">
+            The following Senior Design teams have requested you as a faculty
+            advisor.
+          </h1>
+          <h2 className="pb-2 mb-6 text-xl font-bold">
+            Read the project description, then click the Manage tab to accept or
+            deny the request.
+          </h2>
+        </>
+      ) : (
+        <h1 className="pb-2 text-2xl font-bold">
+          No Senior Design teams have requested you as a faculty advisor yet.
+        </h1>
+      )}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {projects.map((project, index) => (
           <div
@@ -70,15 +90,15 @@ const AdvisorRequests = () => {
             <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 bg-gray-50 rounded-t-lg border-b border-gray-200">
               <li className="me-2">
                 <button
-                  id={`overview-tab-${project.id}`}
+                  id={`description-tab-${project.id}`}
                   type="button"
                   role="tab"
-                  aria-controls={`overview-${project.id}`}
-                  aria-selected={activeTabs[index] === "overview"}
-                  className={`inline-block p-4 hover:bg-gray-100 ${activeTabs[index] === "overview" ? "text-gray-900 border-b-2 border-gray-900" : ""}`}
-                  onClick={() => handleTabClick(index, "overview")}
+                  aria-controls={`description-${project.id}`}
+                  aria-selected={activeTabs[index] === "description"}
+                  className={`inline-block p-4 hover:bg-gray-100 ${activeTabs[index] === "description" ? "text-gray-900 border-b-2 border-gray-900" : ""}`}
+                  onClick={() => handleTabClick(index, "description")}
                 >
-                  Project Overview
+                  Project description
                 </button>
               </li>
               <li className="me-2">
@@ -100,16 +120,16 @@ const AdvisorRequests = () => {
 
             {/* Tab Content */}
             <div>
-              {activeTabs[index] === "overview" && (
+              {activeTabs[index] === "description" && (
                 <div
                   className="p-4 bg-white rounded-lg md:p-8"
-                  id={`overview-${project.id}`}
+                  id={`description-${project.id}`}
                   role="tabpanel"
                 >
                   <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900">
                     {project.title}
                   </h2>
-                  <p className="mb-3 text-gray-500">{project.overview}</p>
+                  <p className="mb-3 text-gray-500">{project.description}</p>
                 </div>
               )}
               {activeTabs[index] === "manage" && (
@@ -125,12 +145,24 @@ const AdvisorRequests = () => {
                   </h3>
                   <br></br>
                   <h3>Project Members:</h3>
-                  <p>{project.members}</p>
-                  <button className="py-2 px-4 m-4 text-white cursor-pointer bg-[#07B31B]">
-                    Advise this Project
+                  <p>
+                    {project.members.map((current, idx) => {
+                      return `${current.student.firstName} ${current.student.lastName}${idx === project.members.length - 1 ? "" : ", "}`;
+                    })}
+                  </p>
+                  <button
+                    onClick={() => handleRequest(project.id, "accept")}
+                    className="py-2 px-4 m-4 text-white cursor-pointer bg-[#07B31B]"
+                  >
+                    {loading ? "Approving request..." : "Advise this Project"}
                   </button>
-                  <button className="py-2 px-4 m-4 text-white cursor-pointer bg-[#b30738]">
-                    Do NOT Advise this Project
+                  <button
+                    onClick={() => handleRequest(project.id, "reject")}
+                    className="py-2 px-4 m-4 text-white cursor-pointer bg-[#b30738]"
+                  >
+                    {loading
+                      ? "Denying request..."
+                      : "Do NOT Advise this Project"}
                   </button>
                 </div>
               )}
@@ -142,4 +174,59 @@ const AdvisorRequests = () => {
   );
 };
 
-export { AdvisorRequests };
+AdvisorRequests.propTypes = {
+  requests: PropTypes.array,
+};
+
+const RequestAdvisorButtons = ({ studentId, projects, facultyId }) => {
+  const [loading, setLoading] = useState(false);
+  const handleClick = async (projectId) => {
+    setLoading(true);
+    try {
+      await requestToAdvise(studentId, projectId, facultyId);
+    } catch (error) {
+      if (
+        error.message === "Faculty already requested to advise this project"
+      ) {
+        alert("Faculty already requested to advise this project");
+      }
+    }
+    setLoading(false);
+  };
+  return (
+    <DropdownMenu className="items-end">
+      <DropdownMenuTrigger asChild>
+        <Button variant="custom">
+          {loading ? "Sending request..." : "Request as Advisor"}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>
+          {projects.length > 0
+            ? "Which project proposal would you like to pitch to this faculty member?"
+            : "This faculty member is already advising all of your projects"}
+        </DropdownMenuLabel>
+        {projects.length > 0 && <DropdownMenuSeparator />}
+        <DropdownMenuRadioGroup>
+          {projects.map((project) => (
+            <DropdownMenuRadioItem
+              className="max-w-full cursor-pointer"
+              key={project.id}
+              onClick={() => handleClick(project.id)}
+            >
+              {project.title}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+RequestAdvisorButtons.propTypes = {
+  studentId: PropTypes.string,
+  projects: PropTypes.array,
+  facultyId: PropTypes.string,
+};
+
+export { AdvisorRequests, RequestAdvisorButtons };
