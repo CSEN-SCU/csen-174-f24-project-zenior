@@ -27,6 +27,7 @@ const Navbar = async() => {
   const facultyLinks = [
     { label: "Projects", href: "/proposals" },
     { label: "Requests", href: "/requests" },
+    { label: "Archive", href: "/archive"},
   ];
 
   const adminLinks = [
@@ -39,6 +40,7 @@ const Navbar = async() => {
     { label: "Super Admin Dashboard", href: "/superadmin/dashboard" },
     { label: "System Logs", href: "/superadmin/logs" },
     { label: "Global Settings", href: "/superadmin/settings" },
+    { label: "Archive", href: "/archive"},
   ];
 
   let navLinks = [];
