@@ -30,7 +30,7 @@ title Zenior Database Schema
 ' - For instance, in the `Project` table, `title`, `description`, and `status` depend only on `Project.id`.
 ' - No non-key attribute depends on another non-key attribute, ensuring the database is free from anomalies.
 
-legend top right
+legend top left
   <font size=36><b>Legend</b></font>
   <b><font size=28 color=green>[E]</font> <font size=28>Entity Table</font></b>  
   <b><font size=28 color=orangered>[E]</font> <font size=28>Enum List</font></b>
@@ -41,6 +41,7 @@ enum Role {
   advisor
   admin
   super_admin
+  --
 }
 
 enum ProjectStatus {
@@ -48,17 +49,20 @@ enum ProjectStatus {
   revise_requested
   advisor_approved
   final_approval
+  --
 }
 
 enum RequestStatus {
   pending
   approved
   rejected
+  --
 }
 
 enum GroupRequestType {
   join
   invite
+  --
 }
 
 entity User {
@@ -100,6 +104,23 @@ entity Faculty {
   userId : UUID <<FK>>
 }
 
+entity InterestedIn {
+  * userId : UUID <<FK>>
+  * projectId : UUID <<FK>>
+  --
+  interestedAt : DateTime 
+}
+
+entity AdvisorRequest {
+  * id : UUID <<PK>>
+  --
+  status : RequestStatus
+  studentId : UUID <<FK>>
+  projectId : UUID <<FK>>
+  createdAt : DateTime
+  updatedAt : DateTime
+}
+
 entity Project {
   * id : UUID <<PK>>
   --
@@ -116,36 +137,6 @@ entity Project {
   updatedAt : DateTime
 }
 
-entity Skill {
-  * id : UUID <<PK>>
-  --
-  name : String <<Unique>>
-}
-
-entity ProjectSkill {
-  * projectId : UUID <<FK>>
-  * skillId : UUID <<FK>>
-}
-
-entity Permission {
-  * id : UUID <<PK>>
-  --
-  name : String <<Unique>>
-  description : String
-  role : role <<FK>>
-  userId : UUID? <<FK>>
-}
-
-entity AdvisorRequest {
-  * id : UUID <<PK>>
-  --
-  status : RequestStatus
-  studentId : UUID <<FK>>
-  projectId : UUID <<FK>>
-  createdAt : DateTime
-  updatedAt : DateTime
-}
-
 entity GroupRequest {
   * id : UUID <<PK>>
   --
@@ -157,19 +148,43 @@ entity GroupRequest {
   updatedAt : DateTime
 }
 
+entity Skill {
+  * id : UUID <<PK>>
+  --
+  name : String <<Unique>>
+}
+
+entity ProjectSkill {
+  * projectId : UUID <<FK>>
+  * skillId : UUID <<FK>>
+  --
+}
+
+entity Permission {
+  * id : UUID <<PK>>
+  --
+  name : String <<Unique>>
+  description : String
+  role : role <<FK>>
+  userId : UUID? <<FK>>
+}
+
 entity ProjectMembers {
   * studentId : UUID <<FK>>
   * projectId : UUID <<FK>>
+  --
 }
 
 entity StudentSkills {
   * studentId : UUID <<FK>>
   * skillId : UUID <<FK>>
+  --
 }
 
 entity FacultySkills {
   * facultyId : UUID <<FK>>
   * skillId : UUID <<FK>>
+  --
 }
 
 User ||--o{ Student : "is"
@@ -199,6 +214,8 @@ GroupRequest "type" -- "GroupRequestType"
 
 User ||--o{ GroupRequest : "belongs to"
 Project ||--o{ GroupRequest : "requests for"
+User ||--o{ InterestedIn : "marked interest"
+Project ||--o{ InterestedIn : "interested by"
 
 Faculty ||--o{ Project : "has advisor" 
 Faculty ||--o{ Project : "has co-advisor" 
