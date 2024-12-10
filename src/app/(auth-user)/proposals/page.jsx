@@ -27,9 +27,9 @@ import { FaLastfmSquare } from "react-icons/fa";
 export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [radioSelections, setRadioSelections] = useState({
-    "Interdisciplinary?": false,
-    "Openings for additional members?": true,
-    "Has an advisor already?": false,
+    "Interdisciplinary?": null,
+    "Openings for additional members?": 9,
+    "Has an advisor already?": null,
   });
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
