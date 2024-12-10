@@ -1,6 +1,5 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
 // Function returns array of m projects that are currently proposed starting at the
 // nth record.

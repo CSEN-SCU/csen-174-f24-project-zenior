@@ -1,11 +1,8 @@
 "use client";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ArchiveSidebar } from "@/components/sidebar/archive-sidebar";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -23,33 +20,28 @@ import {
 } from "@/components/ui/pagination";
 
 import { getTheses } from "@/lib/server/scholar-commons";
-import { getThesesWithKeywordFilters } from "@/lib/server/scholar-commons";
-import { getThesesWithDepartments} from "@/lib/server/scholar-commons";
+import { getThesesWithDepartments } from "@/lib/server/scholar-commons";
 
 export default function Archives() {
   const [departments, setSelectedItems] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
-  const [maxPages, setMaxPages] = useState(0);
+  const [maxPages] = useState(0);
 
-  React.useEffect(() => {
-
-      //fetch archived projects from db with applied filters
-      const fetchFilteredArchives = async () => {
-        console.log(departments);
-        var results;
-        if (departments.length === 0){
-          results = await getTheses(5);
-        }else{
-          results = await getThesesWithDepartments(departments, 5);
-        }
-        setFilteredRows(results);
-
-      };
-      fetchFilteredArchives();
-
+  useEffect(() => {
+    //fetch archived projects from db with applied filters
+    const fetchFilteredArchives = async () => {
+      console.log(departments);
+      var results;
+      if (departments.length === 0) {
+        results = await getTheses(5);
+      } else {
+        results = await getThesesWithDepartments(departments, 5);
+      }
+      setFilteredRows(results);
+    };
+    fetchFilteredArchives();
   }, [departments, page]);
-
 
   return (
     <div className="px-8 m-9">
@@ -64,7 +56,7 @@ export default function Archives() {
         </div>
 
         <div>
-          <h1 className="font-black text-3xl pb-6">Project Archive</h1>
+          <h1 className="pb-6 text-3xl font-black">Project Archive</h1>
 
           <TableContainer component={Paper}>
             <Table>
@@ -78,25 +70,24 @@ export default function Archives() {
                       <div className="flex flex-col p-4 rounded-lg space-y2">
                         <a
                           href={`/archive/${row.context_key}`}
-                          className="underline text-[#b30738] text-xl font-bold"
+                          className="text-xl font-bold underline text-[#b30738]"
                         >
                           {row.title}
                         </a>
                         <div>
-                          {row.abstract.length > 280 ? 
-                          (<>
-                          {row.abstract.slice(0, 280)}...
+                          {row.abstract.length > 280 ? (
+                            <>
+                              {row.abstract.slice(0, 280)}...
                               <a
                                 href={`/archive/${row.id}`}
                                 className="underline text-[#b30738]"
                               >
                                 Read more
                               </a>
-                          </>
-                          ) :
-                          (row.abstract)
-                        } 
-
+                            </>
+                          ) : (
+                            row.abstract
+                          )}
                         </div>
                       </div>
                     </TableCell>

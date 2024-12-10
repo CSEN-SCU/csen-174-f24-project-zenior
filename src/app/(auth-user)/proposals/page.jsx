@@ -1,4 +1,5 @@
 "use client";
+
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Link from "next/link";
@@ -22,7 +23,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { FaLastfmSquare } from "react-icons/fa";
 
 export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -74,8 +74,8 @@ export default function Proposals() {
         </div>
 
         <div>
-          <h1 className="font-black text-3xl pb-6">Project Proposals</h1>
-          <div className="flex flex-row ">
+          <h1 className="pb-6 text-3xl font-black">Project Proposals</h1>
+          <div className="flex flex-row">
             <p className="pr-4 pb-8">Add Your Own Proposal</p>
             <Link href={`/proposal-form`}>
               <Plus size="20" color={"#b30738"} />
@@ -94,7 +94,7 @@ export default function Proposals() {
                       <div className="flex flex-col p-4 rounded-lg space-y2">
                         <a
                           href={`/proposals/${row.id}`}
-                          className="underline text-[#b30738] text-xl font-bold"
+                          className="text-xl font-bold underline text-[#b30738]"
                         >
                           {row.title}
                         </a>
