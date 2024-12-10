@@ -22,15 +22,15 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Next.js-12.0.7-blue" alt="Next.js Version"/>
-    <img src="https://img.shields.io/badge/Prisma-2.0-blue" alt="Prisma Version"/>
+    <img src="https://img.shields.io/badge/Next.js-15.0.2-blue" alt="Next.js Version"/>
+    <img src="https://img.shields.io/badge/Prisma-5.22-blue" alt="Prisma Version"/>
 </p>
 
-## 🌐 About 
+## 🌐 About
 
 Zeinor is a comprehensive platform for rising juniors in the School of Engineering, designed to facilitate their preparation for senior design projects. It offers tools for students to explore and plan their projects efficiently for the upcoming year. Additionally, the platform enables faculty members to submit research topics and project opportunities that students can collaborate on, fostering a dynamic and collaborative environment for academic development and innovation.
 
-### 🛠️ Features 
+### 🛠️ Features
 
 - ⚡ **Project Planning and Exploration**: Assists juniors in the School of Engineering to discover and organize their senior design projects efficiently.
 - ✨ **Faculty Collaboration**: Faculty members can submit research topics and project ideas, making it easy for students to connect with real-world opportunities.
@@ -196,5 +196,3 @@ To create C4 model diagrams, you can use the [C4-PlantUML library](https://githu
 This project is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html). This license grants you the freedom to use, study, modify, and share the software. However, any modifications or derived works must also be distributed under the same license.
 
 For the complete terms, see the [LICENSE](./LICENSE) file.
-
-
