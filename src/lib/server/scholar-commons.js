@@ -79,11 +79,14 @@ export async function getThesesWithDepartments(departments, n){
   console.log(departments)
   const queryUrl = baseUrl + 'query?virtual_ancestor_link=http://scholarcommons.scu.edu/eng_senior_theses&select_fields=all' + limitField;
   var results = [];
+  // Need to request multiple times as digital commons RESTv2 api doesn't allow for logical filtering.
   for (let i = 0; i < departments.length; i = i + 1){
     const requestUrl = queryUrl + '&subject_area=' + departments[i];
     console.log(requestUrl);
     const response = await fetch(requestUrl, init);
     const result = await validateResponse(response);
+    // For each response make sure that a unique response hasn't already been returned due to interdisciplinary projects
+    // @note: This will get slow if we try to request more than 20 at a time.
     for(let j = 0; j < result.length; j = j + 1){
       (results.findIndex((item)=> {return (item["context_key"] === result[j]["context_key"]);}) === -1 ? results.push(result[j]) : undefined)
     }
