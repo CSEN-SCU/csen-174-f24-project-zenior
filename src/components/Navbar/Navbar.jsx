@@ -46,12 +46,12 @@ const Navbar = async () => {
     role === "student"
       ? studentLinks
       : role === "faculty"
-      ? facultyLinks
-      : role === "admin"
-      ? adminLinks
-      : role === "super_admin"
-      ? superAdminLinks
-      : [];
+        ? facultyLinks
+        : role === "admin"
+          ? adminLinks
+          : role === "super_admin"
+            ? superAdminLinks
+            : [];
 
   return (
     <nav className="bg-[#b30738] text-white">
@@ -110,11 +110,11 @@ const Navbar = async () => {
                 <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/my-profile">My Profile</Link>
                 </DropdownMenuItem>
-                {role === "student" && (
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href="/my-team">My Team</Link>
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/my-team">
+                    {role === "student" ? "My Team" : "My Projects"}
+                  </Link>
+                </DropdownMenuItem>
                 <Logout />
               </DropdownMenuContent>
             </DropdownMenu>

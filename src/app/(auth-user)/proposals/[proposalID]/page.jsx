@@ -48,7 +48,7 @@ export default async function ProposalDetails({ params }) {
             <span key={member.student.id}>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger className="text-[#b30738] underline decoration-solid">
+                  <TooltipTrigger className="text-[#b30738] mr-1 underline decoration-solid">
                     {member.student.firstName} {member.student.lastName}
                   </TooltipTrigger>
                   <TooltipContent>
