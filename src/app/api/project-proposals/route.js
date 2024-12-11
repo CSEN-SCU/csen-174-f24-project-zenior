@@ -53,8 +53,23 @@ export async function POST(request) {
     const newProject = await projects.create(data);
 
     members.map(async (email) => {
-      // add request
-      console.log(email);
+      const student = await prisma.user.findUnique({
+        where: { email },
+        include: {
+          Student: true,
+        },
+      });
+
+      if (!student || !student.Student) {
+        return;
+      }
+
+      await prisma.ProjectMember.create({
+        data: {
+          studentId: student.Student.id,
+          projectId: newProject.id,
+        },
+      });
     });
 
     advisors.map(async (email) => {

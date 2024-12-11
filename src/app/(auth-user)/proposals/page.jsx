@@ -31,7 +31,7 @@ export default function Proposals() {
     "Openings for additional members?": 9,
     "Has an advisor already?": null,
   });
-  const [filteredRows, setFilteredRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState(null);
   const [page, setPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
 
@@ -58,6 +58,10 @@ export default function Proposals() {
     };
     fetchCountProposals();
   }, []);
+
+  if (!filteredRows) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="px-8 m-9">
