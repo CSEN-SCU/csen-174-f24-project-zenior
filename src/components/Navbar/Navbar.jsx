@@ -44,12 +44,12 @@ const Navbar = async () => {
     role === "student"
       ? studentLinks
       : role === "faculty"
-      ? facultyLinks
-      : role === "admin"
-      ? adminLinks
-      : role === "super_admin"
-      ? superAdminLinks
-      : [];
+        ? facultyLinks
+        : role === "admin"
+          ? adminLinks
+          : role === "super_admin"
+            ? superAdminLinks
+            : [];
 
   return (
     <nav className="bg-[#b30738] text-white">
@@ -69,19 +69,20 @@ const Navbar = async () => {
 
         {/* Navigation Links */}
         <div className="flex items-center space-x-4">
-          {session
-            ? navLinks.map((link) => (
-                <Button
-                  key={link.href}
-                  variant="ghost"
-                  asChild
-                  className="hover:text-[#9e1b32] transition-colors text-base font-medium"
-                >
-                  <Link href={link.href}>{link.label}</Link>
-                </Button>
-              ))
-            : <Login />
-          }
+          {session ? (
+            navLinks.map((link) => (
+              <Button
+                key={link.href}
+                variant="ghost"
+                asChild
+                className="hover:text-[#9e1b32] transition-colors text-base font-medium"
+              >
+                <Link href={link.href}>{link.label}</Link>
+              </Button>
+            ))
+          ) : (
+            <Login />
+          )}
 
           {/* Profile or Sign-In Button */}
           {session && (
@@ -108,11 +109,11 @@ const Navbar = async () => {
                 <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/my-profile">My Profile</Link>
                 </DropdownMenuItem>
-                {role === "student" && (
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href="/my-team">My Team</Link>
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/my-team">
+                    {role === "student" ? "My Team" : "My Projects"}
+                  </Link>
+                </DropdownMenuItem>
                 <Logout />
               </DropdownMenuContent>
             </DropdownMenu>

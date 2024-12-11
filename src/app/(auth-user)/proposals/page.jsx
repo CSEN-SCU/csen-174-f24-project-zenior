@@ -1,12 +1,11 @@
 "use client";
+
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { countProposals, proposals } from "@/lib/server/proposals";
-
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -22,7 +21,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { FaLastfmSquare } from "react-icons/fa";
 
 export default function Proposals() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -31,11 +29,11 @@ export default function Proposals() {
     "Openings for additional members?": 9,
     "Has an advisor already?": null,
   });
-  const [filteredRows, setFilteredRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState(null);
   const [page, setPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //fetch proposals from db with applied filters
     const fetchFilteredProposals = async () => {
       const filters = {
@@ -51,13 +49,17 @@ export default function Proposals() {
     fetchFilteredProposals();
   }, [selectedItems, radioSelections, page]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchCountProposals = async () => {
       const count = await countProposals();
       setMaxPages(Math.ceil(count / 5));
     };
     fetchCountProposals();
   }, []);
+
+  if (!filteredRows) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="px-8 m-9">
@@ -74,8 +76,8 @@ export default function Proposals() {
         </div>
 
         <div>
-          <h1 className="font-black text-3xl pb-6">Project Proposals</h1>
-          <div className="flex flex-row ">
+          <h1 className="pb-6 text-3xl font-black">Project Proposals</h1>
+          <div className="flex flex-row">
             <p className="pr-4 pb-8">Add Your Own Proposal</p>
             <Link href={`/proposal-form`}>
               <Plus size="20" color={"#b30738"} />
@@ -94,7 +96,7 @@ export default function Proposals() {
                       <div className="flex flex-col p-4 rounded-lg space-y2">
                         <a
                           href={`/proposals/${row.id}`}
-                          className="underline text-[#b30738] text-xl font-bold"
+                          className="text-xl font-bold underline text-[#b30738]"
                         >
                           {row.title}
                         </a>
