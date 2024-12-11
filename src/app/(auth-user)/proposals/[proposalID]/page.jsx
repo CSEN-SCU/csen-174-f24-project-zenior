@@ -13,9 +13,11 @@ import InterestedButton from "@/components/InterestedButton";
 export default async function ProposalDetails({ params }) {
   const currParams = await params;
   const proposals = await projects.get({ id: currParams.proposalID });
+
   if (!proposals[0]) {
     return <div>Proposal was deleted or couldn&apos;t be found</div>;
   }
+
   const session = await auth();
   const user = session.user;
 
@@ -83,7 +85,7 @@ export default async function ProposalDetails({ params }) {
                 </TooltipProvider>
               </span>
             ))}
-            <br></br>
+            <br />
             <span className="font-semibold">Advisor:</span>{" "}
             {!advisor && !coAdvisor ? "None yet" : ""}
             {advisor && (
@@ -144,15 +146,15 @@ export default async function ProposalDetails({ params }) {
                 </Tooltip>
               </TooltipProvider>
             )}
-            <br></br>
+            <br />
             <span className="font-semibold">Department:</span>{" "}
             {department ? department : "None yet"}
-            <br></br>
+            <br />
           </div>
-          <br></br>
+          <br />
           <h2 className="text-lg font-semibold">Description:</h2>
           <p>{description}</p>
-          <br></br>
+          <br />
           <h3 className="font-semibold">Desired Skillsets</h3>
           <ul className="list-disc pl-8 pb-4">
             {skills.map((skill) => (
@@ -166,7 +168,7 @@ export default async function ProposalDetails({ params }) {
               projectId={currParams.proposalID}
               willDeleteOnLeave={willDeleteOnLeave}
             />
-            <InterestedButton />
+            <InterestedButton projectId={currParams.proposalID} />
           </div>
         </div>
       </main>
