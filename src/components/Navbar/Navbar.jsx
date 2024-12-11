@@ -38,6 +38,7 @@ const Navbar = async () => {
   const superAdminLinks = [
     { label: "Dashboard", href: "/superadmin/dashboard" },
     { label: "Projects", href: "/proposals" },
+    { label: "Faculty Directory", href: "/advisor-directory" },
     { label: "Archive", href: "/archive" },
   ];
 
