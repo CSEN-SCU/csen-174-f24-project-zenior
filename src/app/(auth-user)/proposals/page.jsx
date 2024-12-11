@@ -12,6 +12,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import InterestedButton from "@/components/InterestedButton";
 
 import {
   Pagination,
@@ -93,7 +94,7 @@ export default function Proposals() {
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>
-                      <div className="flex flex-col p-4 rounded-lg space-y2">
+                      <div className="flex flex-col p-4 rounded-lg space-y-2">
                         <a
                           href={`/proposals/${row.id}`}
                           className="text-xl font-bold underline text-[#b30738]"
@@ -115,8 +116,8 @@ export default function Proposals() {
                             row.description
                           )}
                         </div>
-                        <br></br>
-                        <div>
+                        <br />
+                        <div className="flex items-center space-x-4">
                           {row.advisor ? (
                             <>
                               <span className="font-semibold">Advisor</span>:{" "}
@@ -127,6 +128,7 @@ export default function Proposals() {
                           ) : (
                             <span className="font-semibold">No Advisor</span>
                           )}
+                          <InterestedButton />
                         </div>
                       </div>
                     </TableCell>
