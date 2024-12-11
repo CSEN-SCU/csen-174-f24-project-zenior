@@ -34,9 +34,9 @@ export default function Archives() {
       console.log(departments);
       var results;
       if (departments.length === 0) {
-        results = await getTheses(5);
+        results = await getTheses(page);
       } else {
-        results = await getThesesWithDepartments(departments, 5);
+        results = await getThesesWithDepartments(departments, page);
       }
       setFilteredRows(results);
     };
