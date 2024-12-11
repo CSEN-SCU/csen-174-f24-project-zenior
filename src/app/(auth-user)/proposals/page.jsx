@@ -4,10 +4,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { countProposals, proposals } from "@/lib/server/proposals";
-
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -35,7 +33,7 @@ export default function Proposals() {
   const [page, setPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //fetch proposals from db with applied filters
     const fetchFilteredProposals = async () => {
       const filters = {
@@ -51,7 +49,7 @@ export default function Proposals() {
     fetchFilteredProposals();
   }, [selectedItems, radioSelections, page]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchCountProposals = async () => {
       const count = await countProposals();
       setMaxPages(Math.ceil(count / 5));
