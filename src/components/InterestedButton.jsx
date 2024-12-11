@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 export default function InterestedButton({ projectId }) {
   const [isInterested, setIsInterested] = useState(false);
@@ -17,7 +18,9 @@ export default function InterestedButton({ projectId }) {
 
         console.log("Fetching interest state for projectId:", projectId);
 
-        const response = await fetch(`/api/interested-in?projectId=${projectId}`);
+        const response = await fetch(
+          `/api/interested-in?projectId=${projectId}`,
+        );
         if (!response.ok) {
           const errorDetails = await response.text();
           throw new Error(`API error: ${response.status} ${errorDetails}`);
@@ -40,7 +43,9 @@ export default function InterestedButton({ projectId }) {
     setLoading(true);
     try {
       if (!projectId) {
-        throw new Error("No projectId provided to handleClick in InterestedButton");
+        throw new Error(
+          "No projectId provided to handleClick in InterestedButton",
+        );
       }
 
       const response = await fetch(`/api/interested-in`, {
@@ -68,15 +73,19 @@ export default function InterestedButton({ projectId }) {
       variant="custom"
       onClick={handleClick}
       disabled={loading}
-      className={`flex items-center space-x-2 bg-[#b30738] text-white hover:bg-[#9e1b32] transition-colors ${
-        loading ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      className={`flex px-2 items-center bg-[#b30738] text-white hover:bg-[#9e1b32] transition-colors ${loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
     >
       <Star
-        className={isInterested ? "text-yellow-500 fill-yellow-500" : "text-yellow-500"}
+        className={
+          isInterested ? "text-yellow-500 fill-yellow-500" : "text-yellow-500"
+        }
         size={20}
       />
-      <span>{loading ? "Loading..." : isInterested ? "Not Interested" : "Interested In"}</span>
     </Button>
   );
 }
+
+InterestedButton.propTypes = {
+  projectId: PropTypes.string.isRequired,
+};
