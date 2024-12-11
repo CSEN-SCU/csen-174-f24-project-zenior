@@ -7,7 +7,6 @@ export default async function ArchiveDetails({ params }) {
   if (!previousProject) {
     return <div>Proposal not found</div>;
   }
-  console.log(previousProject);
   return (
     <div className="p-2 m-6">
       <div className="p-6 m-6 bg-slate-100">

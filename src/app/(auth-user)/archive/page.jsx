@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { getTheses } from "@/lib/server/scholar-commons";
-import { getThesesWithDepartments } from "@/lib/server/scholar-commons";
+import { getThesesWithDepartments} from "@/lib/server/scholar-commons";
 
 export default function Archives() {
   const [departments, setSelectedItems] = useState([]);
@@ -42,6 +42,11 @@ export default function Archives() {
     };
     fetchFilteredArchives();
   }, [departments, page]);
+
+  if(filteredRows.length === 0){
+    return <p>Loading..</p>
+  }
+
 
   return (
     <div className="px-8 m-9">
