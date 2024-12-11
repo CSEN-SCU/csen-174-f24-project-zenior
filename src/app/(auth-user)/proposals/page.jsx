@@ -12,6 +12,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import InterestedButton from "@/components/InterestedButton";
 
 import {
   Pagination,
@@ -89,17 +90,20 @@ export default function Proposals() {
               <TableBody>
                 {filteredRows.map((row) => (
                   <TableRow
-                    key={row.title}
+                    key={row.id}
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>
-                      <div className="flex flex-col p-4 rounded-lg space-y2">
-                        <a
-                          href={`/proposals/${row.id}`}
-                          className="text-xl font-bold underline text-[#b30738]"
-                        >
-                          {row.title}
-                        </a>
+                      <div className="flex flex-col p-4 rounded-lg space-y-2">
+                        <div className="flex justify-between">
+                          <a
+                            href={`/proposals/${row.id}`}
+                            className="text-xl font-bold underline text-[#b30738]"
+                          >
+                            {row.title}
+                          </a>
+                          <InterestedButton projectId={row.id} />
+                        </div>
                         <div>
                           {row.description.length > 280 ? (
                             <>
@@ -115,8 +119,8 @@ export default function Proposals() {
                             row.description
                           )}
                         </div>
-                        <br></br>
-                        <div>
+                        <br />
+                        <div className="flex items-center space-x-4">
                           {row.advisor ? (
                             <>
                               <span className="font-semibold">Advisor</span>:{" "}
