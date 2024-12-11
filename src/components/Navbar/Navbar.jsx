@@ -31,12 +31,14 @@ const Navbar = async () => {
   const adminLinks = [
     { label: "Dashboard", href: "/admin/dashboard" },
     { label: "Projects", href: "/proposals" },
+    { label: "Faculty Directory", href: "/advisor-directory" },
     { label: "Archive", href: "/archive" },
   ];
 
   const superAdminLinks = [
     { label: "Dashboard", href: "/superadmin/dashboard" },
     { label: "Projects", href: "/proposals" },
+    { label: "Faculty Directory", href: "/advisor-directory" },
     { label: "Archive", href: "/archive" },
   ];
 
@@ -53,9 +55,9 @@ const Navbar = async () => {
 
   return (
     <nav className="bg-[#b30738] text-white">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-4">
+      <div className="max-w-screen-xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col items-center md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
           <a href="/" className="flex items-center space-x-2">
             <Image
               src="/images/square-whitetree-nobg.png"
@@ -63,26 +65,25 @@ const Navbar = async () => {
               width={42}
               height={42}
             />
-            <span className="text-3xl font-semibold">Zenior</span>
+            <span className="text-3xl font-semibold text-center md:text-left">Zenior</span>
           </a>
         </div>
 
         {/* Navigation Links */}
-        <div className="flex items-center space-x-4">
-          {session ? (
-            navLinks.map((link) => (
-              <Button
-                key={link.href}
-                variant="ghost"
-                asChild
-                className="hover:text-[#9e1b32] transition-colors text-base font-medium"
-              >
-                <Link href={link.href}>{link.label}</Link>
-              </Button>
-            ))
-          ) : (
-            <Login />
-          )}
+        <div className="flex items-center space-x-4 mt-4 md:mt-0">
+          {session
+            ? navLinks.map((link) => (
+                <Button
+                  key={link.href}
+                  variant="ghost"
+                  asChild
+                  className="hover:text-[#9e1b32] transition-colors text-base font-medium"
+                >
+                  <Link href={link.href}>{link.label}</Link>
+                </Button>
+              ))
+            : <Login />
+          }
 
           {/* Profile or Sign-In Button */}
           {session && (
