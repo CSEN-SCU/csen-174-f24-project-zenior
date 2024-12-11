@@ -90,17 +90,20 @@ export default function Proposals() {
               <TableBody>
                 {filteredRows.map((row) => (
                   <TableRow
-                    key={row.title}
+                    key={row.id}
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>
                       <div className="flex flex-col p-4 rounded-lg space-y-2">
-                        <a
-                          href={`/proposals/${row.id}`}
-                          className="text-xl font-bold underline text-[#b30738]"
-                        >
-                          {row.title}
-                        </a>
+                        <div className="flex justify-between">
+                          <a
+                            href={`/proposals/${row.id}`}
+                            className="text-xl font-bold underline text-[#b30738]"
+                          >
+                            {row.title}
+                          </a>
+                          <InterestedButton projectId={row.id} />
+                        </div>
                         <div>
                           {row.description.length > 280 ? (
                             <>
@@ -128,7 +131,6 @@ export default function Proposals() {
                           ) : (
                             <span className="font-semibold">No Advisor</span>
                           )}
-                          <InterestedButton />
                         </div>
                       </div>
                     </TableCell>
