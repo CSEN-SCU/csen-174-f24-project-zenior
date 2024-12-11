@@ -49,6 +49,7 @@ model User {
   Student Student?
   Faculty Faculty?
   GroupRequest   GroupRequest[]
+  InterestedIn   InterestedIn[]
 }
 
 model Student {
@@ -115,6 +116,7 @@ model Project {
 
   AdvisorRequest AdvisorRequest[]
   GroupRequest   GroupRequest[]
+  InterestedIn   InterestedIn[]
 }
 
 model AdvisorRequest {
@@ -190,4 +192,15 @@ model ProjectSkill {
   skillId   String
 
   @@id([projectId, skillId])
+}
+
+model InterestedIn {
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  interestedAt DateTime @default(now())
+
+  userId       String
+  projectId    String
+
+  @@id([userId, projectId]) 
 }
