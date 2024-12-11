@@ -55,9 +55,9 @@ const Navbar = async () => {
 
   return (
     <nav className="bg-[#b30738] text-white">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-4">
+      <div className="max-w-screen-xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col items-center md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-2">
           <a href="/" className="flex items-center space-x-2">
             <Image
               src="/images/square-whitetree-nobg.png"
@@ -65,12 +65,12 @@ const Navbar = async () => {
               width={42}
               height={42}
             />
-            <span className="text-3xl font-semibold">Zenior</span>
+            <span className="text-3xl font-semibold text-center md:text-left">Zenior</span>
           </a>
         </div>
 
         {/* Navigation Links */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mt-4 md:mt-0">
           {session
             ? navLinks.map((link) => (
                 <Button
