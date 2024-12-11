@@ -23,9 +23,6 @@ const createRequest = async (projectId, userId, role, GroupRequest) => {
       userId,
     },
   });
-
-  revalidatePath(`/proposals/${projectId}`);
-  revalidatePath(`/my-team`);
 };
 
 export const requestToJoinProject = async (projectId, newMember) => {
@@ -52,6 +49,7 @@ export const requestToJoinProject = async (projectId, newMember) => {
   });
 
   createRequest(projectId, userId, role, GroupRequest);
+
   revalidatePath(`/proposals/${projectId}`);
   revalidatePath(`/my-team`);
 };
