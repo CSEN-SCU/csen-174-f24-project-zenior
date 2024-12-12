@@ -82,16 +82,16 @@ export default function Archives() {
                         <div>
                           {row.abstract.length > 280 ? (
                             <>
-                              {row.abstract.slice(0, 280)}...
+                            {<div dangerouslySetInnerHTML={{__html: row.abstract.slice(0, 120)}}/>}...
                               <a
-                                href={`/archive/${row.id}`}
+                                href={`/archive/${row.context_key}`}
                                 className="underline text-[#b30738]"
                               >
                                 Read more
                               </a>
                             </>
                           ) : (
-                            row.abstract
+                            <div dangerouslySetInnerHTML={{__html: row.abstract}}/>
                           )}
                         </div>
                       </div>

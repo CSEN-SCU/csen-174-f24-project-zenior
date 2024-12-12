@@ -124,16 +124,16 @@ export default async function AdvisorDetails({ params }) {
             <div>
               {project.abstract.length > 120 ? (
                 <>
-                  {project.abstract.slice(0, 120)}...
+                  {<div dangerouslySetInnerHTML={{__html: project.abstract.slice(0, 120)}}/>}...
                   <a
-                    href={`/archive/${project.id}`}
+                    href={`/archive/${project.context_key}`}
                     className="underline text-[#b30738]"
                   >
                     Read more
                   </a>
                 </>
               ) : (
-                project.abstract
+                <div dangerouslySetInnerHTML={{__html: project.abstract}}/>
               )}
             </div>
           </div>

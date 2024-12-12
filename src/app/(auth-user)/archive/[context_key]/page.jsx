@@ -17,7 +17,7 @@ export default async function ArchiveDetails({ params }) {
         </div>
         <br></br>
         <h2 className="text-lg font-semibold">Description:</h2>
-        <p>{previousProject[0].abstract}</p>
+        <div dangerouslySetInnerHTML={{__html: previousProject[0].abstract}}/>
         <br></br>
       </div>
     </div>
