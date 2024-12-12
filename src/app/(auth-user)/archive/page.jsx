@@ -15,7 +15,6 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
@@ -57,7 +56,7 @@ export default function Archives() {
   }
 
   return (
-    <div className="px-8 m-9">
+    <div className="sm:px-8 m-9">
       <div className="flex flex-row">
         <div>
           <SidebarProvider className="pr-8">
@@ -68,7 +67,7 @@ export default function Archives() {
           </SidebarProvider>
         </div>
 
-        <div className="w-[calc(100vw-288px-64px)]">
+        <div className="sm:w-[calc(100vw-288px-64px)]">
           <h1 className="pb-6 text-3xl font-black">Project Archive</h1>
 
           <TableContainer
@@ -125,18 +124,9 @@ export default function Archives() {
                 }}
               />
             </PaginationItem>
-            {[...Array(maxPages).keys()].map((i) => (
-              <PaginationItem className="cursor-pointer" key={i}>
-                <PaginationLink
-                  className={page === i * 5 ? "font-bold" : ""}
-                  onClick={() => {
-                    setPage(i * 5);
-                  }}
-                >
-                  {i + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+            <p>
+              Page {page / 5 + 1} / {maxPages}
+            </p>
             <PaginationItem className="cursor-pointer">
               <PaginationNext
                 disabled={maxPages <= Math.ceil((page + 5) / 5)}

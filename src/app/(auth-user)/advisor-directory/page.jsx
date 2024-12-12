@@ -19,7 +19,7 @@ export default async function Directory() {
   }
 
   return (
-    <div className="px-8 m-9">
+    <div className="sm:px-8 m-9">
       <div className="flex flex-row">
         <div>
           <SidebarProvider className="pr-8">

@@ -73,7 +73,7 @@ export default function InterestedButton({ projectId }) {
       variant="custom"
       onClick={handleClick}
       disabled={loading}
-      className={`flex px-2 items-center bg-[#b30738] text-white hover:bg-[#9e1b32] transition-colors ${loading ? "opacity-50 cursor-not-allowed" : ""
+      className={`flex px-2 min-w-fit ml-2 items-center bg-[#b30738] text-white hover:bg-[#9e1b32] transition-colors ${loading ? "opacity-50 cursor-not-allowed" : ""
         }`}
     >
       <Star

@@ -18,7 +18,6 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
@@ -63,18 +62,16 @@ export default function Proposals() {
   }
 
   return (
-    <div className="px-8 m-9">
+    <div className="sm:px-8 m-9">
       <div className="flex flex-row">
-        <div>
-          <SidebarProvider className="pr-8">
-            <AppSidebar
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-              radioSelections={radioSelections}
-              setRadioSelections={setRadioSelections}
-            />
-          </SidebarProvider>
-        </div>
+        <SidebarProvider className="pr-8">
+          <AppSidebar
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+            radioSelections={radioSelections}
+            setRadioSelections={setRadioSelections}
+          />
+        </SidebarProvider>
 
         <div>
           <h1 className="pb-6 text-3xl font-black">Project Proposals</h1>
@@ -154,18 +151,9 @@ export default function Proposals() {
                 }}
               />
             </PaginationItem>
-            {[...Array(maxPages).keys()].map((i) => (
-              <PaginationItem className="cursor-pointer" key={i}>
-                <PaginationLink
-                  className={page === i * 5 ? "font-bold" : ""}
-                  onClick={() => {
-                    setPage(i * 5);
-                  }}
-                >
-                  {i + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+            <p>
+              Page {page / 5 + 1} / {maxPages}
+            </p>
             <PaginationItem className="cursor-pointer">
               <PaginationNext
                 disabled={maxPages <= Math.ceil((page + 5) / 5)}
