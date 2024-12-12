@@ -7,8 +7,8 @@ import {
   SidebarGroup,
 } from "@/components/ui/sidebar";
 
-import {PropTypes} from 'prop-types'
-import {  Filter } from "lucide-react";
+import { PropTypes } from "prop-types";
+import { Filter } from "lucide-react";
 
 //grouped filters
 const categories = [
@@ -17,30 +17,30 @@ const categories = [
     type: "checkbox",
     options: [
       { label: "Bioengineering" },
-      { label: "Biomedical Engineering and Bioengineering"},
+      { label: "Biomedical Engineering and Bioengineering" },
       { label: "Civil, Environmental and Sustainable Engineering" },
-      { label: "Civil and Environmental Engineering"},
+      { label: "Civil and Environmental Engineering" },
       { label: "Computer Engineering" },
-      { label: "Computer Science and Engineering"},
+      { label: "Computer Science and Engineering" },
       { label: "Electrical and Computer Engineering" },
       { label: "General Engineering" },
       { label: "Mechanical Engineering" },
-    ]
-  }
+    ],
+  },
 ];
 
 ArchiveSidebar.propTypes = {
-    departments: PropTypes.any.isRequired,
-    setSelectedItems: PropTypes.any.isRequired,
+  departments: PropTypes.any.isRequired,
+  setSelectedItems: PropTypes.any.isRequired,
 };
 
 export function ArchiveSidebar(props) {
-
-
   const handleCheckboxChange = (label) => {
     //if label is unchecked, add it to the array
     props.setSelectedItems((prev) =>
-      prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label],
+      prev.includes(label)
+        ? prev.filter((item) => item !== label)
+        : [...prev, label],
     );
   };
 
@@ -54,7 +54,7 @@ export function ArchiveSidebar(props) {
       <SidebarContent>
         <div className="p-4">
           <div className="flex flex-row items-center">
-            <h2 className="font-semibold text-lg pr-4">Filter</h2>
+            <h2 className="pr-4 text-lg font-semibold">Filter</h2>
             <Filter size="15" />
           </div>
 
@@ -64,28 +64,28 @@ export function ArchiveSidebar(props) {
             </span>
           </button>
           {categories.map((category) => (
-            <SidebarGroup key={category.category} className="mb-6 p-1">
-              <h3 className="font-medium text-sm mb-2">{category.category}</h3>
-                <ul>
-                  {category.options.map((option) => (
-                    <li key={option.label} className="flex items-center mb-2">
-                      <input
-                        type="checkbox"
-                        label={`checkbox-${option.label}`}
-                        checked={props.departments.includes(option.label)}
-                        onChange={() => handleCheckboxChange(option.label)}
-                        className="mr-2"
-                        style={{ accentColor: "#b30738" }}
-                      />
-                      <label
-                        htmlFor={`checkbox-${option.label}`}
-                        className="text-xs"
-                      >
-                        {option.label}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+            <SidebarGroup key={category.category} className="p-1 mb-6">
+              <h3 className="mb-2 text-sm font-medium">{category.category}</h3>
+              <ul>
+                {category.options.map((option) => (
+                  <li key={option.label} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`checkbox-${option.label}`}
+                      checked={props.departments.includes(option.label)}
+                      onChange={() => handleCheckboxChange(option.label)}
+                      className="mr-2"
+                      style={{ accentColor: "#b30738" }}
+                    />
+                    <label
+                      htmlFor={`checkbox-${option.label}`}
+                      className="text-xs"
+                    >
+                      {option.label}
+                    </label>
+                  </li>
+                ))}
+              </ul>
             </SidebarGroup>
           ))}
         </div>

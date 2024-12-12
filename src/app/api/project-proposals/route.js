@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { projects } from "@/lib/server/actions";
-import { requestToJoinProject } from "@/lib/server/project-requests";
 import { requestToAdvise } from "@/lib/server/advisor-requests";
 
 export async function POST(request) {
@@ -52,7 +51,7 @@ export async function POST(request) {
 
     const newProject = await projects.create(data);
 
-    members.map(async (email) => {
+    const createMember = async (email) => {
       const student = await prisma.user.findUnique({
         where: { email },
         include: {
@@ -60,19 +59,17 @@ export async function POST(request) {
         },
       });
 
-      if (!student || !student.Student) {
-        return;
+      if (student && student.Student) {
+        await prisma.ProjectMember.create({
+          data: {
+            studentId: student.Student.id,
+            projectId: newProject.id,
+          },
+        });
       }
+    };
 
-      await prisma.ProjectMember.create({
-        data: {
-          studentId: student.Student.id,
-          projectId: newProject.id,
-        },
-      });
-    });
-
-    advisors.map(async (email) => {
+    const createAdvisor = async (email) => {
       const faculty = await prisma.user.findUnique({
         where: { email },
         include: {
@@ -80,14 +77,26 @@ export async function POST(request) {
         },
       });
 
-      if (!faculty || !faculty.Faculty) {
-        return;
+      if (faculty && faculty.Faculty) {
+        await requestToAdvise(
+          user.Student.id,
+          newProject.id,
+          faculty.Faculty.id,
+        );
       }
+    };
 
-      await requestToAdvise(user.Student.id, newProject.id, faculty.Faculty.id);
-    });
+    await Promise.all(
+      members.map(async (email) => {
+        await createMember(email);
+      }),
+      advisors.map(async (email) => {
+        await createAdvisor(email);
+      }),
+    );
 
     revalidatePath("/proposals");
+    revalidatePath("/my-team");
     return NextResponse.json({ newProject });
   } catch (error) {
     console.error("Error creating project proposal:", error.message);

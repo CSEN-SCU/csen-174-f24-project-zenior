@@ -35,7 +35,7 @@ const AdvisorRequests = ({ requests }) => {
   };
 
   const handleRequest = async (projectId, action) => {
-    setLoading(true);
+    setLoading(action);
     const requestId = requests.find(
       (request) => request.projectId === projectId,
     ).id;
@@ -154,14 +154,16 @@ const AdvisorRequests = ({ requests }) => {
                     onClick={() => handleRequest(project.id, "accept")}
                     className="py-2 px-4 m-4 text-white cursor-pointer bg-[#07B31B]"
                   >
-                    {loading ? "Approving request..." : "Advise this Project"}
+                    {loading === "accept"
+                      ? "Accepting request..."
+                      : "Advise this Project"}
                   </button>
                   <button
                     onClick={() => handleRequest(project.id, "reject")}
                     className="py-2 px-4 m-4 text-white cursor-pointer bg-[#b30738]"
                   >
-                    {loading
-                      ? "Denying request..."
+                    {loading === "reject"
+                      ? "Rejecting request..."
                       : "Do NOT Advise this Project"}
                   </button>
                 </div>

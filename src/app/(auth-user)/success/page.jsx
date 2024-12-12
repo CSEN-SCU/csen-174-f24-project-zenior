@@ -13,23 +13,6 @@ const Success = async () => {
   if (user.new) {
     redirect("/success/new-user");
   } else {
-    switch (user.role) {
-      case "student":
-        redirect("/student");
-        break;
-      case "faculty":
-        redirect("/faculty");
-        break;
-      case "admin":
-        redirect("/admin");
-        break;
-      case "super_admin":
-        redirect("/super_admin");
-        break;
-      default:
-        redirect("/");
-        break;
-    }
     redirect("/");
   }
 };

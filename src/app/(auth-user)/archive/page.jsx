@@ -1,4 +1,5 @@
 "use client";
+
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ArchiveSidebar } from "@/components/sidebar/archive-sidebar";
 import { useState, useEffect } from "react";
@@ -20,33 +21,40 @@ import {
 } from "@/components/ui/pagination";
 
 import { getTheses } from "@/lib/server/scholar-commons";
-import { getThesesWithDepartments} from "@/lib/server/scholar-commons";
+import { getThesesWithDepartments } from "@/lib/server/scholar-commons";
 
 export default function Archives() {
   const [departments, setSelectedItems] = useState([]);
-  const [filteredRows, setFilteredRows] = useState([]);
+  const [allRows, setAllRows] = useState(null);
+  const [filteredRows, setFilteredRows] = useState(null);
   const [page, setPage] = useState(0);
-  const [maxPages] = useState(0);
+  const [maxPages, setMaxPages] = useState(0);
 
   useEffect(() => {
     //fetch archived projects from db with applied filters
     const fetchFilteredArchives = async () => {
-      console.log(departments);
       var results;
       if (departments.length === 0) {
-        results = await getTheses(page);
+        results = await getTheses(0);
       } else {
         results = await getThesesWithDepartments(departments, page);
       }
-      setFilteredRows(results);
+      setAllRows(results);
+      setMaxPages(Math.ceil(results.length / 5));
+      setFilteredRows(results.slice(0, 5));
     };
     fetchFilteredArchives();
-  }, [departments, page]);
+  }, [departments]);
 
-  if(filteredRows.length === 0){
-    return <p>Loading..</p>
+  useEffect(() => {
+    if (allRows) {
+      setFilteredRows(allRows.slice(page, page + 5));
+    }
+  }, [page]);
+
+  if (!filteredRows) {
+    return <p>Loading..</p>;
   }
-
 
   return (
     <div className="px-8 m-9">
@@ -60,40 +68,41 @@ export default function Archives() {
           </SidebarProvider>
         </div>
 
-        <div>
+        <div className="w-[calc(100vw-288px-64px)]">
           <h1 className="pb-6 text-3xl font-black">Project Archive</h1>
 
-          <TableContainer component={Paper}>
-            <Table>
-              <TableBody>
+          <TableContainer
+            component={Paper}
+            sx={{ display: "block", overflow: "hidden", maxWidth: "100%" }}
+          >
+            <Table sx={{ display: "block", maxWidth: "100%" }}>
+              <TableBody sx={{ display: "block" }}>
                 {filteredRows.map((row) => (
                   <TableRow
                     key={row.context_key}
-                    sx={{ "&:last-child td, &last-child th": { border: 0 } }}
+                    sx={{
+                      display: "block",
+                      "&:last-child td, &last-child th": { border: 0 },
+                    }}
                   >
-                    <TableCell align="left" colSpan={4}>
+                    <TableCell
+                      sx={{ display: "block" }}
+                      align="left"
+                      colSpan={4}
+                    >
                       <div className="flex flex-col p-4 rounded-lg space-y2">
                         <a
                           href={`/archive/${row.context_key}`}
-                          className="text-xl font-bold underline text-[#b30738]"
+                          className="mb-2 text-xl font-bold underline text-[#b30738]"
                         >
                           {row.title}
                         </a>
-                        <div>
-                          {row.abstract.length > 280 ? (
-                            <>
-                            {<div dangerouslySetInnerHTML={{__html: row.abstract.slice(0, 120)}}/>}...
-                              <a
-                                href={`/archive/${row.context_key}`}
-                                className="underline text-[#b30738]"
-                              >
-                                Read more
-                              </a>
-                            </>
-                          ) : (
-                            <div dangerouslySetInnerHTML={{__html: row.abstract}}/>
-                          )}
-                        </div>
+                        <div
+                          className="max-w-full [&>*]:line-clamp-2 [&>*:not(:first-child)]:hidden"
+                          dangerouslySetInnerHTML={{
+                            __html: row.abstract,
+                          }}
+                        ></div>
                       </div>
                     </TableCell>
                   </TableRow>

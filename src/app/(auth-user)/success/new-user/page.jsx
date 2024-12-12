@@ -1,3 +1,4 @@
+import styles from "@/styles/profile.module.css";
 import AccountForm from "@/components/AccountForm/Form";
 import { user, skill } from "@/lib/server/actions";
 import { auth } from "@/lib/auth";
@@ -11,10 +12,21 @@ const NewUserForm = async () => {
   const users = await user.get({ email: session.user.email });
   const allSkills = await skill.get();
   if (!users[0].new) {
-    redirect("/student/page.jsx");
+    redirect("/");
   }
+
   return (
-    <AccountForm user={users[0]} userUpdate={user.update} skills={allSkills} />
+    <main className={styles.container}>
+      <div className={styles.leftContainer}>
+        <div className={styles.formContainer}>
+          <AccountForm
+            user={users[0]}
+            userUpdate={user.update}
+            skills={allSkills}
+          />
+        </div>
+      </div>
+    </main>
   );
 };
 

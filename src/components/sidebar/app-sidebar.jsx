@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 "use client";
 
 import {
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/sidebar";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
 import { Filter } from "lucide-react";
 
 //grouped filters
@@ -52,7 +52,6 @@ const categories = [
 ];
 
 export function AppSidebar(props) {
-
   const handleCheckboxChange = (id) => {
     //if id is unchecked, add it to the array
     props.setSelectedItems((prev) =>
@@ -79,7 +78,7 @@ export function AppSidebar(props) {
       <SidebarContent>
         <div className="p-4">
           <div className="flex flex-row items-center">
-            <h2 className="font-semibold text-lg pr-4">Filter</h2>
+            <h2 className="pr-4 text-lg font-semibold">Filter</h2>
             <Filter size="15" />
           </div>
 
@@ -89,8 +88,8 @@ export function AppSidebar(props) {
             </span>
           </button>
           {categories.map((category) => (
-            <SidebarGroup key={category.category} className="mb-6 p-1">
-              <h3 className="font-medium text-sm mb-2">{category.category}</h3>
+            <SidebarGroup key={category.category} className="p-1 mb-6">
+              <h3 className="mb-2 text-sm font-medium">{category.category}</h3>
               {category.type === "checkbox" ? (
                 <ul>
                   {category.options.map((option) => (

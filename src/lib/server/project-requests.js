@@ -95,19 +95,48 @@ export const leaveProject = async (projectId) => {
     },
     include: {
       Student: true,
+      Faculty: true,
     },
   });
 
   if (!user) return;
 
-  await prisma.ProjectMember.delete({
-    where: {
-      studentId_projectId: {
-        studentId: user.Student.id,
-        projectId,
+  if (user.Student) {
+    await prisma.ProjectMember.delete({
+      where: {
+        studentId_projectId: {
+          studentId: user.Student.id,
+          projectId,
+        },
       },
-    },
-  });
+    });
+  } else if (user.Faculty) {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (project.advisorId === user.Faculty.id) {
+      await prisma.project.update({
+        where: {
+          id: projectId,
+        },
+        data: {
+          advisorId: null,
+        },
+      });
+    } else if (project.coAdvisorId === user.Faculty.id) {
+      await prisma.project.update({
+        where: {
+          id: projectId,
+        },
+        data: {
+          coAdvisorId: null,
+        },
+      });
+    }
+  }
 
   // delete all projects that don't have any members, advisor, or coAdvisor
   const projects = await prisma.project.findMany({

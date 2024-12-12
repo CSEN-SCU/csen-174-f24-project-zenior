@@ -7,8 +7,8 @@ export function cn(...inputs) {
 
 export const getRole = (email) => {
   const superAdminEmails = new Set([]);
-  const adminEmails = new Set(["jcisneros@scu.edu", "notvceban@scu.edu"]);
-  const facultyEmails = new Set([]);
+  const adminEmails = new Set(["jcisneros@scu.edu"]);
+  const facultyEmails = new Set(["klukoff@scu.edu"]);
 
   if (superAdminEmails.has(email)) {
     return "super_admin";

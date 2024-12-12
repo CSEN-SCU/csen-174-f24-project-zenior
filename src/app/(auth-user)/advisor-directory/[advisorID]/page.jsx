@@ -38,7 +38,7 @@ export default async function AdvisorDetails({ params }) {
     return <h1>No faculty with id {advisorID} was found</h1>;
   }
   const advisorName = "" + advisor.firstName + " " + advisor.lastName;
-  const previousProjects = await getFacultyPreviousProjects(advisorName,5);
+  const previousProjects = await getFacultyPreviousProjects(advisorName, 5);
 
   return (
     <div className="p-6 my-2 bg-gray-50 rounded-md border-2 border-gray-200 w-[640px]">
@@ -89,59 +89,63 @@ export default async function AdvisorDetails({ params }) {
       <p className="text-gray-600">{advisor.researchInterests}</p>
       <h2 className="mt-4 text-xl font-semibold">Expertise Areas</h2>
       <p className="text-gray-600">{advisor.expertiseAreas}</p>
-      <h2 className="mt-4 text-xl font-semibold">Advised Projects</h2>
       {advisor.advisedProjects.map((project) => (
-        <div key={project.id} className="p-4 mt-2 bg-white rounded-lg border">
-          <h3 className="font-bold">{project.title}</h3>
-          <p>{project.description}</p>
-        </div>
+        <>
+          <h2 className="mt-4 text-xl font-semibold">
+            Currently Advised Projects
+          </h2>
+          <div key={project.id} className="p-4 mt-2 bg-white rounded-lg border">
+            <h3 className="font-bold">{project.title}</h3>
+            <p>{project.description}</p>
+          </div>
+        </>
       ))}
-      <h2 className="mt-4 text-xl font-semibold">Co-Advised Projects</h2>
       {advisor.coAdvisedProjects.map((project) => (
-        <div key={project.id} className="p-4 mt-2 bg-white rounded-lg border">
-          <h3 className="font-bold">{project.title}</h3>
-          <p>{project.description}</p>
-        </div>
+        <>
+          <h2 className="mt-4 text-xl font-semibold">
+            Currently Co-Advised Projects
+          </h2>
+          <div key={project.id} className="p-4 mt-2 bg-white rounded-lg border">
+            <h3 className="font-bold">{project.title}</h3>
+            <p>{project.description}</p>
+          </div>
+        </>
       ))}
-      <h2 className="mt-4 text-xl font-semibold">Skills</h2>
-      <ul className="list-disc list-inside">
-        {advisor.skills.map((skill) => (
-          <li key={skill.skillId} className="text-gray-600">
-            {skill.skill.name}
-          </li>
-        ))}
-      </ul>
-      <h2 className="mt-4 text-x1 font-semibold">Previously Advised Projects</h2>
-        {previousProjects.length > 0 ? (
-          previousProjects.map((project) => (
-            <div className="flex flex-col p-4 rounded-lg space-y2" key={project.context_key}>
+      {advisor.skills.length > 0 && (
+        <>
+          <h2 className="mt-4 text-xl font-semibold">Skills</h2>
+          <ul className="list-disc list-inside">
+            {advisor.skills.map((skill) => (
+              <li key={skill.skillId} className="text-gray-600">
+                {skill.skill.name}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      <h2 className="mt-4 mb-4 text-xl font-semibold">
+        Previously Advised Projects
+      </h2>
+      {previousProjects.length > 0 ? (
+        previousProjects.map((project) => (
+          <div className="flex flex-col" key={project.context_key}>
             <a
               href={`/archive/${project.context_key}`}
-              className="text-xl font-bold underline text-[#b30738]"
+              className="text-xl font-bold underline truncate text-[#b30738]"
             >
               {project.title}
             </a>
-            <div>
-              {project.abstract.length > 120 ? (
-                <>
-                  {<div dangerouslySetInnerHTML={{__html: project.abstract.slice(0, 120)}}/>}...
-                  <a
-                    href={`/archive/${project.context_key}`}
-                    className="underline text-[#b30738]"
-                  >
-                    Read more
-                  </a>
-                </>
-              ) : (
-                <div dangerouslySetInnerHTML={{__html: project.abstract}}/>
-              )}
-            </div>
+            <div
+              className="max-w-full mb-4 [&>*]:line-clamp-2 [&>*:not(:first-child)]:hidden"
+              dangerouslySetInnerHTML={{
+                __html: project.abstract,
+              }}
+            ></div>
           </div>
-          )
-        )
-        
-        ) : (<p>No previous Projects</p>)
-      }
+        ))
+      ) : (
+        <p>No previous Projects</p>
+      )}
     </div>
   );
 }

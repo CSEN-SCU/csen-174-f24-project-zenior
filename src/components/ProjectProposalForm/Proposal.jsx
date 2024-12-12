@@ -31,6 +31,8 @@ const ProposalForm = ({ user, skillSet }) => {
     //recs: [],
   });
 
+  const [loading, setLoading] = useState(false);
+
   const majors = [
     { id: "bioe", label: "Bioengineering" },
     { id: "ceng", label: "Civil, Environmental, and Sustainable Engineering" },
@@ -100,6 +102,9 @@ const ProposalForm = ({ user, skillSet }) => {
   };
 
   const handleSubmit = async () => {
+    if (loading) return;
+
+    setLoading(true);
     try {
       const payload = {
         ...formData,
@@ -114,13 +119,7 @@ const ProposalForm = ({ user, skillSet }) => {
         body: JSON.stringify(payload),
       });
 
-      console.log("Response Status:", response.status);
-
       if (response.ok) {
-        const result = await response.json();
-        console.log("Form submitted successfully:", result);
-
-        // confirmation pop up using toast
         toast({
           title: "Proposal Posted!",
           description: "Your proposal was succesfully submitted.",
@@ -132,7 +131,6 @@ const ProposalForm = ({ user, skillSet }) => {
         const errorData = await response.text();
         console.error("Form submission failed:", errorData);
 
-        // error toast
         toast({
           title: "Submission failed",
           description: "There was an issue submitting your proposal.",
@@ -142,12 +140,13 @@ const ProposalForm = ({ user, skillSet }) => {
     } catch (error) {
       console.error("Error submitting form:", error);
 
-      // error toast
       toast({
         title: "Error",
         description: "An unexpected error occured.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -174,7 +173,7 @@ const ProposalForm = ({ user, skillSet }) => {
               value={formData.title}
               onChange={handleInputChange}
               required
-              className="mt-1 w-1/2 px-3 py-2 ps-1 border focus:outline-none border-gray-300 rounded-md shadow-sm focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
+              className="py-2 px-3 mt-1 w-1/2 rounded-md border border-gray-300 shadow-sm sm:text-sm focus:outline-none ps-1 focus:ring-[#033B4C] focus:border-[#033B4C]"
             ></input>
           </div>
 
@@ -189,7 +188,7 @@ const ProposalForm = ({ user, skillSet }) => {
               onChange={handleInputChange}
               rows="4"
               required
-              className="block w-1/2 px-3 py-2 ps-1 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
+              className="block py-2 px-3 mt-1 w-1/2 rounded-md border border-gray-300 shadow-sm sm:text-sm focus:outline-none ps-1 focus:ring-[#033B4C] focus:border-[#033B4C]"
             ></textarea>
           </div>
 
@@ -209,7 +208,7 @@ const ProposalForm = ({ user, skillSet }) => {
                   onChange={handleInputChange}
                   name="projectMem"
                   type="text"
-                  className="w-full pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow"
+                  className="py-2 pr-10 pl-3 w-full text-sm bg-transparent rounded-md border shadow-sm transition duration-300 focus:shadow focus:outline-none placeholder:text-slate-400 text-slate-600 border-slate-200 ease hover:border-[#033B4C]-300 focus:border-[#033B4C]-400"
                   placeholder="Type here..."
                 />
                 <svg
@@ -239,7 +238,7 @@ const ProposalForm = ({ user, skillSet }) => {
               onChange={handleInputChange}
               name="projectAd"
               type="text"
-              className="w-96 pl-3 pr-10 py-2 bg-transparent placeholder:text-slate-400 text-slate-600 text-sm border border-slate-200 rounded-md transition duration-300 ease focus:outline-none focus:border-[#033B4C]-400 hover:border-[#033B4C]-300 shadow-sm focus:shadow"
+              className="py-2 pr-10 pl-3 w-96 text-sm bg-transparent rounded-md border shadow-sm transition duration-300 focus:shadow focus:outline-none placeholder:text-slate-400 text-slate-600 border-slate-200 ease hover:border-[#033B4C]-300 focus:border-[#033B4C]-400"
               placeholder="Type here..."
             />
           </div>
@@ -302,7 +301,7 @@ const ProposalForm = ({ user, skillSet }) => {
           </label>
           <div className="mb-4">
             <input
-              className="mt-1 block w-96 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C] sm:text-sm"
+              className="block py-2 px-3 mt-1 w-96 rounded-md border border-gray-300 shadow-sm sm:text-sm focus:outline-none focus:ring-[#033B4C] focus:border-[#033B4C]"
               type="text"
               name="skills"
               placeholder="Type desired skills for the project and press Enter"
@@ -335,10 +334,10 @@ const ProposalForm = ({ user, skillSet }) => {
           {/* Submit button for creating project */}
           <button
             type="submit"
-            className="bg-[#b30738] text-white cursor-pointer py-2 px-4 m-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="py-2 px-4 m-4 text-white cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed bg-[#b30738]"
             disabled={!isFormValid}
           >
-            Create Project
+            {loading ? "Loading..." : "Create Proposal"}
           </button>
         </div>
       </form>

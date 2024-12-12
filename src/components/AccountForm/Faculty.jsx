@@ -28,7 +28,7 @@ const FacultyForm = ({
       {!hideInstruction && (
         <div className={styles.instructionContainer}>
           <p className={styles.instructionText}>
-            Enter your information below to create an account.
+            Enter your information below to finish setting up your account.
           </p>
         </div>
       )}

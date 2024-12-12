@@ -157,7 +157,8 @@ const StudentForm = ({
       {!hideInstruction && (
         <div className={styles.instructionContainer}>
           <p className={styles.instructionText}>
-            Enter your information on the left to create an account.
+            Enter your information on the left to finish setting up your
+            account.
           </p>
         </div>
       )}

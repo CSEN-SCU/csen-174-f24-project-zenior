@@ -28,7 +28,7 @@ export default async function Directory() {
         </div>
 
         <div>
-          <h1 className="font-black text-3xl pb-6">
+          <h1 className="pb-6 text-3xl font-black">
             Faculty Advisor Directory
           </h1>
           <TableContainer component={Paper}>
@@ -36,7 +36,7 @@ export default async function Directory() {
               <TableBody>
                 {advisors.map((advisor) => (
                   <TableRow
-                    key={advisor.lastName}
+                    key={advisor.id}
                     sx={{ "&:last-child td, &last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" colSpan={4}>
@@ -59,7 +59,7 @@ export default async function Directory() {
                               />
                             </AvatarFallback>
                           </Avatar>
-                          <h2 className="underline text-[#b30738] text-xl font-bold pl-2">
+                          <h2 className="pl-2 text-xl font-bold underline text-[#b30738]">
                             <Link
                               href={`/advisor-directory/${advisor.id}`}
                               className="hover:text-[#b30738]"
