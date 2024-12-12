@@ -6,6 +6,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { RequestAdvisorButtons } from "@/components/Requests";
+import { getFacultyPreviousProjects } from "@/lib/server/scholar-commons";
 
 export default async function AdvisorDetails({ params }) {
   const urlParams = await params;
@@ -36,6 +37,8 @@ export default async function AdvisorDetails({ params }) {
   if (!advisor) {
     return <h1>No faculty with id {advisorID} was found</h1>;
   }
+  const advisorName = "" + advisor.firstName + " " + advisor.lastName;
+  const previousProjects = await getFacultyPreviousProjects(advisorName,5);
 
   return (
     <div className="p-6 my-2 bg-gray-50 rounded-md border-2 border-gray-200 w-[640px]">
@@ -108,6 +111,37 @@ export default async function AdvisorDetails({ params }) {
           </li>
         ))}
       </ul>
+      <h2 className="mt-4 text-x1 font-semibold">Previously Advised Projects</h2>
+        {previousProjects.length > 0 ? (
+          previousProjects.map((project) => (
+            <div className="flex flex-col p-4 rounded-lg space-y2" key={project.context_key}>
+            <a
+              href={`/archive/${project.context_key}`}
+              className="text-xl font-bold underline text-[#b30738]"
+            >
+              {project.title}
+            </a>
+            <div>
+              {project.abstract.length > 120 ? (
+                <>
+                  {<div dangerouslySetInnerHTML={{__html: project.abstract.slice(0, 120)}}/>}...
+                  <a
+                    href={`/archive/${project.context_key}`}
+                    className="underline text-[#b30738]"
+                  >
+                    Read more
+                  </a>
+                </>
+              ) : (
+                <div dangerouslySetInnerHTML={{__html: project.abstract}}/>
+              )}
+            </div>
+          </div>
+          )
+        )
+        
+        ) : (<p>No previous Projects</p>)
+      }
     </div>
   );
 }
