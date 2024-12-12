@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 const CustomFooter = () => {
   return (
     <footer className="bg-[#b30738] text-white py-4">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4">
+      <div className="max-w-screen-xl mx-auto flex flex-col sm:flex-row items-center justify-between px-4">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
           <Link href="/" className="flex items-center space-x-2">

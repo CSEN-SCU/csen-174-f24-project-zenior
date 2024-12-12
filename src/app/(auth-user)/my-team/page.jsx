@@ -19,11 +19,7 @@ export default async function MyTeam() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.leftContainer}>
-        <div className={styles.progressContainer}>
-          <Checklist />
-        </div>
-      </div>
+      <Checklist />
 
       {isAccountComplete && (
         <div className={styles.rightContainer}>
