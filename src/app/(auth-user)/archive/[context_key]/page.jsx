@@ -7,7 +7,6 @@ export default async function ArchiveDetails({ params }) {
   if (!previousProject) {
     return <div>Proposal not found</div>;
   }
-  console.log(previousProject);
   return (
     <div className="p-2 m-6">
       <div className="p-6 m-6 bg-slate-100">
@@ -18,7 +17,7 @@ export default async function ArchiveDetails({ params }) {
         </div>
         <br></br>
         <h2 className="text-lg font-semibold">Description:</h2>
-        <p>{previousProject[0].abstract}</p>
+        <div dangerouslySetInnerHTML={{__html: previousProject[0].abstract}}/>
         <br></br>
       </div>
     </div>

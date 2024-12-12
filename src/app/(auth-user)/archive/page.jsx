@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { getTheses } from "@/lib/server/scholar-commons";
-import { getThesesWithDepartments } from "@/lib/server/scholar-commons";
+import { getThesesWithDepartments} from "@/lib/server/scholar-commons";
 
 export default function Archives() {
   const [departments, setSelectedItems] = useState([]);
@@ -34,14 +34,19 @@ export default function Archives() {
       console.log(departments);
       var results;
       if (departments.length === 0) {
-        results = await getTheses(5);
+        results = await getTheses(page);
       } else {
-        results = await getThesesWithDepartments(departments, 5);
+        results = await getThesesWithDepartments(departments, page);
       }
       setFilteredRows(results);
     };
     fetchFilteredArchives();
   }, [departments, page]);
+
+  if(filteredRows.length === 0){
+    return <p>Loading..</p>
+  }
+
 
   return (
     <div className="px-8 m-9">
@@ -77,16 +82,16 @@ export default function Archives() {
                         <div>
                           {row.abstract.length > 280 ? (
                             <>
-                              {row.abstract.slice(0, 280)}...
+                            {<div dangerouslySetInnerHTML={{__html: row.abstract.slice(0, 120)}}/>}...
                               <a
-                                href={`/archive/${row.id}`}
+                                href={`/archive/${row.context_key}`}
                                 className="underline text-[#b30738]"
                               >
                                 Read more
                               </a>
                             </>
                           ) : (
-                            row.abstract
+                            <div dangerouslySetInnerHTML={{__html: row.abstract}}/>
                           )}
                         </div>
                       </div>
