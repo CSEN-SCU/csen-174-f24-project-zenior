@@ -2,10 +2,6 @@
   <img src="./public/images/logo-nobg.png" alt="Zeinor Logo" width="400" style="border-radius: 20px;">
 </p>
 
-<p align="center" style="font-size: 36px;">
-  <em> Zenior: A Next-Generation Platform for Engineering Students and Faculty Collaboration</em>
-</p>
-
 <p align="center">
     <a href="https://github.com/CSEN-SCU/csen-174-f24-project-zenior/releases" alt="Pre-release">
         <img src="https://img.shields.io/badge/release-v0.1.0--alpha-orange" />
@@ -173,8 +169,7 @@ The `diagrams` folder will hold diagrams that may change over time. Check out [P
   <summary><strong>🗺️  C4 System Context</strong></summary>
   <br>
 
-<img src="public/images/systemcontext2.png" alt="System Context Diagram 2" width="1200px">
-<br>
+<img src="public/images/systemcontext2.PNG" alt="System Context Diagram 2" width="1200px">
 
 <img src="diagrams/images/systemcontext/systemcontext.png" alt="System Context Diagram" width="1200px">
 
@@ -184,8 +179,7 @@ The `diagrams` folder will hold diagrams that may change over time. Check out [P
   <summary><strong>🏗️ C4 Container</strong></summary>
   <br>
 
-<img src="public/images/container2.png" alt="Container Diagram 2" width="1200px">
-<br>
+<img src="public/images/container2.PNG" alt="Container Diagram 2" width="1200px">
 
 <img src="diagrams/images/containerdiagram/containerdiagram.png" alt="Container Diagram" width="1200px">
 
