@@ -42,7 +42,6 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
 
 <details>
   <summary><strong>🔧 Setup </strong></summary>
-
 <br>
 
 🔑 **Environment Setup:** 
@@ -86,7 +85,6 @@ Run the following command to install the necessary packages:
 
 <details>
   <summary><strong>🔰 Learn More</strong></summary>
-
   <br>
 
 To learn more about the technology used in this project, take a look at the following resources:
@@ -159,18 +157,22 @@ The `diagrams` folder will hold diagrams that may change over time. Check out [P
 ## 📊 Diagrams
 
 <details>
-  <summary><strong>🗺️  C4 System Context Diagrams</strong></summary>
+  <summary><strong>🗺️  C4 System Context</strong></summary>
+  <br>
 
 <img src="public/images/systemcontext2.png" alt="System Context Diagram 2" width="1200px">
+<br>
 
 <img src="diagrams/images/systemcontext/systemcontext.png" alt="System Context Diagram" width="1200px">
 
 </details>
 
 <details>
-  <summary><strong>🏗️ C4 Container Diagrams</strong></summary>
+  <summary><strong>🏗️ C4 Container</strong></summary>
+  <br>
 
 <img src="public/images/container2.png" alt="Container Diagram 2" width="1200px">
+<br>
 
 <img src="diagrams/images/containerdiagram/containerdiagram.png" alt="Container Diagram" width="1200px">
 
@@ -178,6 +180,7 @@ The `diagrams` folder will hold diagrams that may change over time. Check out [P
 
 <details>
   <summary><strong>💠 Schema</strong></summary>
+  <br>
 
 <img src="diagrams/images/schemaupdate/schemaupdate.png" alt="Database Schema" width="1200px">
 
