@@ -43,17 +43,22 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
 <details>
   <summary><strong>🔧 Setup </strong></summary>
 
+<br>
 
 🔑 **Environment Setup:** 
+
   Get the `.env` file from the Zenior administrators and place it in the root of the project (next to `package.json`).
 
-💻 **Install Dependencies:** Run the following command to install the necessary packages:  
+💻 **Install Dependencies:** 
+
+Run the following command to install the necessary packages:  
 
    ```bash  
    npm install  
    ```
 
 🏭 **Generate Prisma Client:**  
+
    Run this command to generate the Prisma client:  
 
    ```bash  
@@ -61,6 +66,7 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
    ```
 
 📶 **Run the Development Server:**  
+
    Start the development server with:  
 
    ```bash  
@@ -69,6 +75,7 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
    Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 📊 **Optional: Run Prisma Studio:** 
+
    To visually work with the database, run:  
 
    ```bash  
@@ -80,20 +87,28 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
 <details>
   <summary><strong>🔰 Learn More</strong></summary>
 
+  <br>
+
 To learn more about the technology used in this project, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
-- [React Docs](https://react.dev/) - React documentation with examples and references.
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Learn how to use Tailwind utility classes.
-- [Prisma Documentation](https://www.prisma.io/docs/orm) - Learn about Prisma ORM.
-- [Shadcn/ui Documentation](https://ui.shadcn.com/docs) - Learn about Shadcn/ui components and examples.
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)  **[Next.js Documentation:](https://nextjs.org/docs)** Learn about Next.js features and API.
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)  **[Learn Next.js:](https://nextjs.org/learn)** An interactive Next.js tutorial.
+
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)  **[React Docs:](https://react.dev/)** React documentation with examples and references.
+
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)  **[Tailwind CSS Documentation:](https://tailwindcss.com/docs)** Learn how to use Tailwind utility classes.
+
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)  **[Prisma Documentation:](https://www.prisma.io/docs/orm)** Learn about Prisma ORM.
+
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)  **[Supabase Documentation:](https://supabase.com/docs)** Learn about Supabase tools and features.
+
+![Shadcn/ui](https://img.shields.io/badge/Shadcn/ui-282C34?style=for-the-badge&logo=react&logoColor=white)  **[Shadcn/ui Documentation:](https://ui.shadcn.com/docs)** Learn about Shadcn/ui components and examples.
 
 </details>
 
 <details>
-    <summary><strong>📎 Technology Choices Explained</strong></summary>
-
+    <summary><strong>📎 Tech Stack </strong></summary>
 <br>
 
 🔹 **React:** React is a JavaScript library for building user interfaces. It is backed by a large company and maintained by a community of individual developers, making it both reliable and open, with a large number of libraries and tools available. Compared to Vue, Angular, and Svelte (other popular frontend frameworks), React is the most popular and has the most libraries and packages available. It's also the most widely used frontend framework in the industry, making it a great skill to learn.
@@ -110,25 +125,36 @@ To learn more about the technology used in this project, take a look at the foll
 
 </details>
 
-
 <details>
   <summary><strong>🍃 PlantUML</strong></summary>
+<br>
 
-The "diagrams" folder will be to hold diagrams that may change over time. Check out [PlantUML](https://plantuml.com/).  
- You can generate the images directly with the VS Code extension called "PlantUML." Go to settings and find Plantuml: Server and make sure it is set to "https://www.plantuml.com/plantuml",
-also ensure that **PlantUML: Render** is set to **PlantUML Server**. To do this, go to settings, search for **PlantUML: Render**, and choose **PlantUML Server** from the dropdown.
-You need also need **Java** installed on your system for PlantUML to work.
+The `diagrams` folder will hold diagrams that may change over time. Check out [PlantUML](https://plantuml.com/) to create and manage diagrams.
 
-To preview a diagram, use the command palette (`Ctrl + Shift + P` or `Cmd + Shift + P` on Mac), type **"PlantUML: Preview Current Diagram"**, and select it.  
- To save a diagram as an image, use **"PlantUML: Save Current Diagram As..."** and choose the image format you prefer.
+🌱 **Setup PlantUML in VS Code**  
+- Install the "PlantUML" VS Code extension.  
+- In settings, configure the following:  
+  - **Plantuml: Server** → `https://www.plantuml.com/plantuml`.  
+  - **PlantUML: Render** → Set to **PlantUML Server**.  
+- Ensure **Java** is installed on your system.
 
-Here, to ensure all generated diagrams are saved in the correct location, set **PlantUML: Export Out Dir** in VS Code settings to `./diagrams/images`. This will automatically save all exported images to the `diagrams/images` folder, keeping them organized.
+🌿 **Preview, Export, and Organize Diagrams**  
+- Use the command palette (`Ctrl + Shift + P` or `Cmd + Shift + P` on Mac), and select:  
+  - **"PlantUML: Preview Current Diagram"** to preview your diagram.  
+  - **"PlantUML: Save Current Diagram As..."** to export the diagram in your preferred image format.  
+- Set **PlantUML: Export Out Dir** in settings to `./diagrams/images` to ensure all exported images are saved in the correct folder.  
+- (Optional) Set **PlantUML: Diagrams Root** in VS Code settings to your diagrams folder (e.g., `./diagrams`) for better organization.
 
-Optional, but to set the Diagrams Root, go to settings, search for **PlantUML: Diagrams Root**, and set it to the folder where you store your diagrams (e.g., `./diagrams`).
+🌳 **Create C4 Model Diagrams**  
+- Use the [C4-PlantUML library](https://github.com/plantuml-stdlib/C4-PlantUML) to create C4 diagrams. This ensures you always use the latest version of the library directly from GitHub without managing local files.
+- Include the library in your `.puml` file by adding:  
 
-To create C4 model diagrams, you can use the [C4-PlantUML library](https://github.com/plantuml-stdlib/C4-PlantUML). Clone or download the repository, and include it in your diagram with `!includeC4_Container.puml` to access the C4 elements. In this repository, we use the always up-to-date version of the C4-PlantUML library directly from GitHub. To use it in your PlantUML diagrams, simply include the following line at the top of your `.puml` file: `!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml`. This ensures that you always have the latest version of the library without needing to manage any files locally.
+  ```bash
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+  ```
 
 </details>
+
 
 ## 📊 Diagrams
 
@@ -151,13 +177,13 @@ To create C4 model diagrams, you can use the [C4-PlantUML library](https://githu
 </details>
 
 <details>
-  <summary><strong>📗 Database Schema</strong></summary>
+  <summary><strong>💠 Schema</strong></summary>
 
 <img src="diagrams/images/schemaupdate/schemaupdate.png" alt="Database Schema" width="1200px">
 
 </details>
 
-## 📜 License
+## 📋 License
 
 This project is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html). This license grants you the freedom to use, study, modify, and share the software. However, any modifications or derived works must also be distributed under the same license.
 
