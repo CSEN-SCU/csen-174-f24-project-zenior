@@ -30,7 +30,7 @@
 
 Zeinor is a comprehensive platform for rising juniors in the School of Engineering, designed to facilitate their preparation for senior design projects. It offers tools for students to explore and plan their projects efficiently for the upcoming year. Additionally, the platform enables faculty members to submit research topics and project opportunities that students can collaborate on, fostering a dynamic and collaborative environment for academic development and innovation.
 
-### 🛠️ Features
+### 🌎 Features
 
 - ⚡ **Project Planning and Exploration**: Assists juniors in the School of Engineering to discover and organize their senior design projects efficiently.
 - ✨ **Faculty Collaboration**: Faculty members can submit research topics and project ideas, making it easy for students to connect with real-world opportunities.
@@ -41,54 +41,44 @@ Zeinor is a comprehensive platform for rising juniors in the School of Engineeri
 ## 🚀 Get Started
 
 <details>
-  <summary><strong>🔧 Environment Setup</strong></summary>
+  <summary><strong>🔧 Setup </strong></summary>
 
-Get the `.env` file from the project Google Drive and place it in the root of the project (next to `package.json`).
 
-</details>
+🔑 **Environment Setup:** 
+  Get the `.env` file from the Zenior administrators and place it in the root of the project (next to `package.json`).
 
-<details>
-  <summary><strong>📦 Install Dependencies</strong></summary>
+💻 **Install Dependencies:** Run the following command to install the necessary packages:  
 
-```bash
-npm install
-```
+   ```bash  
+   npm install  
+   ```
 
-</details>
+🏭 **Generate Prisma Client:**  
+   Run this command to generate the Prisma client:  
 
-<details>
-  <summary><strong>🔄 Generate Prisma Client</strong></summary>
+   ```bash  
+   npx prisma generate  
+   ```
 
-```bash
-npx prisma generate
-```
+📶 **Run the Development Server:**  
+   Start the development server with:  
 
-</details>
+   ```bash  
+   npm run dev  
+   ```  
+   Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-<details>
-  <summary><strong>🚀 Run the Development Server</strong></summary>
+📊 **Optional: Run Prisma Studio:** 
+   To visually work with the database, run:  
 
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-</details>
-
-<details>
-  <summary><strong>🛠️ Run Prisma Studio</strong></summary>
-
-(Optional) Run Prisma Studio to visually work with the database:
-
-```bash
-npx prisma studio
-```
+   ```bash  
+   npx prisma studio  
+   ```
 
 </details>
 
 <details>
-  <summary><strong>💡 Learn More</strong></summary>
+  <summary><strong>🔰 Learn More</strong></summary>
 
 To learn more about the technology used in this project, take a look at the following resources:
 
@@ -102,7 +92,7 @@ To learn more about the technology used in this project, take a look at the foll
 </details>
 
 <details>
-    <summary><strong>✅ Technology Choices Explained</strong></summary>
+    <summary><strong>📎 Technology Choices Explained</strong></summary>
 
 - **React** - React is a JavaScript library for building user interfaces.
   It is backed by a large company and maintained a community of individual developers, making it
